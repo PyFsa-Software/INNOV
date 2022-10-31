@@ -3,7 +3,6 @@
   $(function() {
     $(".nav-settings").on("click", function() {
       $("#right-sidebar").toggleClass("open");
-      console.log("hola");
     });
     $(".settings-close").on("click", function() {
       $("#right-sidebar,#theme-settings").removeClass("open");

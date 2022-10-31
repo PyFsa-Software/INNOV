@@ -7,30 +7,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>@yield('titulo')</title>
 
-    <link rel="shortcut icon" href="{{ url('./img/favicon.png') }}" />
-
+    <link rel="shortcut icon" href="{{ url('/img/favicon.png') }}" />
+    <script src="{{ url('/assets/vendor-bundle-base/vendor.bundle.base.js') }}"></script>
     @vite(['resources/js/importFilesSistema.js'])
-
-
-
-
 </head>
 
 <body>
-
-
     <div class="container-scroller">
-
-
-
-
-
         {{-- NAVBAR --}}
-
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                <a class="navbar-brand brand-logo mr-5" href="{{url('inicio')}}"><h3 class="mr-2" alt="logo"><b>INNOVA S.R.L</b></h3></a>
-                <a class="navbar-brand brand-logo-mini" href="{{url('inicio')}}"><h3 class="p-2" alt="logo">IN</h3></a>
+                <a class="navbar-brand brand-logo mr-5" href="{{url('inicio')}}">
+                    <h3 class="mr-2" alt="logo"><b>INNOVA S.R.L</b></h3>
+                </a>
+                <a class="navbar-brand brand-logo-mini" href="{{url('inicio')}}">
+                    <h3 class="p-2" alt="logo">IN</h3>
+                </a>
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
                 <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -128,9 +120,6 @@
                 </button>
             </div>
         </nav>
-
-
-
         {{-- SIDEBAR SKINS --}}
 
         <div class="container-fluid page-body-wrapper">
@@ -211,8 +200,8 @@
                         </a>
                         {{-- <div class="collapse" id="charts">
                             <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link"
-                                        href="pages/charts/chartjs.html">ChartJs</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">ChartJs</a>
+                                </li>
                             </ul>
                         </div> --}}
                     </li>
@@ -262,23 +251,9 @@
                     </li>
                 </ul>
             </nav>
-
-
-
             @yield('contenido')
-
-
-            
-
         </div>
-
     </div>
-
-
-    
-
-
-
 </body>
 
 </html>
