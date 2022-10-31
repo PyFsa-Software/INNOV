@@ -1,9 +1,8 @@
 // bootstrap css
-import "../../vendor/feather/feather.css";
-import "../../vendor/ti-icons/css/themify-icons.css";
-import "../../vendor/css/vendor.bundle.base.css";
-import "../../vendor/datatables.net-bs4/dataTables.bootstrap4.css";
-import "../../vendor/ti-icons/css/themify-icons.css";
+import "../css/feather/feather.css";
+import "../css/vendor.bundle.base.css";
+import "../css/datatables.net-bs4/dataTables.bootstrap4.css";
+import "../css/ti-icons/css/themify-icons.css";
 import "../css/select.dataTables.min.css";
 import "../css/vertical-layout-light/style.css";
 
@@ -15,9 +14,9 @@ window.$ = window.jQuery = $;
 
 import "../js/libs/vendor.bundle.base.js";
 
-import "../../vendor/datatables.net/jquery.dataTables.js";
+import "../js/datatables.net/jquery.dataTables.js";
 
-import "../../vendor/datatables.net-bs4/dataTables.bootstrap4.js";
+import "../js/datatables.net/dataTables.bootstrap4.js";
 
 import "../js/libs/dataTables.select.min.js";
 
