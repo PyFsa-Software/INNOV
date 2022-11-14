@@ -18,9 +18,8 @@ return new class extends Migration
             $table->id('id_venta');
             $table->timestamp('fecha_venta')->useCurrent();
             $table->string('cuotas');
-            $table->foreignId("id_parcela")->references("id_parcela")->on("parcelas")->onDelete("restrict")->onUpdate("restrict");
-            $table->foreignId("id_cliente")->references("id_persona")->on("personas")->onDelete("restrict")->onUpdate("restrict");
-   
+
+
 
         });
     }

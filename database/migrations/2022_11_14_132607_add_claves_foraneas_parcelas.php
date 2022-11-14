@@ -13,15 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('parcelas', function (Blueprint $table){
-
-            $table->id('id_parcela');
-            $table->string('superficie_parcela');
-            $table->string('manzana');
-            $table->string('cantidad_bolsas');
-            $table->string('ancho');
-            $table->string('largo');
-
+        Schema::table('parcelas', function (Blueprint $table) {
+            $table->foreignId("id_lote")->references("id_lote")->on("lotes")->onDelete("restrict")->onUpdate("restrict");
         });
     }
 
@@ -32,6 +25,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('parcelas');
+        Schema::table('parcelas', function (Blueprint $table) {
+            $table->dropForeign(['id_lote']);
+            $table->dropColumn('id_lote');
+        });
     }
 };

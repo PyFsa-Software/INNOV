@@ -20,8 +20,8 @@ return new class extends Migration
             $table->date('fecha_hasta');
             $table->string('valor_cuota');
             $table->timestamp('fecha')->useCurrent();
-            $table->foreignId("id_venta")->references("id_venta")->on("ventas")->onDelete("restrict")->onUpdate("restrict");
-   
+
+
 
         });
     }

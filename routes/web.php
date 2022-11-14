@@ -1,23 +1,23 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+Route::middleware(['guest'])->group(function () {
+    // INICIAR SESION
+    Route::get('/', [Auth::class, 'index'])->name('inicioSesion.index');
 
-Route::get('/', function () {
-    return view('login.login');
+    Route::post('/', [Auth::class, 'loguearse'])->name('inicioSesion.loguearse');
+
 });
 
+Route::middleware(['auth'])->group(function () {
 
-route::get('/inicio', function () {
-    return view('dashboard.dashboard');
-})->name('inicio');
+    // CERRAR SESION
+    Route::get('/logout', [Auth::class, 'logout'])->name('inicioSesion.desloguearse');
+
+    route::get('/inicio', function () {
+        return view('dashboard.dashboard');
+    })->name('inicio');
+
+});

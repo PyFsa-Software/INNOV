@@ -20,8 +20,8 @@ return new class extends Migration
             $table->timestamp('fecha')->useCurrent();
             $table->string('fecha_prox_vencimiento');
             $table->string('importe');
-            $table->foreignId("id_venta")->references("id_venta")->on("ventas")->onDelete("restrict")->onUpdate("restrict");
-   
+
+
 
         });
     }

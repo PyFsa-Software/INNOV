@@ -20,7 +20,6 @@ return new class extends Migration
             $table->date('fecha_fin');
             $table->string('total_intereses');
             $table->string('activo');
-            $table->foreignId("id_cliente")->references("id_persona")->on("personas")->onDelete("restrict")->onUpdate("restrict");
         });
     }
 

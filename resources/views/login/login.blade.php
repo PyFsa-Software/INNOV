@@ -24,18 +24,24 @@
                             </div>
                             {{-- <h4>Hello! let's get started</h4> --}}
                             {{-- <h6 class="font-weight-light">Sign in to continue.</h6> --}}
-                            <form class="pt-3 ">
+                            <form class="pt-3" method="POST" action="{{ route('inicioSesion.loguearse') }}">
+                                @csrf
+                                @if ($errors->has('mensaje'))
+                                    <span class="text-danger">{{ $errors->first('mensaje') }}</span>
+                                    <br>
+                                @endif
                                 <div class="form-group">
-                                    <input type="email" class="form-control form-control-lg" id="nombreUsuario"
-                                        placeholder="Nombre de Usuario">
+                                    <input type="text" class="form-control form-control-lg" id="nombreUsuario"
+                                        name="usuario" placeholder="Nombre de Usuario">
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" class="form-control form-control-lg"
-                                        id="consenia" placeholder="Contraseña">
+                                    <input type="password" class="form-control form-control-lg" id="consenia"
+                                        name="password" placeholder="Contraseña">
                                 </div>
                                 <div class="mt-3">
-                                    <a class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
-                                        href="../../index.html">INICIAR SESION</a>
+                                    <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">
+                                        INICIAR SESION
+                                    </button>
                                 </div>
                                 {{-- <div class="my-2 d-flex justify-content-between align-items-center">
                                     <div class="form-check">
