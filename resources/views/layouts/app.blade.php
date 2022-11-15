@@ -9,7 +9,7 @@
 
     <link rel="shortcut icon" href="{{ url('/img/favicon.png') }}" />
     <script src="{{ url('/assets/vendor-bundle-base/vendor.bundle.base.js') }}"></script>
-    @vite(['resources/js/importFilesSistema.js'])
+
 </head>
 
 <body>
@@ -17,10 +17,10 @@
         {{-- NAVBAR --}}
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                <a class="navbar-brand brand-logo mr-5" href="{{url('inicio')}}">
+                <a class="navbar-brand brand-logo mr-5" href="{{ url('inicio') }}">
                     <h3 class="mr-2" alt="logo"><b>INNOVA S.R.L</b></h3>
                 </a>
-                <a class="navbar-brand brand-logo-mini" href="{{url('inicio')}}">
+                <a class="navbar-brand brand-logo-mini" href="{{ url('inicio') }}">
                     <h3 class="p-2" alt="logo">IN</h3>
                 </a>
             </div>
@@ -94,17 +94,13 @@
                     </li>
                     <li class="nav-item nav-profile dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                            NOMBRE-USUARIO
+                            {{ auth()->user()->nombre_usuario }}
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown"
                             aria-labelledby="profileDropdown">
-                            <a class="dropdown-item">
-                                <i class="ti-settings text-primary"></i>
-                                Settings
-                            </a>
-                            <a class="dropdown-item">
+                            <a href={{ route('inicioSesion.desloguearse') }} class="dropdown-item">
                                 <i class="ti-power-off text-primary"></i>
-                                Logout
+                                CERRAR SESION
                             </a>
                         </div>
                     </li>
@@ -152,7 +148,7 @@
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{url('inicio')}}">
+                        <a class="nav-link" href="{{ url('inicio') }}">
                             <i class="icon-grid menu-icon"></i>
                             <span class="menu-title">INICIO</span>
                         </a>
@@ -176,14 +172,20 @@
                             </ul>
                         </div> --}}
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false"
+                        <a class="nav-link" href="{{ route('lotes') }}">
+                            <i class="icon-columns menu-icon"></i>
+                            <span class="menu-title">LOTES</span>
+                        </a>
+                    </li>
+                    {{-- <a class="nav-link" data-toggle="collapse" href={{ route('lotes') }} aria-expanded="false"
                             aria-controls="form-elements">
                             <i class="icon-columns menu-icon"></i>
                             <span class="menu-title">LOTES</span>
                             <i class="menu-arrow"></i>
-                        </a>
-                        {{-- <div class="collapse" id="form-elements">
+                        </a> --}}
+                    {{-- <div class="collapse" id="form-elements">
                             <ul class="nav flex-column sub-menu">
                                 <li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">Basic
                                         Elements</a>
@@ -240,20 +242,24 @@
                             <span class="menu-title">PAGOS</span>
                             <i class="menu-arrow"></i>
                         </a>
-                        {{-- <div class="collapse" id="auth">
-                            <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a>
-                                </li>
-                                <li class="nav-item"> <a class="nav-link" href="pages/samples/register.html">
-                                        Register </a></li>
-                            </ul>
-                        </div> --}}
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href={{ route('inicioSesion.desloguearse') }} aria-expanded="false"
+                            aria-controls="auth">
+                            <i class="ti-power-off menu-icon"></i>
+                            <span class="menu-title">CERRAR SESION</span>
+                            <i class="menu-arrow"></i>
+                        </a>
                     </li>
                 </ul>
             </nav>
             @yield('contenido')
         </div>
     </div>
+
+
+    @vite(['resources/js/importFilesSistema.js'])
+
 </body>
 
 </html>

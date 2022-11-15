@@ -46,6 +46,6 @@ class Usuario extends Authenticatable
     ];
     public function getAuthPassword()
     {
-        return $this->password_usuario;
+        return $this->contrasenia;
     }
 }

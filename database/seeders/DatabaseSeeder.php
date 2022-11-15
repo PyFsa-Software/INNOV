@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
             'celular'=>'3454546576',
             'correo'=>'asdasd@asdas.com'
         ]);
-        
+
         // USUARIO POR DEFECTO
         Usuario::create([
             'nombre_usuario' => 'admin',

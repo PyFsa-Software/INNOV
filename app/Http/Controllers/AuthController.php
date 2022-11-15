@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
@@ -26,27 +28,29 @@ class AuthController extends Controller
     {
 
         try {
-            if (auth()->attempt(['nombre_usuario' => $request->usuario, 'contrasenia' => $request->password])) {
+            if (auth()->attempt(['nombre_usuario' => $request->usuario, 'password' => $request->password])) {
 
 
                 return redirect()->route('inicio');
             }
-    
+
             return back()->withErrors(['mensaje' => 'Correo o contraseña incorrectos']);
-    
+
         } catch (\Exception$e) {
 
             $mensaje = $e->getMessage();
-        
-            
+
+
         }
 
-        
+
     }
 
     public function logout(Request $request)
     {
-        auth()->logout();
+        Session::flush();
+
+        Auth::logout();
         return redirect()->route('inicioSesion.index');
 
     }
