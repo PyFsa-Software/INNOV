@@ -180,18 +180,18 @@
                         </a>
                     </li>
                     {{-- <a class="nav-link" data-toggle="collapse" href={{ route('lotes') }} aria-expanded="false"
-                            aria-controls="form-elements">
-                            <i class="icon-columns menu-icon"></i>
-                            <span class="menu-title">LOTES</span>
-                            <i class="menu-arrow"></i>
-                        </a> --}}
+                        aria-controls="form-elements">
+                        <i class="icon-columns menu-icon"></i>
+                        <span class="menu-title">LOTES</span>
+                        <i class="menu-arrow"></i>
+                    </a> --}}
                     {{-- <div class="collapse" id="form-elements">
-                            <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">Basic
-                                        Elements</a>
-                                </li>
-                            </ul>
-                        </div> --}}
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">Basic
+                                    Elements</a>
+                            </li>
+                        </ul>
+                    </div> --}}
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="collapse" href="#charts" aria-expanded="false"
@@ -222,7 +222,7 @@
                         </div> --}}
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" href="#icons" aria-expanded="false"
+                        <a class="nav-link" href="{{route('precios.index')}}" aria-expanded="false"
                             aria-controls="icons">
                             <i class="icon-contract menu-icon"></i>
                             <span class="menu-title">PRECIOS</span>
