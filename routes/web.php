@@ -26,9 +26,19 @@ Route::middleware(['auth'])->group(function () {
     Route::get('lotes', [LotesController::class, 'Lotes'])->name('lotes');
 
     // ROUTES PRECIOS
-    Route::get('precios', [PreciosController::class, 'index'])->name('precios.index');
-    Route::get('precios/crear', [PreciosController::class, 'create'])->name('precios.crear');
+    Route::controller(PreciosController::class)->group(function () {
 
-    Route::post('precios/crear', [PreciosController::class, 'store'])->name('precios.guardar');
+        Route::get('precios', 'index')->name('precios.index');
+
+        Route::get('precios/crear', 'create')->name('precios.crear');
+        Route::post('precios/crear', 'store')->name('precios.guardar');
+
+        Route::get('precios/editar/{precio}', 'edit')->name('precios.editar');
+        Route::put('precios/editar/{precio}', 'update')->name('precios.modificar');
+
+        Route::get('precios/borrar/{precio}', 'showQuestion')->name('precios.borrar');
+        Route::delete('precios/borrar/{precio}', 'destroy')->name('precios.eliminar');
+
+    });
 
 });

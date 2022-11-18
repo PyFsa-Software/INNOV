@@ -79,9 +79,9 @@ class PreciosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Precios $precio)
     {
-        //
+        return view('precios.editar', compact('precio'));
     }
 
     /**
@@ -91,9 +91,33 @@ class PreciosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StorePreciosRequest $request, Precios $precio)
     {
-        //
+        try {
+            $precioBercomat = $request->precio_bercomat;
+            $precioSanCayetano = $request->precio_sancayetano;
+            $precioRioColorado = $request->precio_rio_colorado;
+
+            $promedio = ($precioBercomat + $precioSanCayetano + $precioRioColorado) / 3;
+
+            $promedioRedondeado = number_format((float) $promedio, 2, '.', '');
+            $precio->update([
+                'precio_bercomat' => $precioBercomat,
+                'precio_sancayetano' => $precioSanCayetano,
+                'precio_rio_colorado' => $precioRioColorado,
+                'precio_promedio' => $promedioRedondeado,
+            ]);
+            return back()->with('success', 'Precio actualizado correctamente!');
+        } catch (\Throwable$th) {
+            return back()->with('error', 'Error al editar el registro de precio!');
+
+        }
+
+    }
+
+    public function showQuestion(Precios $precio)
+    {
+        return view('precios.eliminar', compact('precio'));
     }
 
     /**
@@ -102,8 +126,16 @@ class PreciosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Precios $precio)
     {
-        //
+        dd($precio);
+        try {
+            $precio->delete();
+            return redirect()->route('percios.index')->with('success', 'Precio eliminado correctamente!');
+        } catch (\Throwable$th) {
+            return redirect()->route('percios.index')->with('error', 'Error al eliminar el registro de precio!');
+
+        }
+
     }
 }
