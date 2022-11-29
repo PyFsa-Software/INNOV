@@ -28,7 +28,6 @@ import "./todolist/todolist";
 import "./dashboard/dashboard";
 import "./Chart.roundedBarCharts/Chart.roundedBarCharts";
 
-
 //IMPORTACIONES MODULOS
 
 import "./dataTables.js";
