@@ -28,7 +28,11 @@ import "./todolist/todolist";
 import "./dashboard/dashboard";
 import "./Chart.roundedBarCharts/Chart.roundedBarCharts";
 
+// import "./bootstrap";
+// import "laravel-datatables-vite";
+
+// import "../css/app.css";
 //IMPORTACIONES MODULOS
 
-import "./dataTables.js";
+// import "./dataTables.js";
 // import "../system/js/vendor-bundle-base/vendor.bundle.base";

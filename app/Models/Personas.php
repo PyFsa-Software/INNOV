@@ -20,6 +20,7 @@ class Personas extends Model
         'cuit',
         'domicilio',
         'celular',
-        'correo'
+        'correo',
+        'cliente',
     ];
 }

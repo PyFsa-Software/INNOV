@@ -252,8 +252,8 @@
     </div>
 
 
+    @stack('scripts')
     @vite(['resources/js/importFilesSistema.js'])
-
 </body>
 
 </html>

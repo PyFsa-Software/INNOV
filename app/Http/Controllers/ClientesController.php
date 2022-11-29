@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\ClientesDataTable;
 use App\Models\Personas;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Yajra\DataTables\DataTables;
 
 class ClientesController extends Controller
 {
@@ -14,26 +13,28 @@ class ClientesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(ClientesDataTable $dataTable)
     {
-        $clientes = Personas::all();
-        // dd($data);
-        if ($request->ajax()) {
-            $data = Personas::select(DB::raw("CONCAT(nombre,' ',apellido) AS nombre_apellido"), 'dni', 'celular', 'correo')->get();
-            return DataTables::of($data)->addIndexColumn()
-                ->addColumn('editar', function ($row) {
-                    $btn = '<a href="{}" class="btn btn-warning btn-sm">Editar</a>';
-                    return $btn;
-                })
-                ->addColumn('eliminar', function ($row) {
-                    $btn = '<a href="{}" class="btn btn-danger btn-sm">Eliminar</a>';
-                    return $btn;
-                })
-                ->rawColumns(['editar', 'eliminar'])
-                ->make(true);
-        }
+        $clientes = Personas::all()->where('cliente', '=', '1');
+        return $dataTable->render('clientes.index', compact('clientes'));
 
-        return view('clientes.index', compact('clientes'));
+        // // dd($data);
+        // if ($request->ajax()) {
+        //     $data = Personas::select(DB::raw("CONCAT(nombre,' ',apellido) AS nombre_apellido"), 'dni', 'celular', 'correo')->get();
+        //     return DataTables::of($data)->addIndexColumn()
+        //         ->addColumn('editar', function ($row) {
+        //             $btn = '<a href="{}" class="btn btn-warning btn-sm">Editar</a>';
+        //             return $btn;
+        //         })
+        //         ->addColumn('eliminar', function ($row) {
+        //             $btn = '<a href="{}" class="btn btn-danger btn-sm">Eliminar</a>';
+        //             return $btn;
+        //         })
+        //         ->rawColumns(['editar', 'eliminar'])
+        //         ->make(true);
+        // }
+
+        // return view('clientes.index', compact('clientes'));
 
     }
 

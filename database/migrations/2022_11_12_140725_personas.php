@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('personas', function (Blueprint $table){
+        Schema::create('personas', function (Blueprint $table) {
 
             $table->id('id_persona');
             $table->string('nombre');
@@ -21,8 +21,9 @@ return new class extends Migration
             $table->string('dni');
             $table->string('cuit');
             $table->string('domicilio');
-            $table->string('celular',10);
+            $table->string('celular', 10);
             $table->string('correo');
+            $table->boolean('cliente')->default(1);
 
         });
     }

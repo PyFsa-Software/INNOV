@@ -14,7 +14,7 @@
             @if (count($clientes) === 0)
             <h1 class="text-center text-danger"><i class="fa fa-desktop fa-lg"></i> Aun no hay registros de clientes
             </h1>
-            <a href="{{route('clientes.crear')}}" class="btn btn-success">Agregar Venta</a>
+            <a href="{{route('clientes.crear')}}" class="btn btn-success">Agregar Cliente</a>
             @else
 
             <h1 class="text-center"><i class="fa fa-desktop fa-lg"></i> Listado de Clientes
@@ -22,20 +22,7 @@
             <a href="{{route('clientes.crear')}}" class="btn btn-success mb-2">Agregar Cliente</a>
             <div class="table-responsive">
 
-                <table id="tablaClientes" class="table" style="width: 100%">
-
-                    <thead>
-                        <tr>
-                            <td>NOMBRE-APELLIDO</td>
-                            <td>DNI</td>
-                            <td>CELULAR</td>
-                            <td>CORREO</td>
-                            <td>MODIFICAR</td>
-                            <td>ELIMINAR</td>
-                        </tr>
-                    </thead>
-
-                </table>
+                {{ $dataTable->table(['width' => '100%', 'class' => 'table table-striped table-bordered']) }}
             </div>
             @endif
         </div>
@@ -43,7 +30,7 @@
     </div>
 </div>
 
-<script type="text/javascript">
+{{-- <script type="text/javascript">
     $(function () {
     $('#tablaClientes').DataTable({
         processing: true,
@@ -86,5 +73,8 @@
         responsive: true,
     });
   });
-</script>
+</script> --}}
 @endsection
+@push('scripts')
+{{ $dataTable->scripts(attributes: ['type' => 'module']) }}
+@endpush
