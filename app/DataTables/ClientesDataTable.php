@@ -18,7 +18,7 @@ class ClientesDataTable extends DataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
-        $queryWithWhere = $query->select(['id_persona', 'nombre', 'apellido', 'dni', 'correo', 'celular', 'cliente'])
+        $queryWithWhere = $query->select(['id_persona', 'nombre', 'apellido', 'dni', 'correo', 'celular', 'cliente', 'activo'])
             ->from('personas')
             ->where('cliente', '=', '1');
 
@@ -27,15 +27,17 @@ class ClientesDataTable extends DataTable
                 return $data->nombre . ' ' . $data->apellido;
             })
             ->addColumn('editar', function ($data) {
-                $btn = '<a href="{}" class="btn btn-warning btn-sm">Editar</a>';
+                $btn = "<a href='" . route('clientes.editar', $data->id_persona) . "' class='btn btn-warning btn-sm'>Editar</a>";
                 return $btn;
             })
-            ->addColumn('eliminar', function ($data) {
-                $btn = '<a href="{}" class="btn btn-danger btn-sm">Eliminar</a>';
-                return $btn;
+            ->addColumn('eliminar/activar', function ($data) {
+                if (!$data->activo) {
+                    return "<a href='" . route('clientes.activar', $data->id_persona) . "' class='btn btn-info btn-sm'>Activar</a>";
+                } else {
+                    return "<a href='" . route('clientes.eliminar', $data->id_persona) . "' class='btn btn-danger btn-sm'>Eliminar</a>";
+                }
             })
-
-            ->rawColumns(['nombre_apellido', 'editar', 'eliminar'])
+            ->rawColumns(['nombre_apellido', 'editar', 'eliminar/activar'])
             ->setRowId('id_persona');
     }
 
@@ -77,7 +79,7 @@ class ClientesDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            'nombre_apellido', 'dni', 'correo', 'celular', 'editar', 'eliminar',
+            'nombre_apellido', 'dni', 'correo', 'celular', 'editar', 'eliminar/activar',
         ];
     }
 

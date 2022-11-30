@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\ClientesDataTable;
+use App\Http\Requests\StoreClientesRequest;
 use App\Models\Personas;
 use Illuminate\Http\Request;
 
@@ -17,25 +18,6 @@ class ClientesController extends Controller
     {
         $clientes = Personas::all()->where('cliente', '=', '1');
         return $dataTable->render('clientes.index', compact('clientes'));
-
-        // // dd($data);
-        // if ($request->ajax()) {
-        //     $data = Personas::select(DB::raw("CONCAT(nombre,' ',apellido) AS nombre_apellido"), 'dni', 'celular', 'correo')->get();
-        //     return DataTables::of($data)->addIndexColumn()
-        //         ->addColumn('editar', function ($row) {
-        //             $btn = '<a href="{}" class="btn btn-warning btn-sm">Editar</a>';
-        //             return $btn;
-        //         })
-        //         ->addColumn('eliminar', function ($row) {
-        //             $btn = '<a href="{}" class="btn btn-danger btn-sm">Eliminar</a>';
-        //             return $btn;
-        //         })
-        //         ->rawColumns(['editar', 'eliminar'])
-        //         ->make(true);
-        // }
-
-        // return view('clientes.index', compact('clientes'));
-
     }
 
     /**
@@ -55,9 +37,17 @@ class ClientesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreClientesRequest $request)
     {
-        //
+        // dd($request->all());
+        try {
+            Personas::create(request()->all());
+            return back()->with('success', 'Cliente creado correctamente!');
+        } catch (\Throwable$th) {
+            return back()->with('error', 'Error al crear al registrar el cliente!');
+
+        }
+
     }
 
     /**
@@ -77,9 +67,9 @@ class ClientesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Personas $persona)
     {
-        //
+        return view('clientes.editar', compact('persona'));
     }
 
     /**
@@ -89,9 +79,38 @@ class ClientesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreClientesRequest $request, Personas $persona)
     {
-        //
+        try {
+            $persona->update($request->all());
+            return back()->with('success', 'Cliente editado correctamente!');
+        } catch (\Throwable$th) {
+            return back()->with('error', 'Error al actualizar los datos del cliente!');
+
+        }
+
+    }
+
+    public function showQuestionActivate(Personas $persona)
+    {
+        return view('clientes.activar', compact('persona'));
+    }
+
+    public function activate(Personas $persona)
+    {
+        try {
+            $persona->activo = 1;
+            $persona->save();
+            return redirect()->route('clientes.index')->with('success', 'Cliente activado correctamente!');
+        } catch (\Throwable$th) {
+            return redirect()->route('clientes.index')->with('error', 'Error al reactivar el cliente!');
+
+        }
+    }
+
+    public function showQuestionDestroy(Personas $persona)
+    {
+        return view('clientes.eliminar', compact('persona'));
     }
 
     /**
@@ -100,8 +119,15 @@ class ClientesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Personas $persona)
     {
-        //
+        try {
+            $persona->activo = 0;
+            $persona->save();
+            return redirect()->route('clientes.index')->with('success', 'Cliente eliminado correctamente!');
+        } catch (\Throwable$th) {
+            return redirect()->route('clientes.index')->with('error', 'Error al eliminar al cliente!');
+
+        }
     }
 }

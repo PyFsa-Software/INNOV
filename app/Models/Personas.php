@@ -22,5 +22,6 @@ class Personas extends Model
         'celular',
         'correo',
         'cliente',
+        'activo',
     ];
 }

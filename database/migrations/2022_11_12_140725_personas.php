@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('celular', 10);
             $table->string('correo');
             $table->boolean('cliente')->default(1);
+            $table->boolean('activo')->default(1);
 
         });
     }

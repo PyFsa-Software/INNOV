@@ -48,13 +48,16 @@ Route::middleware(['auth'])->group(function () {
         Route::get('clientes', 'index')->name('clientes.index');
 
         Route::get('clientes/crear', 'create')->name('clientes.crear');
-        // Route::post('clientes/crear', 'store')->name('clientes.guardar');
+        Route::post('clientes/crear', 'store')->name('clientes.guardar');
 
-        // Route::get('clientes/editar/{precio}', 'edit')->name('clientes.editar');
-        // Route::put('clientes/editar/{precio}', 'update')->name('clientes.modificar');
+        Route::get('clientes/editar/{persona}', 'edit')->name('clientes.editar');
+        Route::put('clientes/editar/{persona}', 'update')->name('clientes.modificar');
 
-        // Route::get('clientes/borrar/{precio}', 'showQuestion')->name('clientes.borrar');
-        // Route::delete('clientes/borrar/{precio}', 'destroy')->name('clientes.eliminar');
+        Route::get('clientes/activar/{persona}', 'showQuestionActivate')->name('clientes.activar');
+        Route::patch('clientes/activar/{persona}', 'activate')->name('clientes.habilitar');
+
+        Route::get('clientes/borrar/{persona}', 'showQuestionDestroy')->name('clientes.borrar');
+        Route::delete('clientes/borrar/{persona}', 'destroy')->name('clientes.eliminar');
 
     });
 
