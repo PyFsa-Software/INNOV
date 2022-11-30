@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\PreciosDataTable;
 use App\Http\Requests\StorePreciosRequest;
 use App\Models\Precios;
 use Illuminate\Http\Request;
@@ -13,12 +14,12 @@ class PreciosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(PreciosDataTable $dataTable)
     {
         $precios = Precios::all();
 
-        // ddd($precios);
-        return view('precios.index', compact('precios'));
+        return $dataTable->render('precios.index', compact('precios'));
+
     }
 
     /**
@@ -128,12 +129,12 @@ class PreciosController extends Controller
      */
     public function destroy(Precios $precio)
     {
-        dd($precio);
+        // dd($precio);
         try {
             $precio->delete();
-            return redirect()->route('percios.index')->with('success', 'Precio eliminado correctamente!');
+            return redirect()->route('precios.index')->with('success', 'Precio eliminado correctamente!');
         } catch (\Throwable$th) {
-            return redirect()->route('percios.index')->with('error', 'Error al eliminar el registro de precio!');
+            return redirect()->route('precios.index')->with('error', 'Error al eliminar el registro de precio!');
 
         }
 

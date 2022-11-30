@@ -7,64 +7,35 @@
 
 <div class="main-panel">
 
-    <div class="content-wrapper  d-flex justify-content-center">
+    <div class="content-wrapper d-flex justify-content-center">
 
-        <div class="col-md-12 grid-margin transparent">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-            <div class="app-title mb-5">
-                @if (count($precios) === 0)
-                <h1 class="text-center text-danger"><i class="fa fa-desktop fa-lg"></i> Aun no hay precios cargados
-                </h1>
-                <a href="{{route('precios.crear')}}" class="btn btn-success">Agregar Precio</a>
-                @else
+            @if (count($precios) === 0)
+            <h1 class="text-center text-danger"><i class="fa fa-desktop fa-lg"></i> Aun no hay precios cargados
+            </h1>
+            <a href="{{route('precios.crear')}}" class="btn btn-success">Agregar Precio</a>
+            @else
 
-                <div>
-                    <h1 class="text-center"><i class="fa fa-desktop fa-lg"></i> Listado de Precios
-                    </h1>
-                    <a href="{{route('precios.crear')}}" class="btn btn-success">Agregar Precio</a>
-                </div>
+            <h1 class="text-center"><i class="fa fa-desktop fa-lg"></i> Listado de Precios
+            </h1>
 
-                <table id="myTable" class="table">
+            <x-alertas />
 
-                    <thead>
-                        <tr>
-                            <th>BERCOMAT</th>
-                            <th>SAN CAYETANO</th>
-                            <th>RIO COLORADO</th>
-                            <th>PROMEDIO</th>
-                            <th>FECHA</th>
-                            <th>MODIFICAR</th>
-                            <th>ELIMINAR</th>
-                        </tr>
-                    </thead>
+            <a href="{{route('precios.crear')}}" class="btn btn-success mb-2">Agregar Precio</a>
 
-                    <tbody>
+            <div class="table-responsive">
 
-                        @foreach ($precios as $precio)
-                        <tr>
-                            <td>{{ $precio?->precio_bercomat }}</td>
-                            <td>{{ $precio?->precio_sancayetano }}</td>
-                            <td>{{ $precio?->precio_rio_colorado }}</td>
-                            <td>{{ $precio?->precio_promedio }}</td>
-                            <td>{{ $precio?->fecha }}</td>
-                            <td><a href="{{ route('precios.editar', $precio->id_precio_cemento)}}"
-                                    class="btn btn-warning">EDITAR</a></td>
-                            <td><a href="{{route('precios.borrar', $precio->id_precio_cemento)}}"
-                                    class="btn btn-danger">ELIMINAR</a>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                @endif
-
+                {{ $dataTable->table(['width' => '100%', 'class' => 'table table-striped table-bordered']) }}
             </div>
+            @endif
 
         </div>
     </div>
 
 </div>
 
-
-
 @endsection
+@push('scripts')
+{{ $dataTable->scripts(attributes: ['type' => 'module']) }}
+@endpush
