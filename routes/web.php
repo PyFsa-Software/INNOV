@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\LotesController;
 use App\Http\Controllers\PreciosController;
+use App\Http\Controllers\ParcelasController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['guest'])->group(function () {
@@ -24,8 +25,6 @@ Route::middleware(['auth'])->group(function () {
     })->name('inicio');
 
     //ROUTES LOTES
-
-
     Route::controller(LotesController::class)->group(function () {
 
         Route::get('lotes', 'LotesIndex')->name('lotes');
@@ -40,6 +39,25 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('lotes/eliminar/{lote}', 'EliminarLote')->name('lotes.eliminar');
 
     });
+
+      //ROUTES PARCELAS
+
+      Route::controller(ParcelasController::class)->group(function () {
+
+        Route::get('parcelas', 'ParcelasIndex')->name('parcelas');
+
+        Route::get('parcelas/crear', 'CrearParcelaView')->name('parcelas.crear');
+        Route::post('parcelas/crear', 'CrearParcela')->name('parcelas.guardar');
+
+        Route::get('parcelas/editar/{parcela}', 'EditarParcelaView')->name('parcelas.editar');
+        Route::put('parcelas/editar/{parcela}', 'EditarParcela')->name('parcelas.modificar');
+
+        Route::get('parcelas/eliminar/{parcela}', 'EliminarParcelaView')->name('parcelas.borrar');
+        Route::delete('parcelas/eliminar/{parcela}', 'EliminarParcela')->name('parcelas.eliminar');
+
+    });
+
+
 
     // ROUTES PRECIOS
     Route::controller(PreciosController::class)->group(function () {

@@ -195,8 +195,7 @@
                     </div> --}}
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" href="#charts" aria-expanded="false"
-                            aria-controls="charts">
+                        <a class="nav-link" href="{{ route('parcelas') }}">
                             <i class="icon-bar-graph menu-icon"></i>
                             <span class="menu-title">PARCELAS</span>
                             <i class="menu-arrow"></i>
