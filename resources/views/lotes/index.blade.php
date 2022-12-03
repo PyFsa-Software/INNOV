@@ -3,56 +3,39 @@
 @section('titulo', 'INNOVA')
 
 @section('contenido')
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap4.min.css">
 
+<div class="main-panel">
 
-    <div class="main-panel">
+    <div class="content-wrapper d-flex justify-content-center">
 
-        <div class="content-wrapper  d-flex justify-content-center">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-            <div class="col-md-12 grid-margin transparent">
+            @if (count($lotes) === 0)
+            <h1 class="text-center text-danger"><i class="fa fa-desktop fa-lg"></i> Aun no hay lotes cargados
+            </h1>
+            <a href="{{route('lotes.crear')}}" class="btn btn-success">Agregar Lote</a>
+            @else
 
+            <h1 class="text-center"><i class="fa fa-desktop fa-lg"></i> Listado de Lotes
+            </h1>
 
-                <div class="app-title mb-5">
+            <x-alertas />
 
-                    <div>
-                        <h1 class="text-center"><i class="fa fa-desktop fa-lg"></i> Listado de Lotes
-                        </h1>
-                    </div>
-                </div>
+            <a href="{{route('lotes.crear')}}" class="btn btn-success mb-2">Agregar Lote</a>
 
-                <table id="myTable" class="table">
+            <div class="table-responsive">
 
-                    <thead>
-                        <tr>
-                            <th>NOMBRE</th>
-                            <th>SUPERFICIE</th>
-                            <th>CANTIDAD DE MANZANAS</th>
-                            <th>UBICACION</th>
-                            <th>MODIFICAR</th>
-                            <th>ELIMINAR</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-
-
-                        <td>asdasd</td>
-                        <td>asdas</td>
-
-                        <td>asdasd</td>
-                        <td>asdasd</td>
-
-                        <td>asdas</td>
-                        <td>asdas</td>
-
-                    </tbody>
-                </table>
-
+                {{ $dataTable->table(['width' => '100%', 'class' => 'table table-striped table-bordered']) }}
             </div>
-        </div>
+            @endif
 
+        </div>
     </div>
 
-
+</div>
 
 @endsection
+@push('scripts')
+{{ $dataTable->scripts(attributes: ['type' => 'module']) }}
+@endpush

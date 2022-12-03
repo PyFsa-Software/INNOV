@@ -177,6 +177,7 @@
                         <a class="nav-link" href="{{ route('lotes') }}">
                             <i class="icon-columns menu-icon"></i>
                             <span class="menu-title">LOTES</span>
+                            <i class="menu-arrow"></i>
                         </a>
                     </li>
                     {{-- <a class="nav-link" data-toggle="collapse" href={{ route('lotes') }} aria-expanded="false"

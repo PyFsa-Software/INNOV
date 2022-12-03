@@ -24,7 +24,22 @@ Route::middleware(['auth'])->group(function () {
     })->name('inicio');
 
     //ROUTES LOTES
-    Route::get('lotes', [LotesController::class, 'Lotes'])->name('lotes');
+
+
+    Route::controller(LotesController::class)->group(function () {
+
+        Route::get('lotes', 'LotesIndex')->name('lotes');
+
+        Route::get('lotes/crear', 'CrearLoteView')->name('lotes.crear');
+        Route::post('lotes/crear', 'CrearLote')->name('lotes.guardar');
+
+        Route::get('lotes/editar/{lote}', 'EditarLoteView')->name('lotes.editar');
+        Route::put('lotes/editar/{lote}', 'EditarLote')->name('lotes.modificar');
+
+        Route::get('lotes/eliminar/{lote}', 'EliminarLoteView')->name('lotes.borrar');
+        Route::delete('lotes/eliminar/{lote}', 'EliminarLote')->name('lotes.eliminar');
+
+    });
 
     // ROUTES PRECIOS
     Route::controller(PreciosController::class)->group(function () {
