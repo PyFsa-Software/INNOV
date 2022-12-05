@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\Lotes;
+use App\Models\Lote;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -39,7 +39,7 @@ class LotesDataTable extends DataTable
      * @param \App\Models\Cliente $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Lotes $model): QueryBuilder
+    public function query(Lote $model): QueryBuilder
     {
         return $model->newQuery();
     }

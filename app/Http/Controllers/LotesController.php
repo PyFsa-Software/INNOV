@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\DataTables\LotesDataTable;
-use App\Models\Lotes;
+use App\Models\Lote;
 
 class LotesController extends Controller
 {
     public function LotesIndex(LotesDataTable $dataTable)
     {
 
-        $lotes = Lotes::all();
+        $lotes = Lote::all();
 
         return $dataTable->render('lotes.index', compact('lotes'));
 
@@ -47,13 +47,13 @@ class LotesController extends Controller
 
 
     }
-    public function EditarLoteView(Lotes $lote)
+    public function EditarLoteView(Lote $lote)
     {
 
         return view('lotes.editar', compact('lote'));
 
     }
-    public function EditarLote(Request $request,  Lotes $lote)
+    public function EditarLote(Request $request,  Lote $lote)
     {
 
 
@@ -80,13 +80,13 @@ class LotesController extends Controller
 
 
     }
-    public function EliminarLoteView(Lotes $lote)
+    public function EliminarLoteView(Lote $lote)
     {
 
         return view('lotes.eliminar', compact('lote'));
 
     }
-    public function EliminarLote( Lotes $lote)
+    public function EliminarLote( Lote $lote)
     {
         try {
             $lote->delete();

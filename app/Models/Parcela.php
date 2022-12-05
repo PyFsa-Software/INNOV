@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Parcelas extends Model
+class Parcela extends Model
 {
     use HasFactory;
 
@@ -19,6 +19,6 @@ class Parcelas extends Model
         'cantidad_bolsas',
         'ancho',
         'largo',
-        'id_lote'
+        'id_lote',
     ];
 }

@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\Personas;
+use App\Models\Persona;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -47,7 +47,7 @@ class ClientesDataTable extends DataTable
      * @param \App\Models\Cliente $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Personas $model): QueryBuilder
+    public function query(Persona $model): QueryBuilder
     {
         return $model->newQuery();
     }

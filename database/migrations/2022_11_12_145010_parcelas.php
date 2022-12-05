@@ -21,11 +21,12 @@ return new class extends Migration
             $table->string('cantidad_bolsas');
             $table->string('ancho');
             $table->string('largo');
+            $table->boolean('disponible')->default(1);
 
         });
     }
 
-    /**
+    /**w
      * Reverse the migrations.
      *
      * @return void

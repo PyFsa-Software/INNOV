@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\Parcelas;
+use App\Models\Parcela;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -18,11 +18,24 @@ class ParcelasDataTable extends DataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
-        $queryWithWhere = $query->select(['id_parcela', 'superficie_parcela', 'manzana', 'cantidad_bolsas','ancho','largo', 'nombre_lote'])
+        $queryWithWhere = $query->select(['id_parcela', 'superficie_parcela', 'manzana', 'cantidad_bolsas','ancho','largo', 'nombre_lote','disponible'])
             ->from('parcelas')
             ->join('lotes', 'parcelas.id_lote', '=', 'lotes.id_lote');
 
         return (new EloquentDataTable($queryWithWhere))
+            ->addColumn('disponible', function ($data) {
+
+                  
+
+                if ($data->disponible === 1) {
+                    $spamDisponible = "<span class='badge badge-success'>Disponible</span>";
+                    return $spamDisponible;
+                }
+
+                $spamVendido = "<span class='badge badge-danger'>Vendido</span>";
+
+                return $spamVendido;
+            })
             ->addColumn('editar', function ($data) {
                 $btn = "<a href='" . route('parcelas.editar', $data->id_parcela) . "' class='btn btn-warning btn-sm'>Editar</a>";
                 return $btn;
@@ -30,7 +43,7 @@ class ParcelasDataTable extends DataTable
             ->addColumn('eliminar', function ($data) {
                 return "<a href='" . route('parcelas.eliminar', $data->id_parcela) . "' class='btn btn-danger btn-sm'>Eliminar</a>";
             })
-            ->rawColumns(['editar', 'eliminar'])
+            ->rawColumns(['disponible','editar', 'eliminar'])
             ->setRowId('id_lote');
     }
 
@@ -40,7 +53,7 @@ class ParcelasDataTable extends DataTable
      * @param \App\Models\Cliente $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Parcelas $model): QueryBuilder
+    public function query(Parcela $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -75,9 +88,10 @@ class ParcelasDataTable extends DataTable
             ['name' => 'superficie_parcelas', 'title' => 'Superficie', 'data' => 'superficie_parcela'],
             ['name' => 'manzana', 'title' => 'Manzana', 'data' => 'manzana'],
             ['name' => 'cantidad_bolsas', 'title' => 'Cantidad de Bolsas de Cemento', 'data' => 'cantidad_bolsas'],
+            ['name' => 'disponible', 'title' => 'Disponible', 'data' => 'disponible'],
+            ['name' => 'nombre_lote', 'title' => 'Lote', 'data' => 'nombre_lote'],
             ['name' => 'ancho', 'title' => 'Ancho', 'data' => 'ancho'],
             ['name' => 'largo', 'title' => 'Largo', 'data' => 'largo'],
-            ['name' => 'nombre_lote', 'title' => 'Lote', 'data' => 'nombre_lote'],
             ['name' => 'editar', 'title' => 'Editar', 'data' => 'editar'],
             ['name' => 'eliminar', 'title' => 'Eliminar', 'data' => 'eliminar'],
 

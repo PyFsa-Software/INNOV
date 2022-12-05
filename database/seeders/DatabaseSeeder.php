@@ -3,9 +3,17 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\Perfiles;
-use App\Models\Personas;
+
+use App\Models\DetallePlan;
+use App\Models\DetalleVenta;
+use App\Models\Lote;
+use App\Models\Parcela;
+use App\Models\Perfil;
+use App\Models\Persona;
+use App\Models\Precio;
 use App\Models\Usuario;
+use App\Models\Venta;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -24,11 +32,11 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        Perfiles::create([
+        Perfil::create([
             'descripcion' => 'Administrador',
         ]);
 
-        Personas::create([
+        Persona::create([
             'nombre' => 'Daniel',
             'apellido' => 'Rojas',
             'dni' => '43546534',
@@ -39,7 +47,7 @@ class DatabaseSeeder extends Seeder
             'cliente' => 0,
         ]);
 
-        Personas::create([
+        Persona::create([
             'nombre' => 'Marcos',
             'apellido' => 'Franco',
             'dni' => '43711098',
@@ -49,7 +57,7 @@ class DatabaseSeeder extends Seeder
             'correo' => 'marcosd@gmail.com',
             'cliente' => 1,
         ]);
-        Personas::create([
+        Persona::create([
             'nombre' => 'Cliente2',
             'apellido' => 'Cliente2',
             'dni' => '43711094',
@@ -68,5 +76,74 @@ class DatabaseSeeder extends Seeder
             "id_persona" => 1,
         ]);
 
+        Precio::create([
+            'precio_bercomat' => '1000',
+            'precio_sancayetano' => '2000',
+            'precio_rio_colorado' => '3000',
+            'precio_promedio' => '2000',
+        ]);
+
+        // LOTES
+
+        Lote::create([
+            'nombre_lote' => 'Lote 1',
+            'superficie_lote' => '2000',
+            'cantidad_manzanas' => '4',
+            'ubicacion' => 'Barrio las orquideas',
+        ]);
+
+        Lote::create([
+            'nombre_lote' => 'Lote 2',
+            'superficie_lote' => '3000',
+            'cantidad_manzanas' => '6',
+            'ubicacion' => 'Barrio eva peron',
+        ]);
+
+        Parcela::create([
+            'superficie_parcela' => '1',
+            'manzana' => '1',
+            'cantidad_bolsas' => '1000',
+            'ancho' => '200',
+            'largo' => '200',
+            'id_lote' => '1',
+        ]);
+
+        Parcela::create([
+            'superficie_parcela' => '2',
+            'manzana' => '2',
+            'cantidad_bolsas' => '1200',
+            'ancho' => '230',
+            'largo' => '240',
+            'id_lote' => '1',
+        ]);
+
+        Parcela::create([
+            'superficie_parcela' => '3',
+            'manzana' => '2',
+            'cantidad_bolsas' => '1300',
+            'ancho' => '260',
+            'largo' => '260',
+            'id_lote' => '2',
+        ]);
+
+        Venta::create([
+            'cuotas' => '120',
+            'id_parcela' => '1',
+            'id_cliente' => '2',
+        ]);
+
+        DetallePlan::create([
+            'fecha_desde' => Carbon::now()->format('Y-m-d'),
+            'fecha_hasta' => Carbon::now()->addMonths(5)->format('Y-m-d'),
+            'valor_cuota' => '20000',
+            'id_venta' => '1',
+        ]);
+
+        DetalleVenta::create([
+            'nro_cuota_pagada' => '1',
+            'fecha_prox_vencimiento' => Carbon::now()->addMonths(1)->format('Y-m-d'),
+            'importe' => '20000',
+            'id_venta' => '1',
+        ]);
     }
 }

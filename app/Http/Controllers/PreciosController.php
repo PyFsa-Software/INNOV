@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DataTables\PreciosDataTable;
 use App\Http\Requests\StorePreciosRequest;
-use App\Models\Precios;
-use Illuminate\Http\Request;
+use App\Models\Precio;
 
 class PreciosController extends Controller
 {
@@ -16,7 +15,7 @@ class PreciosController extends Controller
      */
     public function index(PreciosDataTable $dataTable)
     {
-        $precios = Precios::all();
+        $precios = Precio::all();
 
         return $dataTable->render('precios.index', compact('precios'));
 
@@ -49,7 +48,7 @@ class PreciosController extends Controller
             $promedio = ($precioBercomat + $precioSanCayetano + $precioRioColorado) / 3;
 
             $promedioRedondeado = number_format((float) $promedio, 2, '.', '');
-            Precios::create([
+            Precio::create([
                 'precio_bercomat' => $precioBercomat,
                 'precio_sancayetano' => $precioSanCayetano,
                 'precio_rio_colorado' => $precioRioColorado,
@@ -80,7 +79,7 @@ class PreciosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Precios $precio)
+    public function edit(Precio $precio)
     {
         return view('precios.editar', compact('precio'));
     }
@@ -92,7 +91,7 @@ class PreciosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StorePreciosRequest $request, Precios $precio)
+    public function update(StorePreciosRequest $request, Precio $precio)
     {
         try {
             $precioBercomat = $request->precio_bercomat;
@@ -116,7 +115,7 @@ class PreciosController extends Controller
 
     }
 
-    public function showQuestion(Precios $precio)
+    public function showQuestion(Precio $precio)
     {
         return view('precios.eliminar', compact('precio'));
     }
@@ -127,7 +126,7 @@ class PreciosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Precios $precio)
+    public function destroy(Precio $precio)
     {
         // dd($precio);
         try {

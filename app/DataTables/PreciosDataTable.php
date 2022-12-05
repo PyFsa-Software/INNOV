@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\Precios;
+use App\Models\Precio;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -39,7 +39,7 @@ class PreciosDataTable extends DataTable
      * @param \App\Models\Cliente $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Precios $model): QueryBuilder
+    public function query(Precio $model): QueryBuilder
     {
         return $model->newQuery();
     }

@@ -5,18 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Lotes extends Model
+class Venta extends Model
 {
     use HasFactory;
-
-    protected $table = 'lotes';
-    protected $primaryKey = 'id_lote';
+    protected $table = 'ventas';
+    protected $primaryKey = 'id_venta';
     public $timestamps = false;
 
     protected $fillable = [
-        'nombre_lote',
-        'superficie_lote',
-        'cantidad_manzanas',
-        'ubicacion'
+        'cuotas',
+        'id_parcela',
+        'id_cliente',
     ];
 }

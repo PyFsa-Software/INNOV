@@ -4,15 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\DataTables\ParcelasDataTable;
-use App\Models\Parcelas;
-use App\Models\Lotes;
+use App\Models\Parcela;
+use App\Models\Lote;
 
 class ParcelasController extends Controller
 {
     public function ParcelasIndex(ParcelasDataTable $dataTable)
     {
 
-        $parcelas = Parcelas::all();
+        $parcelas = Parcela::all();
 
         return $dataTable->render('parcelas.index', compact('parcelas'));
 
@@ -23,7 +23,7 @@ class ParcelasController extends Controller
     public function CrearParcelaView()
     {
      
-        $lotes = Lotes::all();
+        $lotes = Lote::all();
 
         return view('parcelas.crear', compact('lotes'));
         
@@ -54,15 +54,15 @@ class ParcelasController extends Controller
 
 
     }
-    public function EditarParcelaView(Parcelas $parcela)
+    public function EditarParcelaView(Parcela $parcela)
     {
 
-        $lotes = Lotes::all();
+        $lotes = Lote::all();
 
         return view('parcelas.editar', compact('parcela', 'lotes'));
 
     }
-    public function EditarLote(Request $request,  Parcelas $parcela)
+    public function EditarLote(Request $request,  Parcela $parcela)
     {
 
 
@@ -89,13 +89,13 @@ class ParcelasController extends Controller
 
 
     }
-    public function EliminarLoteView(Parcelas $parcela)
+    public function EliminarLoteView(Parcela $parcela)
     {
 
         return view('parcelas.eliminar', compact('parcela'));
 
     }
-    public function EliminarLote( Parcelas $parcela)
+    public function EliminarLote( Parcela $parcela)
     {
         try {
             $lote->delete();

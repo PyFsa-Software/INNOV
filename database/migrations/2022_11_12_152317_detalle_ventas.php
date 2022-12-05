@@ -13,15 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('detalle_ventas', function (Blueprint $table){
+        Schema::create('detalle_ventas', function (Blueprint $table) {
 
             $table->id('id_detalle_venta');
-            $table->date('nro_cuota_pagada');
+            $table->integer('nro_cuota_pagada');
             $table->timestamp('fecha')->useCurrent();
             $table->string('fecha_prox_vencimiento');
             $table->string('importe');
-
-
 
         });
     }

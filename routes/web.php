@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\LotesController;
 use App\Http\Controllers\PreciosController;
+use App\Http\Controllers\VentasController;
 use App\Http\Controllers\ParcelasController;
 use Illuminate\Support\Facades\Route;
 
@@ -91,6 +92,27 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('clientes/borrar/{persona}', 'showQuestionDestroy')->name('clientes.borrar');
         Route::delete('clientes/borrar/{persona}', 'destroy')->name('clientes.eliminar');
+
+    });
+
+    // ROUTES VENTAS
+    Route::controller(VentasController::class)->group(function () {
+
+        Route::get('ventas', 'index')->name('ventas.index');
+
+        Route::post('ventas/calcularPlan', 'calcularPlan')->name('ventas.calcularPlan');
+
+        Route::get('ventas/crear', 'create')->name('ventas.crear');
+        Route::post('ventas/crear', 'store')->name('ventas.guardar');
+
+        // Route::get('ventas/editar/{persona}', 'edit')->name('ventas.editar');
+        // Route::put('ventas/editar/{persona}', 'update')->name('ventas.modificar');
+
+        // Route::get('ventas/activar/{persona}', 'showQuestionActivate')->name('ventas.activar');
+        // Route::patch('ventas/activar/{persona}', 'activate')->name('ventas.habilitar');
+
+        // Route::get('ventas/borrar/{persona}', 'showQuestionDestroy')->name('ventas.borrar');
+        // Route::delete('ventas/borrar/{persona}', 'destroy')->name('ventas.eliminar');
 
     });
 
