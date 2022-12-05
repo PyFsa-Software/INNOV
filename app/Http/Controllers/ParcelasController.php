@@ -54,31 +54,42 @@ class ParcelasController extends Controller
 
 
     }
-    public function EditarParcelaView(Parcela $parcela)
+    public function EditarParcelaView(Parcela $parcela, Lote $lote)
     {
 
-        $lotes = Lote::all();
+        $idLote = $parcela->id_lote;
 
-        return view('parcelas.editar', compact('parcela', 'lotes'));
+        $loteSeleccionado = Lote::find($idLote);
+
+        $lotes = Lote::all()->where('id_lote','!=',$idLote);
+
+
+
+        return view('parcelas.editar', compact('parcela', 'loteSeleccionado','lotes'));
 
     }
-    public function EditarLote(Request $request,  Parcela $parcela)
+    public function EditarParcela(Request $request,  Parcela $parcela)
     {
 
 
         try {
 
 
-            $nombre_lote = $request->nombre_lote;
-            $superficie_lote = $request->superficie_lote;
-            $cantidad_manzanas = $request->cantidad_manzanas;
-            $ubicacion = $request->ubicacion;
+         $superficie_parcela = $request->superficie_parcela;
+         $manzana = $request->manzana;
+         $cantidad_bolsas = $request->cantidad_bolsas;
+         $ancho = $request->ancho;
+         $largo = $request->largo;
+         $id_lote = $request->lote;
+ 
 
             $parcela->update([
-                'nombre_lote' => $nombre_lote,
-                'superficie_lote' => $superficie_lote,
-                'cantidad_manzanas' => $cantidad_manzanas,
-                'ubicacion' => $ubicacion,
+                'superficie_parcela' => $superficie_parcela,
+                'manzana' => $manzana,
+                'cantidad_bolsas' => $cantidad_bolsas,
+                'ancho' => $ancho,
+                'largo' => $largo,
+                'id_lote' => $id_lote,
             ]);
             return back()->with('success', 'Parcela actualizada correctamente!');
         } catch (\Throwable$th) {
@@ -89,16 +100,24 @@ class ParcelasController extends Controller
 
 
     }
-    public function EliminarLoteView(Parcela $parcela)
+    public function EliminarParcelaView(Parcela $parcela, Lote $lote)
     {
 
-        return view('parcelas.eliminar', compact('parcela'));
+        $idLote = $parcela->id_lote;
+
+        $loteSeleccionado = Lote::find($idLote);
+
+        $lotes = Lote::all()->where('id_lote','!=',$idLote);
+
+
+        return view('parcelas.eliminar', compact('parcela', 'loteSeleccionado'));
 
     }
-    public function EliminarLote( Parcela $parcela)
+    public function EliminarParcela( Parcela $parcela)
     {
         try {
-            $lote->delete();
+
+            $parcela->delete();
             return redirect()->route('parcelas')->with('success', 'Parcela eliminada correctamente!');
         } catch (\Throwable$th) {
             return redirect()->route('parcelas')->with('error', 'Error al eliminar la Parcela!');
