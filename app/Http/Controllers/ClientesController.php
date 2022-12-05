@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DataTables\ClientesDataTable;
 use App\Http\Requests\StoreClientesRequest;
-use App\Models\Personas;
-use Illuminate\Http\Request;
+use App\Models\Persona;
 
 class ClientesController extends Controller
 {
@@ -16,7 +15,7 @@ class ClientesController extends Controller
      */
     public function index(ClientesDataTable $dataTable)
     {
-        $clientes = Personas::all()->where('cliente', '=', '1');
+        $clientes = Persona::all()->where('cliente', '=', '1');
         return $dataTable->render('clientes.index', compact('clientes'));
     }
 
@@ -41,7 +40,7 @@ class ClientesController extends Controller
     {
         // dd($request->all());
         try {
-            Personas::create(request()->all());
+            Persona::create(request()->all());
             return back()->with('success', 'Cliente creado correctamente!');
         } catch (\Throwable$th) {
             return back()->with('error', 'Error al crear al registrar el cliente!');
@@ -67,7 +66,7 @@ class ClientesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Personas $persona)
+    public function edit(Persona $persona)
     {
         return view('clientes.editar', compact('persona'));
     }
@@ -79,7 +78,7 @@ class ClientesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreClientesRequest $request, Personas $persona)
+    public function update(StoreClientesRequest $request, Persona $persona)
     {
         try {
             $persona->update($request->all());
@@ -91,12 +90,12 @@ class ClientesController extends Controller
 
     }
 
-    public function showQuestionActivate(Personas $persona)
+    public function showQuestionActivate(Persona $persona)
     {
         return view('clientes.activar', compact('persona'));
     }
 
-    public function activate(Personas $persona)
+    public function activate(Persona $persona)
     {
         try {
             $persona->activo = 1;
@@ -108,7 +107,7 @@ class ClientesController extends Controller
         }
     }
 
-    public function showQuestionDestroy(Personas $persona)
+    public function showQuestionDestroy(Persona $persona)
     {
         return view('clientes.eliminar', compact('persona'));
     }
@@ -119,7 +118,7 @@ class ClientesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Personas $persona)
+    public function destroy(Persona $persona)
     {
         try {
             $persona->activo = 0;
