@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Precio extends Model
 {
@@ -19,4 +21,10 @@ class Precio extends Model
         'precio_rio_colorado',
         'precio_promedio',
     ];
+
+    public function getFechaFormateadoAttribute()
+    {
+        $fecha = Carbon::parse($this->fecha);
+        return Str::ucfirst($fecha->monthName) . " " . $fecha->year;
+    }
 }

@@ -16,10 +16,13 @@ return new class extends Migration
         Schema::create('detalle_ventas', function (Blueprint $table) {
 
             $table->id('id_detalle_venta');
-            $table->integer('nro_cuota_pagada');
-            $table->timestamp('fecha')->useCurrent();
-            $table->string('fecha_prox_vencimiento');
-            $table->string('importe');
+            $table->string('numero_cuota');
+            $table->date('fecha_maxima_a_pagar');
+            $table->string('total_estimado_a_pagar');
+            $table->string('total_intereses')->nullable(true);
+            $table->string('fecha_pago')->nullable(true);
+            $table->string('total_pago')->nullable(true);
+            $table->boolean('pagado')->default(0);
 
         });
     }

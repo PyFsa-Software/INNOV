@@ -77,10 +77,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Precio::create([
-            'precio_bercomat' => '1000',
-            'precio_sancayetano' => '2000',
-            'precio_rio_colorado' => '3000',
-            'precio_promedio' => '2000',
+            'precio_bercomat' => '1700',
+            'precio_sancayetano' => '1800',
+            'precio_rio_colorado' => '1900',
+            'precio_promedio' => '1800',
         ]);
 
         // LOTES
@@ -102,9 +102,10 @@ class DatabaseSeeder extends Seeder
         Parcela::create([
             'superficie_parcela' => '1',
             'manzana' => '1',
-            'cantidad_bolsas' => '1000',
+            'cantidad_bolsas' => '1166',
             'ancho' => '200',
             'largo' => '200',
+            'disponible' => '0',
             'id_lote' => '1',
         ]);
 
@@ -128,21 +129,29 @@ class DatabaseSeeder extends Seeder
 
         Venta::create([
             'cuotas' => '120',
+            'cuotas' => '120',
+            'precio_total_terreno' => '2200000',
+            'cuota_mensual_bolsas_cemento' => '9,7',
+            'precio_total_entrega' => '100000',
+            'precio_final' => '2100000',
             'id_parcela' => '1',
             'id_cliente' => '2',
         ]);
 
         DetallePlan::create([
             'fecha_desde' => Carbon::now()->format('Y-m-d'),
-            'fecha_hasta' => Carbon::now()->addMonths(5)->format('Y-m-d'),
-            'valor_cuota' => '20000',
+            'fecha_hasta' => Carbon::now()->addMonths(6)->format('Y-m-d'),
+            'valor_cuota' => '17.460',
             'id_venta' => '1',
         ]);
 
         DetalleVenta::create([
-            'nro_cuota_pagada' => '1',
-            'fecha_prox_vencimiento' => Carbon::now()->addMonths(1)->format('Y-m-d'),
-            'importe' => '20000',
+            'numero_cuota' => '1',
+            'fecha_maxima_a_pagar' => '2023-01-21',
+            'total_estimado_a_pagar' => '17.460',
+            'total_intereses' => '',
+            'fecha_pago' => '',
+            'total_pago' => '',
             'id_venta' => '1',
         ]);
     }

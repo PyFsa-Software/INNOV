@@ -13,13 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('ventas', function (Blueprint $table){
+        Schema::create('ventas', function (Blueprint $table) {
 
             $table->id('id_venta');
             $table->timestamp('fecha_venta')->useCurrent();
-            $table->string('cuotas');
-
-
+            $table->integer('cuotas');
+            $table->string('precio_total_terreno');
+            $table->string('cuota_mensual_bolsas_cemento');
+            $table->string('precio_total_entrega');
+            $table->string('precio_final');
 
         });
     }

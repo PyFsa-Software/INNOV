@@ -13,10 +13,9 @@ export function fetchHelper(url, data = {}, method = "GET") {
     })
         .then((res) => res.json())
         .then((result) => {
-            console.log(result);
             return result;
         })
         .catch((error) => {
-            console.log(error);
+            return error;
         });
 }

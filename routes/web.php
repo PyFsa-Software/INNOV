@@ -3,9 +3,9 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\LotesController;
+use App\Http\Controllers\ParcelasController;
 use App\Http\Controllers\PreciosController;
 use App\Http\Controllers\VentasController;
-use App\Http\Controllers\ParcelasController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['guest'])->group(function () {
@@ -41,9 +41,9 @@ Route::middleware(['auth'])->group(function () {
 
     });
 
-      //ROUTES PARCELAS
+    //ROUTES PARCELAS
 
-      Route::controller(ParcelasController::class)->group(function () {
+    Route::controller(ParcelasController::class)->group(function () {
 
         Route::get('parcelas', 'ParcelasIndex')->name('parcelas');
 
@@ -57,8 +57,6 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('parcelas/eliminar/{parcela}', 'EliminarParcela')->name('parcelas.eliminar');
 
     });
-
-
 
     // ROUTES PRECIOS
     Route::controller(PreciosController::class)->group(function () {
@@ -98,7 +96,7 @@ Route::middleware(['auth'])->group(function () {
     // ROUTES VENTAS
     Route::controller(VentasController::class)->group(function () {
 
-        Route::get('ventas', 'index')->name('ventas.index');
+        // Route::get('ventas', 'index')->name('ventas.index');
 
         Route::post('ventas/calcularPlan', 'calcularPlan')->name('ventas.calcularPlan');
 

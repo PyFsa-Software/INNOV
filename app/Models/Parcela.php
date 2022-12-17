@@ -20,5 +20,12 @@ class Parcela extends Model
         'ancho',
         'largo',
         'id_lote',
+        'disponible',
     ];
+
+    public function lote()
+    {
+        return $this->belongsTo(Lote::class, 'id_lote');
+    }
+
 }

@@ -14,9 +14,12 @@ class DetalleVenta extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'nro_cuota_pagada',
-        'fecha_prox_vencimiento',
-        'importe',
+        'numero_cuota',
+        'fecha_maxima_a_pagar',
+        'total_estimado_a_pagar',
+        'total_intereses',
+        'fecha_pago',
+        'total_pago',
         'id_venta',
     ];
 }

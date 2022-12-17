@@ -36,7 +36,12 @@ class VentasDataTable extends DataTable
                 return $lote->nombre_lote;
             })
             ->addColumn('cantidad_cuotas_pagadas', function ($data) {
-                $totalRegistrosDetalleVenta = DetalleVenta::where('id_venta', '=', $data->id_venta);
+                $totalRegistrosDetalleVenta = DetalleVenta::where(
+                    [
+                        ['id_venta', '=', $data->id_venta],
+                        ['pagado', '=', '1'],
+                    ]
+                );
 
                 if (!$totalRegistrosDetalleVenta) {
                     return "0/" . $data->cuotas;

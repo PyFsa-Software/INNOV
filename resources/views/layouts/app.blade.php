@@ -153,26 +153,28 @@
                             <span class="menu-title">INICIO</span>
                         </a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false"
-                            aria-controls="ui-basic">
-                            <i class="icon-layout menu-icon"></i>
-                            <span class="menu-title">USUARIOS</span>
+                        <a class="nav-link" href="{{route('clientes.index')}}" aria-expanded="false"
+                            aria-controls="tables">
+                            <i class="icon-grid-2 menu-icon"></i>
+                            <span class="menu-title">CLIENTES</span>
                             <i class="menu-arrow"></i>
                         </a>
-                        {{-- <div class="collapse" id="ui-basic">
+                        {{-- <div class="collapse" id="tables">
                             <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link"
-                                        href="pages/ui-features/buttons.html">Buttons</a></li>
-                                <li class="nav-item"> <a class="nav-link"
-                                        href="pages/ui-features/dropdowns.html">Dropdowns</a></li>
-                                <li class="nav-item"> <a class="nav-link"
-                                        href="pages/ui-features/typography.html">Typography</a>
-                                </li>
+                                <li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">Basic
+                                        table</a></li>
                             </ul>
                         </div> --}}
                     </li>
-
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('ventas.crear')}}" aria-expanded="false" aria-controls="auth">
+                            <i class="icon-head menu-icon"></i>
+                            <span class="menu-title">VENTAS</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('lotes') }}">
                             <i class="icon-columns menu-icon"></i>
@@ -207,20 +209,7 @@
                             </ul>
                         </div> --}}
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('clientes.index')}}" aria-expanded="false"
-                            aria-controls="tables">
-                            <i class="icon-grid-2 menu-icon"></i>
-                            <span class="menu-title">CLIENTES</span>
-                            <i class="menu-arrow"></i>
-                        </a>
-                        {{-- <div class="collapse" id="tables">
-                            <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">Basic
-                                        table</a></li>
-                            </ul>
-                        </div> --}}
-                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('precios.index')}}" aria-expanded="false"
                             aria-controls="icons">
@@ -230,11 +219,23 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('ventas.index')}}" aria-expanded="false" aria-controls="auth">
-                            <i class="icon-head menu-icon"></i>
-                            <span class="menu-title">VENTAS</span>
+                        <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false"
+                            aria-controls="ui-basic">
+                            <i class="icon-layout menu-icon"></i>
+                            <span class="menu-title">USUARIOS</span>
                             <i class="menu-arrow"></i>
                         </a>
+                        {{-- <div class="collapse" id="ui-basic">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link"
+                                        href="pages/ui-features/buttons.html">Buttons</a></li>
+                                <li class="nav-item"> <a class="nav-link"
+                                        href="pages/ui-features/dropdowns.html">Dropdowns</a></li>
+                                <li class="nav-item"> <a class="nav-link"
+                                        href="pages/ui-features/typography.html">Typography</a>
+                                </li>
+                            </ul>
+                        </div> --}}
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href={{ route('inicioSesion.desloguearse') }} aria-expanded="false"
@@ -244,6 +245,7 @@
                             <i class="menu-arrow"></i>
                         </a>
                     </li>
+
                 </ul>
             </nav>
             @yield('contenido')
