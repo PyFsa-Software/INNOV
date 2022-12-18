@@ -100,6 +100,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Parcela::create([
+            'descripcion_parcela' => 'Parcela 1',
             'superficie_parcela' => '1',
             'manzana' => '1',
             'cantidad_bolsas' => '1166',
@@ -110,6 +111,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Parcela::create([
+            'descripcion_parcela' => 'Parcela 2',
             'superficie_parcela' => '2',
             'manzana' => '2',
             'cantidad_bolsas' => '1200',
@@ -119,6 +121,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Parcela::create([
+            'descripcion_parcela' => 'Parcela 3',
             'superficie_parcela' => '3',
             'manzana' => '2',
             'cantidad_bolsas' => '1300',

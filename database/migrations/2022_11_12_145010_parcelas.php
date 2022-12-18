@@ -13,9 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('parcelas', function (Blueprint $table){
+        Schema::create('parcelas', function (Blueprint $table) {
 
             $table->id('id_parcela');
+            $table->string('descripcion_parcela');
             $table->string('superficie_parcela');
             $table->string('manzana');
             $table->string('cantidad_bolsas');

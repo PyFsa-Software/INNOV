@@ -18,14 +18,12 @@ class ParcelasDataTable extends DataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
-        $queryWithWhere = $query->select(['id_parcela', 'superficie_parcela', 'manzana', 'cantidad_bolsas','ancho','largo', 'nombre_lote','disponible'])
+        $queryWithWhere = $query->select(['id_parcela', 'descripcion_parcela', 'superficie_parcela', 'manzana', 'cantidad_bolsas', 'ancho', 'largo', 'nombre_lote', 'disponible'])
             ->from('parcelas')
             ->join('lotes', 'parcelas.id_lote', '=', 'lotes.id_lote');
 
         return (new EloquentDataTable($queryWithWhere))
-            ->addColumn('disponible', function ($data) {
-
-                  
+            ->addColumn('estado', function ($data) {
 
                 if ($data->disponible === 1) {
                     $spamDisponible = "<span class='badge badge-success'>Disponible</span>";
@@ -37,13 +35,24 @@ class ParcelasDataTable extends DataTable
                 return $spamVendido;
             })
             ->addColumn('editar', function ($data) {
-                $btn = "<a href='" . route('parcelas.editar', $data->id_parcela) . "' class='btn btn-warning btn-sm'>Editar</a>";
-                return $btn;
+
+                // dd($data->disponible);
+                if ($data->disponible === 0) {
+                    return "<span class='badge badge-warning'>No disponible</span>";
+                } else {
+                    return "<a href='" . route('parcelas.editar', $data->id_parcela) . "' class='btn btn-warning btn-sm'>Editar</a>";
+                }
             })
             ->addColumn('eliminar', function ($data) {
-                return "<a href='" . route('parcelas.eliminar', $data->id_parcela) . "' class='btn btn-danger btn-sm'>Eliminar</a>";
+
+                if ($data->disponible === 0) {
+                    return "<span class='badge badge-warning'>No disponible</span>";
+                } else {
+                    return "<a href='" . route('parcelas.eliminar', $data->id_parcela) . "' class='btn btn-danger btn-sm'>Eliminar</a>";
+                }
+
             })
-            ->rawColumns(['disponible','editar', 'eliminar'])
+            ->rawColumns(['estado', 'editar', 'eliminar'])
             ->setRowId('id_lote');
     }
 
@@ -85,10 +94,11 @@ class ParcelasDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            ['name' => 'superficie_parcelas', 'title' => 'Superficie', 'data' => 'superficie_parcela'],
+            ['name' => 'descripcion_parcela', 'title' => 'Descripción', 'data' => 'descripcion_parcela'],
+            ['name' => 'superficie_parcela', 'title' => 'Superficie', 'data' => 'superficie_parcela'],
             ['name' => 'manzana', 'title' => 'Manzana', 'data' => 'manzana'],
-            ['name' => 'cantidad_bolsas', 'title' => 'Cantidad de Bolsas de Cemento', 'data' => 'cantidad_bolsas'],
-            ['name' => 'disponible', 'title' => 'Disponible', 'data' => 'disponible'],
+            ['name' => 'cantidad_bolsas', 'title' => 'Bolsas de Cemento', 'data' => 'cantidad_bolsas'],
+            ['name' => 'estado', 'title' => 'Estado', 'data' => 'estado'],
             ['name' => 'nombre_lote', 'title' => 'Lote', 'data' => 'nombre_lote'],
             ['name' => 'ancho', 'title' => 'Ancho', 'data' => 'ancho'],
             ['name' => 'largo', 'title' => 'Largo', 'data' => 'largo'],

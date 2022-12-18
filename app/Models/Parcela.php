@@ -14,6 +14,7 @@ class Parcela extends Model
     public $timestamps = false;
 
     protected $fillable = [
+        'descripcion_parcela',
         'superficie_parcela',
         'manzana',
         'cantidad_bolsas',
