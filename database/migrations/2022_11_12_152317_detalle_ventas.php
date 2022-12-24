@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('total_intereses')->nullable(true);
             $table->string('fecha_pago')->nullable(true);
             $table->string('total_pago')->nullable(true);
-            $table->boolean('pagado')->default(0);
+            $table->string('pagado')->default('no');
 
         });
     }

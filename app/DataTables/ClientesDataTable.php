@@ -26,6 +26,10 @@ class ClientesDataTable extends DataTable
             ->addColumn('nombre_apellido', function ($data) {
                 return $data->nombre . ' ' . $data->apellido;
             })
+            ->addColumn('estado', function ($data) {
+
+                return "<a href='" . route('clientes.estado', $data->id_persona) . "' class='btn btn-info btn-sm'>Estado</a>";
+            })
             ->addColumn('editar', function ($data) {
                 $btn = "<a href='" . route('clientes.editar', $data->id_persona) . "' class='btn btn-warning btn-sm'>Editar</a>";
                 return $btn;
@@ -37,7 +41,7 @@ class ClientesDataTable extends DataTable
                     return "<a href='" . route('clientes.eliminar', $data->id_persona) . "' class='btn btn-danger btn-sm'>Eliminar</a>";
                 }
             })
-            ->rawColumns(['nombre_apellido', 'editar', 'eliminar/activar'])
+            ->rawColumns(['nombre_apellido', 'editar', 'eliminar/activar', 'estado'])
             ->setRowId('id_persona');
     }
 
@@ -79,7 +83,7 @@ class ClientesDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            'nombre_apellido', 'dni', 'correo', 'celular', 'editar', 'eliminar/activar',
+            'nombre_apellido', 'dni', 'correo', 'celular', 'estado', 'editar', 'eliminar/activar',
         ];
     }
 

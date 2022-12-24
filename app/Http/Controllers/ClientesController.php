@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\ClientesDataTable;
+use App\DataTables\CuotasVentasDataTable;
 use App\Http\Requests\StoreClientesRequest;
+use App\Models\DetalleVenta;
+use App\Models\Parcela;
 use App\Models\Persona;
+use App\Models\Venta;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ClientesController extends Controller
 {
@@ -129,4 +134,56 @@ class ClientesController extends Controller
 
         }
     }
+
+    public function estadoCliente(Persona $persona)
+    {
+
+        // obtener los is de parcelas compradas por una persona
+        $idsParcelas = Venta::all()->where('id_cliente', '=', $persona->id_persona)->pluck('id_parcela');
+
+        // obtener las parcelas
+        $parcelas = Parcela::whereIn('id_parcela', $idsParcelas)->get();
+
+        // dd($parcelas[1]->cantidadDeudas);
+        return view('clientes.estado', compact('persona', 'parcelas'));
+
+    }
+    public function estadoCuotas(CuotasVentasDataTable $dataTable, $idVenta)
+    {
+        return $dataTable->with('idVenta', $idVenta)->render('clientes.cuotasVentas');
+    }
+    public function cobrarCuotas(DetalleVenta $cuota)
+    {
+        // if ($cuota->pagado == 'si') {
+        //     return back()->withErrors(['error' => ['La cuota seleccionada ya esta pagada']]);
+        // }
+
+        return view('clientes.cobrarCuotas', compact('cuota'));
+    }
+
+    public function generarVolantePago(DetalleVenta $cuota)
+    {
+        // dd($cuota);
+        $data = [
+            'title' => 'Welcome to ItSolutionStuff.com',
+            'date' => date('m/d/Y'),
+        ];
+
+        // ->setOptions(['defaultFont' => 'sans-serif'])
+        $pdf = Pdf::loadView('clientes.volantePago', $data);
+
+        return $pdf->stream('test_pdf.pdf', array('Attachment' => 0));
+
+        // $pdf->stream("", array("Attachment" => false));
+
+        // return $pdf->download('volantePago.pdf');
+
+        // $pdfContent = Pdf::loadView('clientes.volantePago', $data)->output();
+        // response()->streamDownload(
+        //     fn() => print($pdfContent),
+        //     "filename.pdf"
+        // );
+
+    }
+
 }

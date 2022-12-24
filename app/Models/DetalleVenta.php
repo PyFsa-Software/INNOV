@@ -22,4 +22,10 @@ class DetalleVenta extends Model
         'total_pago',
         'id_venta',
     ];
+
+    public function getIdParcelaAttribute()
+    {
+        $idParcela = Venta::all()->where('id_venta', '=', $this->id_venta)->value('id_parcela');
+        return $idParcela;
+    }
 }

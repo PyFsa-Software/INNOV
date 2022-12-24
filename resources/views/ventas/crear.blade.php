@@ -44,7 +44,7 @@
                         <option value="" disabled selected>Seleccione una parcela</option>
                         @foreach ($parcelas as $parcela)
                         <option value="{{ $parcela->id_parcela }}" @selected(old('id_parcela')==$parcela->id_parcela)>
-                            {{ $parcela->superficie_parcela }}
+                            {{ $parcela->descripcion_parcela }}
                             (Lote: {{ $parcela->lote->nombre_lote }})
                             (Bolsas Cemento: {{ $parcela->cantidad_bolsas }})
                         </option>

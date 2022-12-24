@@ -8,8 +8,8 @@
     <title>@yield('titulo')</title>
 
     <link rel="shortcut icon" href="{{ url('/img/favicon.png') }}" />
+    <livewire:styles />
     <script src="{{ url('/assets/vendor-bundle-base/vendor.bundle.base.js') }}"></script>
-
 </head>
 
 <body>
@@ -255,6 +255,8 @@
 
     @stack('scripts')
     @vite(['resources/js/importFilesSistema.js'])
+    <livewire:scripts />
+
 </body>
 
 </html>

@@ -9,7 +9,8 @@
     <!-- plugins:css -->
     @vite(['resources/js/importFilesSistema.js'])
     <!-- endinject -->
-    {{-- <link rel="shortcut icon" href="../../images/favicon.png" /> --}}
+    {{--
+    <link rel="shortcut icon" href="../../images/favicon.png" /> --}}
 </head>
 
 <body>
@@ -27,12 +28,12 @@
                             <form class="pt-3" method="POST" action="{{route('inicioSesion.loguearse')}}">
                                 @csrf
                                 @if ($errors->has('mensaje'))
-                                    <span class="text-danger">{{ $errors->first('mensaje') }}</span>
-                                    <br>
+                                <span class="text-danger">{{ $errors->first('mensaje') }}</span>
+                                <br>
                                 @endif
                                 <div class="form-group">
                                     <input type="text" class="form-control form-control-lg" id="nombreUsuario"
-                                        name="usuario" placeholder="Nombre de Usuario">
+                                        name="usuario" placeholder="Nombre de Usuario" autofocus>
                                 </div>
                                 <div class="form-group">
                                     <input type="password" class="form-control form-control-lg" id="consenia"
@@ -53,7 +54,8 @@
         </div>
         <!-- page-body-wrapper ends -->
     </div>
-    {{-- <!-- container-scroller -->
+    {{--
+    <!-- container-scroller -->
     <!-- plugins:js -->
     <script src="../../vendors/js/vendor.bundle.base.js"></script>
     <!-- endinject -->

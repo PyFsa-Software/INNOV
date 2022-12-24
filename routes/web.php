@@ -6,6 +6,8 @@ use App\Http\Controllers\LotesController;
 use App\Http\Controllers\ParcelasController;
 use App\Http\Controllers\PreciosController;
 use App\Http\Controllers\VentasController;
+use App\Http\Middleware\VerificarCuotaNoPagada;
+use App\Http\Middleware\VerificarCuotaVolantePago;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['guest'])->group(function () {
@@ -90,6 +92,14 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('clientes/borrar/{persona}', 'showQuestionDestroy')->name('clientes.borrar');
         Route::delete('clientes/borrar/{persona}', 'destroy')->name('clientes.eliminar');
+
+        Route::get('clientes/estado/{persona}', 'estadoCliente')->name('clientes.estado');
+
+        Route::get('clientes/cuotas/{parcela}', 'estadoCuotas')->name('clientes.estadoCuotas');
+
+        Route::get('clientes/cobrar/{cuota}', 'cobrarCuotas')->name('clientes.cobrarCuota')->middleware(VerificarCuotaNoPagada::class);
+
+        Route::get('clientes/volante-pago/{cuota}', 'generarVolantePago')->name('clientes.volantePago')->middleware(VerificarCuotaVolantePago::class);
 
     });
 

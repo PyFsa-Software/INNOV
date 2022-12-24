@@ -29,4 +29,16 @@ class Parcela extends Model
         return $this->belongsTo(Lote::class, 'id_lote');
     }
 
+    public function getCantidadDeudasAttribute()
+    {
+        $idVenta = Venta::all()->where('id_parcela', '=', $this->id_parcela)->value('id_venta');
+
+        $debeCuotas = DetalleVenta::where('id_venta', $idVenta)
+            ->where('fecha_maxima_a_pagar', '<', date('Y-m-d'))
+            ->where('pagado', '!=', 'si')
+            ->count();
+
+        return $debeCuotas;
+    }
+
 }
