@@ -45,7 +45,7 @@ class CuotasVentasDataTable extends DataTable
                 return "<b class='$estadoCuota'>" . Carbon::createFromFormat('Y-m-d', $data->fecha_maxima_a_pagar)->format('d/m/Y') . "</b>";
             })
             ->addColumn('volantePago', function ($data) {
-                return "<a href='" . route('clientes.volantePago', $data->id_detalle_venta) . "' class='btn btn-info btn-sm'><i class='ti-download'></i></a>";
+                return "<a href='" . route('clientes.volantePago', $data->id_detalle_venta) . "' class='btn btn-info btn-sm' target='_blank'><i class='ti-download'></i></a>";
             })
             ->rawColumns(['pagado', 'cobrar', 'volantePago', 'fecha_maxima_a_pagar']);
     }

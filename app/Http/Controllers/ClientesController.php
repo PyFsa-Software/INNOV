@@ -154,23 +154,27 @@ class ClientesController extends Controller
     }
     public function cobrarCuotas(DetalleVenta $cuota)
     {
-        // if ($cuota->pagado == 'si') {
-        //     return back()->withErrors(['error' => ['La cuota seleccionada ya esta pagada']]);
-        // }
-
         return view('clientes.cobrarCuotas', compact('cuota'));
     }
 
     public function generarVolantePago(DetalleVenta $cuota)
     {
-        // dd($cuota);
-        $data = [
-            'title' => 'Welcome to ItSolutionStuff.com',
-            'date' => date('m/d/Y'),
-        ];
+
+        // dd($cuota->id_parcela);
+        $venta = Venta::all()->where('id_parcela', '=', $cuota->id_parcela)->first();
+        $cliente = Persona::all()->where('id_persona', '=', $venta->id_cliente)->first();
+        $parcela = Parcela::with('lote')->where('id_parcela', '=', $cuota->id_parcela)->first();
+        // dd($parcela);
+        // $lote = Lote::all()->where('id_lote', '=', $parcela->id_lote)->first();
+        // dd($cliente);
+
+        // $data = [
+        //     'title' => 'Welcome to ItSolutionStuff.com',
+        //     'date' => date('m/d/Y'),
+        // ];
 
         // ->setOptions(['defaultFont' => 'sans-serif'])
-        $pdf = Pdf::loadView('clientes.volantePago', $data);
+        $pdf = Pdf::loadView('clientes.volantePago', compact('cuota', 'venta', 'cliente', 'parcela'));
 
         return $pdf->stream('test_pdf.pdf', array('Attachment' => 0));
 

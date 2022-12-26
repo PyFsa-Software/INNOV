@@ -1,9 +1,8 @@
 <?php
 
-function calcularDetallePlan(int $idCliente, int $idParcela, int $cantidadCuotas): array
+function convertDigitsToWord(int $number): string
 {
+    $f = new NumberFormatter("es", NumberFormatter::SPELLOUT);
+    return $f->format($number);
 
-    //
-
-    return [];
 }
