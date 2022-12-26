@@ -8,12 +8,12 @@ import "../css/datatables.net-bs4/dataTables.bootstrap4.css";
 import "../css/select.dataTables/select.dataTables.min.css";
 import "../css/vertical-layout-light/style.css";
 
-import "./jquery/jquery.min.js";
 import "./chart.js/Chart.min";
-import "./dataTables/js/jquery.dataTables.min.js";
-import "./dataTables/js/dataTables.bootstrap4.min.js";
-import "./dataTables/js/dataTables.responsive.min.js";
-import "./dataTables/js/responsive.bootstrap4.min.js";
+// import "./jquery/jquery.min.js";
+// import "./dataTables/js/jquery.dataTables.min";
+// import "./dataTables/js/dataTables.bootstrap4.min";
+// import "./dataTables/js/dataTables.responsive.min";
+// import "./dataTables/js/responsive.bootstrap4.min";
 
 // import "./datatables.net/jquery.dataTables";
 // import "./datatables.net-bs4/dataTables.bootstrap4";
@@ -28,12 +28,3 @@ import "./todolist/todolist";
 import "./dashboard/dashboard";
 import "./Chart.roundedBarCharts/Chart.roundedBarCharts";
 import "./modulos/ventas/index";
-
-// import "./bootstrap";
-// import "laravel-datatables-vite";
-
-// import "../css/app.css";
-//IMPORTACIONES MODULOS
-
-// import "./dataTables.js";
-// import "../system/js/vendor-bundle-base/vendor.bundle.base";

@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 use App\Models\Parcela;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -18,11 +19,17 @@ class ParcelasDataTable extends DataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
-        $queryWithWhere = $query->select(['id_parcela', 'descripcion_parcela', 'superficie_parcela', 'manzana', 'cantidad_bolsas', 'ancho', 'largo', 'nombre_lote', 'disponible'])
-            ->from('parcelas')
-            ->join('lotes', 'parcelas.id_lote', '=', 'lotes.id_lote');
+        // dd(request('search'));
 
-        return (new EloquentDataTable($queryWithWhere))
+        return (new EloquentDataTable($query))
+            ->filterColumn('nombre_lote', function ($query) {
+                $query->whereHas('lote', function ($query) {
+                    $query->where('nombre_lote', 'like', "%" . request('search')["value"] . "%");
+                })->get();
+            })
+            ->addColumn('nombre_lote', function ($data) {
+                return $data->lote->nombre_lote;
+            })
             ->addColumn('estado', function ($data) {
 
                 if ($data->disponible === 1) {
@@ -62,9 +69,9 @@ class ParcelasDataTable extends DataTable
      * @param \App\Models\Cliente $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Parcela $model): QueryBuilder
+    public function query(): QueryBuilder
     {
-        return $model->newQuery();
+        return Parcela::with('lote');
     }
 
     /**
@@ -99,7 +106,7 @@ class ParcelasDataTable extends DataTable
             ['name' => 'manzana', 'title' => 'Manzana', 'data' => 'manzana'],
             ['name' => 'cantidad_bolsas', 'title' => 'Bolsas de Cemento', 'data' => 'cantidad_bolsas'],
             ['name' => 'estado', 'title' => 'Estado', 'data' => 'estado'],
-            ['name' => 'nombre_lote', 'title' => 'Lote', 'data' => 'nombre_lote'],
+            ['name' => 'nombre_lote', 'title' => 'Lote', 'data' => 'nombre_lote', 'searchable' => true],
             ['name' => 'ancho', 'title' => 'Ancho', 'data' => 'ancho'],
             ['name' => 'largo', 'title' => 'Largo', 'data' => 'largo'],
             ['name' => 'editar', 'title' => 'Editar', 'data' => 'editar'],

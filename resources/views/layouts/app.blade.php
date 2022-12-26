@@ -8,8 +8,10 @@
     <title>@yield('titulo')</title>
 
     <link rel="shortcut icon" href="{{ url('/img/favicon.png') }}" />
+
+    <link rel="stylesheet" href="{{ url('/assets/datatables/css/responsive.bootstrap4.min.css') }}">
     <livewire:styles />
-    <script src="{{ url('/assets/vendor-bundle-base/vendor.bundle.base.js') }}"></script>
+
 </head>
 
 <body>
@@ -251,11 +253,15 @@
             @yield('contenido')
         </div>
     </div>
-
-
-    @stack('scripts')
+    <script src="{{ url('/assets/vendor-bundle-base/vendor.bundle.base.js') }}"></script>
+    <script src="{{ url('/assets/datatables/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ url('/assets/datatables/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ url('/assets/datatables/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ url('/assets/datatables/js/responsive.bootstrap4.min.js') }}"></script>
     @vite(['resources/js/importFilesSistema.js'])
+    @stack('scripts')
     <livewire:scripts />
+
 
 </body>
 
