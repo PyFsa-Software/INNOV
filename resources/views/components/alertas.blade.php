@@ -11,7 +11,7 @@
 
 @if ($message = Session::get('success'))
 <div class="alert alert-success alert-dismissible fade show mt-2">
-    <strong>{{ $message }}</strong>
+    <strong>{!! $message !!}</strong>
 </div>
 @elseif ($message = Session::get('error'))
 <div class="alert alert-danger alert-dismissible fade show mt-2">

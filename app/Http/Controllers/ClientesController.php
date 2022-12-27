@@ -148,9 +148,10 @@ class ClientesController extends Controller
         return view('clientes.estado', compact('persona', 'parcelas'));
 
     }
-    public function estadoCuotas(CuotasVentasDataTable $dataTable, $idVenta)
+    public function estadoCuotas(CuotasVentasDataTable $dataTable, $idParcela)
     {
-        return $dataTable->with('idVenta', $idVenta)->render('clientes.cuotasVentas');
+        $venta = Venta::select('id_venta')->where('id_parcela', '=', $idParcela)->first();
+        return $dataTable->with('idVenta', $venta->id_venta)->render('clientes.cuotasVentas');
     }
     public function cobrarCuotas(DetalleVenta $cuota)
     {
@@ -160,13 +161,9 @@ class ClientesController extends Controller
     public function generarVolantePago(DetalleVenta $cuota)
     {
 
-        // dd($cuota->id_parcela);
         $venta = Venta::all()->where('id_parcela', '=', $cuota->id_parcela)->first();
         $cliente = Persona::all()->where('id_persona', '=', $venta->id_cliente)->first();
         $parcela = Parcela::with('lote')->where('id_parcela', '=', $cuota->id_parcela)->first();
-        // dd($parcela);
-        // $lote = Lote::all()->where('id_lote', '=', $parcela->id_lote)->first();
-        // dd($cliente);
 
         // $data = [
         //     'title' => 'Welcome to ItSolutionStuff.com',
@@ -176,7 +173,7 @@ class ClientesController extends Controller
         // ->setOptions(['defaultFont' => 'sans-serif'])
         $pdf = Pdf::loadView('clientes.volantePago', compact('cuota', 'venta', 'cliente', 'parcela'));
 
-        return $pdf->stream('test_pdf.pdf', array('Attachment' => 0));
+        return $pdf->stream(date('d-m-Y') . ".pdf", array('Attachment' => 0));
 
         // $pdf->stream("", array("Attachment" => false));
 

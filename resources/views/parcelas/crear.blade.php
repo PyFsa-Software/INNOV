@@ -66,7 +66,7 @@
                 <a href="{{route('parcelas')}}" class="btn btn-danger form-control">Cancelar</a>
             </form>
 
-            <x-alerta />
+            <x-alertas />
         </div>
     </div>
 

@@ -21,8 +21,6 @@
 
             <livewire:form-cobrar-cuotas :cuota="$cuota" />
 
-            {{--
-            <x-alerta /> --}}
         </div>
     </div>
 

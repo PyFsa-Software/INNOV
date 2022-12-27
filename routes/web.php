@@ -106,12 +106,12 @@ Route::middleware(['auth'])->group(function () {
     // ROUTES VENTAS
     Route::controller(VentasController::class)->group(function () {
 
+        Route::get('ventas/crear', 'create')->name('ventas.crear');
         // Route::get('ventas', 'index')->name('ventas.index');
 
-        Route::post('ventas/calcularPlan', 'calcularPlan')->name('ventas.calcularPlan');
+        // Route::post('ventas/calcularPlan', 'calcularPlan')->name('ventas.calcularPlan');
 
-        Route::get('ventas/crear', 'create')->name('ventas.crear');
-        Route::post('ventas/crear', 'store')->name('ventas.guardar');
+        // Route::post('ventas/crear', 'store')->name('ventas.guardar');
 
         // Route::get('ventas/editar/{persona}', 'edit')->name('ventas.editar');
         // Route::put('ventas/editar/{persona}', 'update')->name('ventas.modificar');

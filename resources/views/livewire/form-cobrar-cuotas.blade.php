@@ -54,7 +54,7 @@
         Cobro</button>
 
     <a href="{{ url()->previous() }}" class="btn btn-danger form-control">Cancelar</a>
-    <x-alerta />
+    <x-alertas />
 
 
     <!-- Modal -->

@@ -83,8 +83,9 @@
                 style="border-color: black;border-style: solid; border-radius: 2%">
                 <small class="float: left; width: 65%;"><b>IMPRENTA ANTONIO NIÑO - Saavedra 234 - Tel. 4433003</b> <br>
                     CUIT
-                    20-08231406-8 H.MINIC. N° 046/96 -
-                    IMPRESO OCTUBRE/2022 - DESDE 0001-00001101 AL 0001-00001150</small>
+                    20-08231406-8 H.MINIC. N° 046/96 <br>
+                    IMPRESO {{getMesEnLetraConAnio()}} <br>
+                    DESDE 0001-00001101 AL 0001-00001150</small>
             </div>
         </div>
     </div>

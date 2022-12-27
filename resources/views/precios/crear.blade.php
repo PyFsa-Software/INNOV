@@ -41,7 +41,7 @@
             </form>
 
 
-            <x-alerta />
+            <x-alertas />
         </div>
     </div>
 

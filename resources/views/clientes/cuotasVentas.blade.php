@@ -12,16 +12,7 @@
 
             <h1 class="text-center"><i class="fa fa-desktop fa-lg"></i> Listado Cuotas
             </h1>
-            {{-- @if (count($clientes) === 0)
-            <a href="{{route('clientes.crear')}}" class="btn btn-success">Agregar Cliente</a>
-            @else
-
-            <h1 class="text-center"><i class="fa fa-desktop fa-lg"></i> Listado de Clientes
-            </h1>
             <x-alertas />
-            <a href="{{route('clientes.crear')}}" class="btn btn-success mb-2">Agregar Cliente</a>
-            @endif --}}
-            <x-alerta />
             <div class="table-responsive">
                 {{ $dataTable->table(['width' => '100%', 'class' => 'table table-striped table-bordered']) }}
             </div>
