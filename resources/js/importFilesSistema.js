@@ -27,4 +27,4 @@ import "./todolist/todolist";
 
 import "./dashboard/dashboard";
 import "./Chart.roundedBarCharts/Chart.roundedBarCharts";
-import "./modulos/ventas/index";
+// import "./modulos/ventas/index";
