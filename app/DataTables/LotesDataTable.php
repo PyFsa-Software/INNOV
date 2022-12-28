@@ -72,7 +72,7 @@ class LotesDataTable extends DataTable
     {
         return [
             ['name' => 'nombre_lote', 'title' => 'Lote', 'data' => 'nombre_lote'],
-            ['name' => 'hectareas_lote', 'title' => 'Superficie del Lote', 'data' => 'hectareas_lote'],
+            ['name' => 'hectareas_lote', 'title' => 'Hectareas del Lote', 'data' => 'hectareas_lote'],
             ['name' => 'cantidad_manzanas', 'title' => 'Cantidad de Manzanas', 'data' => 'cantidad_manzanas'],
             ['name' => 'ubicacion', 'title' => 'Ubicacion', 'data' => 'ubicacion'],
             ['name' => 'editar', 'title' => 'Editar', 'data' => 'editar'],
