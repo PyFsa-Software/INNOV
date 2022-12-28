@@ -87,14 +87,14 @@ class DatabaseSeeder extends Seeder
 
         Lote::create([
             'nombre_lote' => 'Lote 1',
-            'superficie_lote' => '2000',
+            'hectareas_lote' => '2000',
             'cantidad_manzanas' => '4',
             'ubicacion' => 'Barrio las orquideas',
         ]);
 
         Lote::create([
             'nombre_lote' => 'Lote 2',
-            'superficie_lote' => '3000',
+            'hectareas_lote' => '3000',
             'cantidad_manzanas' => '6',
             'ubicacion' => 'Barrio eva peron',
         ]);

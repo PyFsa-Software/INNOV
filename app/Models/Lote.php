@@ -15,7 +15,7 @@ class Lote extends Model
 
     protected $fillable = [
         'nombre_lote',
-        'superficie_lote',
+        'hectareas_lote',
         'cantidad_manzanas',
         'ubicacion',
     ];

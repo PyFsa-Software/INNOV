@@ -24,24 +24,25 @@
                 @csrf
                 @method('DELETE')
                 <div class="form-group">
-                    <label for="exampleInputName1">Nombre del Lote</label>
+                    <label for="nombre_lote">Nombre del Lote</label>
                     <input type="text" class="form-control" name="nombre_lote" id="nombreLote"
-                        placeholder="Ingrese el Nombre" value="{{old('nombre_lote', $lote->nombre_lote)}} " disabled>
+                        placeholder="Ingrese el Nombre" value="{{old('nombre_lote', $lote->nombre_lote)}} " disabled
+                        autofocus>
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail3">Superficie del Lote</label>
-                    <input type="text" class="form-control" name="superficie_lote" id="superficieLote"
-                        placeholder="Ingrese la Superficie" value="{{old('superficie_lote', $lote->superficie_lote)}} "
+                    <label for="hectareas_lote">Hectáreas del Lote</label>
+                    <input type="text" class="form-control" name="hectareas_lote" id="superficieLote"
+                        placeholder="Ingrese la Superficie" value="{{old('hectareas_lote', $lote->hectareas_lote)}} "
                         disabled>
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputPassword4">Cantidad de Manzanas</label>
+                    <label for="cantidad_manzanas">Cantidad de Manzanas</label>
                     <input type="text" class="form-control" name="cantidad_manzanas" id="cantidadManzanas"
                         placeholder="Ingrese la Cantidad" value="{{old('cantidad_manzanas', $lote->cantidad_manzanas)}}"
                         disabled>
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputCity1">Ubicacion</label>
+                    <label for="ubicacion">Ubicacion</label>
                     <input type="text" class="form-control" name="ubicacion" id="ubicacion"
                         placeholder="Ingrese la Ubicacion" value="{{old('ubicacion', $lote->ubicacion)}}" disabled>
                 </div>

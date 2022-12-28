@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('lotes', function (Blueprint $table){
+        Schema::create('lotes', function (Blueprint $table) {
 
             $table->id('id_lote');
             $table->string('nombre_lote');
-            $table->string('superficie_lote');
+            $table->string('hectareas_lote');
             $table->string('cantidad_manzanas');
             $table->string('ubicacion');
         });

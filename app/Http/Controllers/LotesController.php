@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\DataTables\LotesDataTable;
+use App\Http\Requests\StoreLotesRequest;
 use App\Models\Lote;
 
 class LotesController extends Controller
@@ -15,36 +15,32 @@ class LotesController extends Controller
 
         return $dataTable->render('lotes.index', compact('lotes'));
 
-    
-
     }
 
     public function CrearLoteView()
     {
-     
+
         return view('lotes.crear');
-        
+
     }
-    public function CrearLote(Request $request)
+    public function CrearLote(StoreLotesRequest $request)
     {
 
-       try {
-         // dd($request->all());
+        try {
 
-         $nuevoLote = new Lotes;
+            $nuevoLote = new Lote;
 
-         $nuevoLote->nombre_lote = $request->nombre_lote;
-         $nuevoLote->superficie_lote = $request->superficie_lote;
-         $nuevoLote->cantidad_manzanas = $request->cantidad_manzanas;
-         $nuevoLote->ubicacion = $request->ubicacion;
- 
-         $nuevoLote->save();
- 
-         return back()->with('success', 'Lote creado correctamente!');
-       } catch (\Throwable $th) {
-        return back()->with('error', 'Error al crear el registro de lote!');
-       }
+            $nuevoLote->nombre_lote = $request->nombre_lote;
+            $nuevoLote->hectareas_lote = $request->hectareas_lote;
+            $nuevoLote->cantidad_manzanas = $request->cantidad_manzanas;
+            $nuevoLote->ubicacion = $request->ubicacion;
 
+            $nuevoLote->save();
+
+            return back()->with('success', 'Lote creado correctamente!');
+        } catch (\Throwable$th) {
+            return back()->with('error', 'Error al crear el registro de lote!');
+        }
 
     }
     public function EditarLoteView(Lote $lote)
@@ -53,21 +49,19 @@ class LotesController extends Controller
         return view('lotes.editar', compact('lote'));
 
     }
-    public function EditarLote(Request $request,  Lote $lote)
+    public function EditarLote(StoreLotesRequest $request, Lote $lote)
     {
-
 
         try {
 
-
             $nombre_lote = $request->nombre_lote;
-            $superficie_lote = $request->superficie_lote;
+            $hectareas_lote = $request->hectareas_lote;
             $cantidad_manzanas = $request->cantidad_manzanas;
             $ubicacion = $request->ubicacion;
 
             $lote->update([
                 'nombre_lote' => $nombre_lote,
-                'superficie_lote' => $superficie_lote,
+                'hectareas_lote' => $hectareas_lote,
                 'cantidad_manzanas' => $cantidad_manzanas,
                 'ubicacion' => $ubicacion,
             ]);
@@ -77,8 +71,6 @@ class LotesController extends Controller
 
         }
 
-
-
     }
     public function EliminarLoteView(Lote $lote)
     {
@@ -86,7 +78,7 @@ class LotesController extends Controller
         return view('lotes.eliminar', compact('lote'));
 
     }
-    public function EliminarLote( Lote $lote)
+    public function EliminarLote(Lote $lote)
     {
         try {
             $lote->delete();

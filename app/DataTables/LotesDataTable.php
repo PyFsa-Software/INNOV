@@ -18,7 +18,7 @@ class LotesDataTable extends DataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
-        $queryWithWhere = $query->select(['id_lote', 'nombre_lote', 'superficie_lote', 'cantidad_manzanas', 'ubicacion'])
+        $queryWithWhere = $query->select(['id_lote', 'nombre_lote', 'hectareas_lote', 'cantidad_manzanas', 'ubicacion'])
             ->from('lotes');
 
         return (new EloquentDataTable($queryWithWhere))
@@ -72,7 +72,7 @@ class LotesDataTable extends DataTable
     {
         return [
             ['name' => 'nombre_lote', 'title' => 'Lote', 'data' => 'nombre_lote'],
-            ['name' => 'superficie_lote', 'title' => 'Superficie del Lote', 'data' => 'superficie_lote'],
+            ['name' => 'hectareas_lote', 'title' => 'Superficie del Lote', 'data' => 'hectareas_lote'],
             ['name' => 'cantidad_manzanas', 'title' => 'Cantidad de Manzanas', 'data' => 'cantidad_manzanas'],
             ['name' => 'ubicacion', 'title' => 'Ubicacion', 'data' => 'ubicacion'],
             ['name' => 'editar', 'title' => 'Editar', 'data' => 'editar'],
