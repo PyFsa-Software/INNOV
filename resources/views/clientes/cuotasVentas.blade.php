@@ -12,6 +12,7 @@
 
             <h1 class="text-center"><i class="fa fa-desktop fa-lg"></i> Listado Cuotas
             </h1>
+            <a href="{{route('clientes.estado', $idCliente)}}" class="btn btn-warning mb-2">Volver Atrás</a>
             <x-alertas />
             <div class="table-responsive">
                 {{ $dataTable->table(['width' => '100%', 'class' => 'table table-striped table-bordered']) }}

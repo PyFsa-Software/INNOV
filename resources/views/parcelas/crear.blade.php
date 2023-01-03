@@ -63,7 +63,7 @@
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary mr-2 mb-2 form-control">Guardar</button>
-                <a href="{{route('parcelas')}}" class="btn btn-danger form-control">Cancelar</a>
+                <a href="{{route('parcelas.index')}}" class="btn btn-danger form-control">Cancelar</a>
             </form>
 
             <x-alertas />

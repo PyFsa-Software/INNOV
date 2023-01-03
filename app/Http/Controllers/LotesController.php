@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\DataTables\LotesDataTable;
 use App\Http\Requests\StoreLotesRequest;
 use App\Models\Lote;
+use App\Models\Parcela;
 
 class LotesController extends Controller
 {
@@ -74,17 +75,18 @@ class LotesController extends Controller
     }
     public function EliminarLoteView(Lote $lote)
     {
+        $cantidadParcelasLotes = Parcela::all()->where('id_lote', '=', $lote->id_lote)->count();
 
-        return view('lotes.eliminar', compact('lote'));
+        return view('lotes.eliminar', compact('lote', 'cantidadParcelasLotes'));
 
     }
     public function EliminarLote(Lote $lote)
     {
         try {
             $lote->delete();
-            return redirect()->route('lotes')->with('success', 'Lote eliminado correctamente!');
+            return redirect()->route('lotes.index')->with('success', 'Lote eliminado correctamente!');
         } catch (\Throwable$th) {
-            return redirect()->route('lotes')->with('error', 'Error al eliminar el Lote!');
+            return redirect()->route('lotes.index')->with('error', 'Error al eliminar el Lote!');
 
         }
     }

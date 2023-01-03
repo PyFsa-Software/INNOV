@@ -178,14 +178,14 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('lotes') }}">
+                        <a class="nav-link" href="{{ route('lotes.index') }}">
                             <i class="icon-columns menu-icon"></i>
                             <span class="menu-title">LOTES</span>
                             <i class="menu-arrow"></i>
                         </a>
                     </li>
-                    {{-- <a class="nav-link" data-toggle="collapse" href={{ route('lotes') }} aria-expanded="false"
-                        aria-controls="form-elements">
+                    {{-- <a class="nav-link" data-toggle="collapse" href={{ route('lotes.index') }}
+                        aria-expanded="false" aria-controls="form-elements">
                         <i class="icon-columns menu-icon"></i>
                         <span class="menu-title">LOTES</span>
                         <i class="menu-arrow"></i>
@@ -199,7 +199,7 @@
                     </div> --}}
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('parcelas') }}">
+                        <a class="nav-link" href="{{ route('parcelas.index') }}">
                             <i class="icon-bar-graph menu-icon"></i>
                             <span class="menu-title">PARCELAS</span>
                             <i class="menu-arrow"></i>

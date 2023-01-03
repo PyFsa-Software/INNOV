@@ -20,6 +20,7 @@
                 </div>
             </div>
 
+            @if ($cantidadParcelasLotes === 0)
             <form class="forms-sample" method="POST" action="{{route('lotes.eliminar', $lote->id_lote)}}">
                 @csrf
                 @method('DELETE')
@@ -47,10 +48,16 @@
                         placeholder="Ingrese la Ubicacion" value="{{old('ubicacion', $lote->ubicacion)}}" disabled>
                 </div>
                 <button type="submit" class="btn btn-primary mr-2 mb-2 form-control">Eliminar</button>
-                <a href="{{route('lotes')}}" class="btn btn-danger form-control">Cancelar</a>
+                <a href="{{route('lotes.index')}}" class="btn btn-danger form-control">Cancelar</a>
             </form>
-
             <x-alertas />
+            @else
+            <a href="{{route('lotes.index')}}" class="btn btn-warning">Volver Atras</a>
+            <div class="alert alert-danger alert-dismissible fade show mt-2">
+                <strong>No se puede borrar este lote, ya que posee parcelas asociadas.</strong>
+            </div>
+            @endif
+
         </div>
     </div>
 

@@ -150,8 +150,10 @@ class ClientesController extends Controller
     }
     public function estadoCuotas(CuotasVentasDataTable $dataTable, $idParcela)
     {
-        $venta = Venta::select('id_venta')->where('id_parcela', '=', $idParcela)->first();
-        return $dataTable->with('idVenta', $venta->id_venta)->render('clientes.cuotasVentas');
+        $venta = Venta::select('id_venta', 'id_cliente')->where('id_parcela', '=', $idParcela)->first();
+
+        $idCliente = $venta->id_cliente;
+        return $dataTable->with('idVenta', $venta->id_venta)->render('clientes.cuotasVentas', compact('idCliente'));
     }
     public function cobrarCuotas(DetalleVenta $cuota)
     {

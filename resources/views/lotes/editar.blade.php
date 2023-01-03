@@ -45,7 +45,7 @@
                         placeholder="Ingrese la Ubicacion" value="{{old('ubicacion', $lote->ubicacion)}}">
                 </div>
                 <button type="submit" class="btn btn-primary mr-2 mb-2 form-control">Modificar</button>
-                <a href="{{route('lotes')}}" class="btn btn-danger form-control">Cancelar</a>
+                <a href="{{route('lotes.index')}}" class="btn btn-danger form-control">Cancelar</a>
             </form>
 
             <x-alertas />

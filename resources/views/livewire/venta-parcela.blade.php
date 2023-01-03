@@ -3,7 +3,7 @@
     <div class="form-group">
         <label for="id_cliente">Cliente</label>
         <select name="id_cliente" id="id_cliente" class="form-control" autofocus wire:model="clienteCombo"
-            wire:keyup.debounce.500ms="calcularPlan">
+            wire:change.debounce.500ms="calcularPlan">
             <option value="" disabled selected>Seleccione un cliente</option>
 
             @foreach ($clientes as $cliente)
@@ -20,7 +20,7 @@
     <div class="form-group">
         <label for="id_parcela">Parcela</label>
         <select name="id_parcela" id="id_parcela" class="form-control" wire:model="parcelaCombo"
-            wire:keyup.debounce.500ms="calcularPlan">
+            wire:change.debounce.500ms="calcularPlan">
             <option value="" disabled selected>Seleccione una parcela</option>
             @foreach ($parcelas as $parcela)
             <option value="{{ $parcela->id_parcela }}" @selected(old('id_parcela')==$parcela->id_parcela)>

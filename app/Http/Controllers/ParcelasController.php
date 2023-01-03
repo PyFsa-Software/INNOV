@@ -99,9 +99,9 @@ class ParcelasController extends Controller
         try {
 
             $parcela->delete();
-            return redirect()->route('parcelas')->with('success', 'Parcela eliminada correctamente!');
+            return redirect()->route('parcelas.index')->with('success', 'Parcela eliminada correctamente!');
         } catch (\Throwable$th) {
-            return redirect()->route('parcelas')->with('error', 'Error al eliminar la Parcela!');
+            return redirect()->route('parcelas.index')->with('error', 'Error al eliminar la Parcela!');
 
         }
     }

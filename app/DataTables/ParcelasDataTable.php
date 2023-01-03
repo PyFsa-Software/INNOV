@@ -53,7 +53,7 @@ class ParcelasDataTable extends DataTable
             ->addColumn('eliminar', function ($data) {
 
                 if ($data->disponible === 0) {
-                    return "<span class='badge badge-warning'>No disponible</span>";
+                    return "<span class='badge badge-info'>No disponible</span>";
                 } else {
                     return "<a href='" . route('parcelas.eliminar', $data->id_parcela) . "' class='btn btn-danger btn-sm'>Eliminar</a>";
                 }

@@ -30,7 +30,7 @@ Route::middleware(['auth'])->group(function () {
     //ROUTES LOTES
     Route::controller(LotesController::class)->group(function () {
 
-        Route::get('lotes', 'LotesIndex')->name('lotes');
+        Route::get('lotes', 'LotesIndex')->name('lotes.index');
 
         Route::get('lotes/crear', 'CrearLoteView')->name('lotes.crear');
         Route::post('lotes/crear', 'CrearLote')->name('lotes.guardar');
@@ -47,7 +47,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::controller(ParcelasController::class)->group(function () {
 
-        Route::get('parcelas', 'ParcelasIndex')->name('parcelas');
+        Route::get('parcelas', 'ParcelasIndex')->name('parcelas.index');
 
         Route::get('parcelas/crear', 'CrearParcelaView')->name('parcelas.crear');
         Route::post('parcelas/crear', 'CrearParcela')->name('parcelas.guardar');
