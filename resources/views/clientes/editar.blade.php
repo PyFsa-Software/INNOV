@@ -42,12 +42,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="cuit">Cuit Cliente</label>
-                    <input type="text" class="form-control" name="cuit" id="cuit"
-                        placeholder="Ingrese el cuit del cliente" value="{{old('cuit', $persona->cuit)}}">
-                </div>
-
-                <div class="form-group">
                     <label for="domicilio">Domicilio Cliente</label>
                     <input type="text" class="form-control" name="domicilio" id="domicilio"
                         placeholder="Ingrese el domicilio del cliente"

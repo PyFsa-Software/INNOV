@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('apellido');
             $table->string('dni');
-            $table->string('cuit');
             $table->string('domicilio');
             $table->string('celular', 10);
             $table->string('correo');

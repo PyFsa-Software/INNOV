@@ -45,7 +45,7 @@ class ClientesController extends Controller
     {
         // dd($request->all());
         try {
-            Persona::create(request()->all());
+            Persona::create($request->all());
             return back()->with('success', 'Cliente creado correctamente!');
         } catch (\Throwable$th) {
             return back()->with('error', 'Error al crear al registrar el cliente!');
