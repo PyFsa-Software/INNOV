@@ -5,7 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>INNOVA S.R.L</title>
+    <title>INNOV S.R.L</title>
     <!-- plugins:css -->
     @vite(['resources/js/importFilesSistema.js'])
     <!-- endinject -->
@@ -21,7 +21,7 @@
                     <div class="col-lg-4 mx-auto">
                         <div class="auth-form-light text-left py-5 px-4 px-sm-5">
                             <div class="brand-logo">
-                                <H2 class="text-center"><b>INNOVA S.R.L</b></H2>
+                                <H2 class="text-center"><b>INNOV S.R.L</b></H2>
                             </div>
                             {{-- <h4>Hello! let's get started</h4> --}}
                             {{-- <h6 class="font-weight-light">Sign in to continue.</h6> --}}

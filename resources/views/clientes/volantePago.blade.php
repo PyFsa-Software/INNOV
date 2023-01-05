@@ -21,9 +21,9 @@
             <div class="col-xs-12 col-sm-12 col-md-12"
                 style="border-color: black;border-style: solid; border-radius: 2%;">
                 <img height="100" width="100" alt=""
-                    src="https://www.tecnopolo.it/grversion/wp-content/uploads/2019/05/INNOVA-logo-Tecnopolo-Tiburtino.jpg" />
+                    src="https://www.tecnopolo.it/grversion/wp-content/uploads/2019/05/INNOV-logo-Tecnopolo-Tiburtino.jpg" />
                 <br>
-                <small>INNOVA S.R.L</small>
+                <small>INNOV S.R.L</small>
                 <br>
                 <small>CUIT: 30-71226835-9</small>
             </div>

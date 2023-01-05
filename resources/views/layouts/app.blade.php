@@ -20,7 +20,7 @@
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
                 <a class="navbar-brand brand-logo mr-5" href="{{ url('inicio') }}">
-                    <h3 class="mr-2" alt="logo"><b>INNOVA S.R.L</b></h3>
+                    <h3 class="mr-2" alt="logo"><b>INNOV S.R.L</b></h3>
                 </a>
                 <a class="navbar-brand brand-logo-mini" href="{{ url('inicio') }}">
                     <h3 class="p-2" alt="logo">IN</h3>
