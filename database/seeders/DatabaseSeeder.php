@@ -132,8 +132,6 @@ class DatabaseSeeder extends Seeder
             'cuotas' => '120',
             'precio_total_terreno' => '2200000',
             'cuota_mensual_bolsas_cemento' => '9,7',
-            'precio_total_entrega' => '100000',
-            'precio_final' => '2100000',
             'id_parcela' => '1',
             'id_cliente' => '2',
         ]);

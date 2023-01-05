@@ -20,8 +20,8 @@ return new class extends Migration
             $table->integer('cuotas');
             $table->string('precio_total_terreno');
             $table->string('cuota_mensual_bolsas_cemento');
-            $table->string('precio_total_entrega');
-            $table->string('precio_final');
+            // $table->string('precio_total_entrega');
+            // $table->string('precio_final');
 
         });
     }

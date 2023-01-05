@@ -22,7 +22,7 @@ class VentaParcela extends Component
     public $clienteCombo = "";
     public $parcelaCombo = "";
     public $cantidadCuotas = 0;
-    public $precioTotalEntrega = 0;
+    // public $precioTotalEntrega = 0;
     public $promedioCemento = 0;
 
     // se actualiza automaticamente
@@ -32,18 +32,19 @@ class VentaParcela extends Component
     public $fechaHastaDetallePlan;
     public $bolsasCementoMensual;
     public $valorCuotaMensual;
-    public $valorTotalFinanciar;
+    // public $valorTotalFinanciar;
     public $precioTotalTerreno;
 
     public $isDisabled = true;
 
     protected $rules = [
-        'clienteCombo' => 'required|numeric',
-        'parcelaCombo' => 'required|numeric',
-        'cantidadCuotas' => 'required|numeric|min:1',
-        'precioTotalEntrega' => 'required|numeric|min:1',
-        'promedioCemento' => 'required|numeric|min:1',
+        'clienteCombo' => 'required|numeric|integer',
+        'parcelaCombo' => 'required|numeric|integer',
+        'cantidadCuotas' => 'required|numeric|integer|min:1|int',
+        // 'precioTotalEntrega' => 'required|numeric|min:1',
+        'promedioCemento' => 'required|numeric|integer|min:1',
     ];
+
 
     public function mount()
     {
@@ -68,11 +69,8 @@ class VentaParcela extends Component
         // CALCULAR TOTAL BOLSAS DE CEMENTO POR EL PROMEDIO DEL CEMENTO
         $this->precioTotalTerreno = $this->parcelaById->cantidad_bolsas * $this->promedioCemento;
 
-        // RESTAR PRECIO TOTAL DEL TERRENO MENOS LA ENTREGA
-        $this->valorTotalFinanciar = $this->precioTotalTerreno - $this->precioTotalEntrega;
-
         // OBTENER TOTAL BOLSAS DE CEMENTO PARA EL LOTE
-        $cantidadBolsasCementoTerreno = $this->valorTotalFinanciar / $this->promedioCemento;
+        $cantidadBolsasCementoTerreno = $this->precioTotalTerreno / $this->promedioCemento;
         // $cantidadBolsasCementoTerreno = number_format(($valorTotalFinanciar / $promedioCemento), 0, ',');
 
         // OBTENER BOLSAS DE CEMENTO A PAGAR MENSUAL
@@ -98,8 +96,8 @@ class VentaParcela extends Component
                 'cuotas' => $this->cantidadCuotas,
                 'precio_total_terreno' => $this->precioTotalTerreno,
                 'cuota_mensual_bolsas_cemento' => $this->bolsasCementoMensual,
-                'precio_total_entrega' => $this->precioTotalEntrega,
-                'precio_final' => $this->valorTotalFinanciar,
+                // 'precio_total_entrega' => $this->precioTotalEntrega,
+                // 'precio_final' => $this->valorTotalFinanciar,
                 'id_parcela' => $this->parcelaCombo,
                 'id_cliente' => $this->clienteCombo,
             ]);

@@ -66,8 +66,6 @@ class FormCobrarCuotas extends Component
 
             $this->cuota->save();
 
-            $this->pagado = true;
-
             DB::commit();
             return redirect()->route('clientes.estadoCuotas', $this->cuota->idParcela)->with('success', "Cuota guardada exitosamente <a href=" . route('clientes.volantePago', $this->cuota->id_detalle_venta) . " target='_blank'>Haga click aqui </a>para descargar el volante de pago."
             );

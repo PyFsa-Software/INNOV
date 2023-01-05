@@ -46,12 +46,12 @@
             wire:model="precioTotalTerreno">
     </div>
 
-    <div class="form-group">
+    {{-- <div class="form-group">
         <label for="precio_total_entrega">Valor Entrega</label>
         <input type="number" class="form-control" name="precio_total_entrega" id="precio_total_entrega"
             placeholder="Ingrese el precio total de la entrega del terreno" value="{{old('precio_total_entrega')}}"
             wire:model="precioTotalEntrega" wire:keyup.debounce.500ms="calcularPlan">
-    </div>
+    </div> --}}
 
 
     <div class="form-group">
@@ -86,12 +86,6 @@
         <label for="valor_cuota">Valor Cuota</label>
         <input type="number" class="form-control" name="valor_cuota" id="valor_cuota" disabled
             wire:model="valorCuotaMensual">
-    </div>
-
-    <div class="form-group">
-        <label for="valorTotalFinanciar">Valor Total A Financiar</label>
-        <input type="number" class="form-control" name="valorTotalFinanciar" id="valorTotalFinanciar" disabled
-            wire:model="valorTotalFinanciar">
     </div>
 
 
