@@ -41,4 +41,15 @@ class Parcela extends Model
         return $debeCuotas;
     }
 
+    public function getActualizarPrecioCuotaAttribute()
+    {
+        $idVenta = Venta::all()->where('id_parcela', '=', $this->id_parcela)->value('id_venta');
+
+        $ultimaCuota = DetalleVenta::where('id_venta', $idVenta)
+            ->orderBy('fecha_maxima_a_pagar', 'desc')->value('fecha_maxima_a_pagar');
+
+        return fechaIgualMesActual($ultimaCuota);
+
+    }
+
 }

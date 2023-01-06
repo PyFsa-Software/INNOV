@@ -45,12 +45,6 @@ class VentaParcela extends Component
         'promedioCemento' => 'required|numeric|integer|min:1',
     ];
 
-
-    public function mount()
-    {
-
-    }
-
     public function updated($propertyName)
     {
         $this->isDisabled = true;
@@ -122,22 +116,12 @@ class VentaParcela extends Component
 
             DB::commit();
 
-            // $this->cuota->total_intereses = $this->totalIntereses;
-            // $this->cuota->total_pago = $this->totalAbonar;
-            // $this->cuota->fecha_pago = date('Y-m-d');
-            // $this->cuota->pagado = 'si';
-
-            // $this->cuota->save();
-
-            // $this->pagado = true;
-
             return redirect()->route('ventas.crear')->with('success', "Venta realizada correctamente, puede visualizarla desde el modulo de detalle de clientes.");
         } catch (\Throwable$e) {
 
             // dd($e->getMessage());
             DB::rollback();
             return redirect()->route('ventas.crear')->with('error', "Error al intentar guardar la venta, contacte con el administrador.");
-            // session()->flash('error', 'Error al intentar guardar la venta, contacte con el administrador.');
 
         }
 

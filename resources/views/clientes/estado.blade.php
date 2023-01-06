@@ -18,6 +18,8 @@
                 <a href="{{route('clientes.index')}}" class="btn btn-warning">Volver Atrás</a>
 
             </div>
+
+            <x-alertas />
             @forelse ($parcelas as $parcela)
             <div class="card text-center mt-3">
                 <div class="card-header ">
@@ -26,14 +28,13 @@
                 <div class="card-body">
                     <h5 class="card-title {{$parcela->cantidadDeudas > 0 ? 'text-danger': 'text-success'}}">Estado:
                         {{$parcela->cantidadDeudas > 0 ? 'Hay cuotas pendientes': 'Cliente al día'}}</h5>
-                    {{-- <ul class="text-left">
-                        <li>*</li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                    </ul> --}}
                     <a href="{{route('clientes.estadoCuotas', $parcela->id_parcela)}}" class="btn btn-primary">Ver
                         Detalle</a>
+                    @if ($parcela->actualizarPrecioCuota)
+                    <a href="{{route('clientes.actualizarPrecios', $parcela->id_parcela)}}"
+                        class="btn btn-danger">Actualizar
+                        Precios</a>
+                    @endif
                 </div>
                 {{-- <div class="card-footer text-muted">
                     2 days ago

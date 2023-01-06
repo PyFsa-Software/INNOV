@@ -6,6 +6,7 @@ use App\Http\Controllers\LotesController;
 use App\Http\Controllers\ParcelasController;
 use App\Http\Controllers\PreciosController;
 use App\Http\Controllers\VentasController;
+use App\Http\Middleware\VerificarActualizacionCuotas;
 use App\Http\Middleware\VerificarCuotaNoPagada;
 use App\Http\Middleware\VerificarCuotaVolantePago;
 use Illuminate\Support\Facades\Route;
@@ -100,6 +101,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('clientes/cobrar/{cuota}', 'cobrarCuotas')->name('clientes.cobrarCuota')->middleware(VerificarCuotaNoPagada::class);
 
         Route::get('clientes/volante-pago/{cuota}', 'generarVolantePago')->name('clientes.volantePago')->middleware(VerificarCuotaVolantePago::class);
+
+        Route::get('clientes/actualizar-precios/{parcela}', 'actualizarPrecios')->name('clientes.actualizarPrecios')->middleware(VerificarActualizacionCuotas::class);
 
     });
 

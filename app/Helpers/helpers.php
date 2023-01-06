@@ -10,9 +10,13 @@ function convertDigitsToWord(int $number): string
 
 }
 
-function getMesEnLetraConAnio()
+function getMesEnLetraConAnio($anio = '')
 {
-    $fecha = Carbon::parse(date('d-m-Y'));
+    $fecha = Carbon::parse($anio ?? date('d-m-Y'));
     return Str::upper($fecha->monthName) . "/" . $fecha->year;
 
+}
+function fechaIgualMesActual($fecha)
+{
+    return Carbon::create($fecha)->isSameMonth();
 }

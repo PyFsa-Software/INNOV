@@ -10,6 +10,7 @@ use App\Models\Parcela;
 use App\Models\Persona;
 use App\Models\Venta;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
 
 class ClientesController extends Controller
 {
@@ -144,7 +145,7 @@ class ClientesController extends Controller
         // obtener las parcelas
         $parcelas = Parcela::whereIn('id_parcela', $idsParcelas)->get();
 
-        // dd($parcelas[1]->cantidadDeudas);
+        // dd($parcelas[1]->actualizarPrecioCuota);
         return view('clientes.estado', compact('persona', 'parcelas'));
 
     }
@@ -187,6 +188,14 @@ class ClientesController extends Controller
         //     "filename.pdf"
         // );
 
+    }
+
+    public function actualizarPrecios(Request $request, Parcela $parcela)
+    {
+        $venta = $request->venta;
+        $ultimaCuota = $request->ultimaCuota;
+
+        return view('clientes.actualizarPrecios', compact('venta', 'parcela', 'ultimaCuota'));
     }
 
 }

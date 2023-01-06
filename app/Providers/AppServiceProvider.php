@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         // Configuración para fechas en español
-        Carbon::setLocale('es');
+        Carbon::setLocale(config('app.locale'));
 
     }
 }
