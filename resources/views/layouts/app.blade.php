@@ -227,17 +227,17 @@
                             <span class="menu-title">REPORTES</span>
                             <i class="menu-arrow"></i>
                         </a>
-                        {{-- <div class="collapse" id="ui-basic">
+                        <div class="collapse" id="ui-basic">
                             <ul class="nav flex-column sub-menu">
                                 <li class="nav-item"> <a class="nav-link"
-                                        href="pages/ui-features/buttons.html">Buttons</a></li>
-                                <li class="nav-item"> <a class="nav-link"
+                                        href="{{route('reportes.planilla')}}">Planilla</a></li>
+                                {{-- <li class="nav-item"> <a class="nav-link"
                                         href="pages/ui-features/dropdowns.html">Dropdowns</a></li>
                                 <li class="nav-item"> <a class="nav-link"
                                         href="pages/ui-features/typography.html">Typography</a>
-                                </li>
+                                </li> --}}
                             </ul>
-                        </div> --}}
+                        </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href={{ route('inicioSesion.desloguearse') }} aria-expanded="false"

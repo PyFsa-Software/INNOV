@@ -4,16 +4,9 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\DetallePlan;
-use App\Models\DetalleVenta;
-use App\Models\Lote;
-use App\Models\Parcela;
 use App\Models\Perfil;
 use App\Models\Persona;
-use App\Models\Precio;
 use App\Models\Usuario;
-use App\Models\Venta;
-use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -55,15 +48,15 @@ class DatabaseSeeder extends Seeder
             'correo' => 'marcosd@gmail.com',
             'cliente' => 1,
         ]);
-        Persona::create([
-            'nombre' => 'Cliente2',
-            'apellido' => 'Cliente2',
-            'dni' => '43711094',
-            'domicilio' => 'kjhk',
-            'celular' => '3740981214',
-            'correo' => 'Cliente2d@gmail.com',
-            'cliente' => 1,
-        ]);
+        // Persona::create([
+        //     'nombre' => 'Cliente2',
+        //     'apellido' => 'Cliente2',
+        //     'dni' => '43711094',
+        //     'domicilio' => 'kjhk',
+        //     'celular' => '3740981214',
+        //     'correo' => 'Cliente2d@gmail.com',
+        //     'cliente' => 1,
+        // ]);
 
         // USUARIO POR DEFECTO
         Usuario::create([
@@ -73,84 +66,84 @@ class DatabaseSeeder extends Seeder
             "id_persona" => 1,
         ]);
 
-        Precio::create([
-            'precio_bercomat' => '1700',
-            'precio_sancayetano' => '1800',
-            'precio_rio_colorado' => '1900',
-            'precio_promedio' => '1800',
-        ]);
+        // Precio::create([
+        //     'precio_bercomat' => '1700',
+        //     'precio_sancayetano' => '1800',
+        //     'precio_rio_colorado' => '1900',
+        //     'precio_promedio' => '1800',
+        // ]);
 
-        // LOTES
+        // // LOTES
 
-        Lote::create([
-            'nombre_lote' => 'Lote 1',
-            'hectareas_lote' => '2000',
-            'cantidad_manzanas' => '4',
-            'ubicacion' => 'Barrio las orquideas',
-        ]);
+        // Lote::create([
+        //     'nombre_lote' => 'Lote 1',
+        //     'hectareas_lote' => '2000',
+        //     'cantidad_manzanas' => '4',
+        //     'ubicacion' => 'Barrio las orquideas',
+        // ]);
 
-        Lote::create([
-            'nombre_lote' => 'Lote 2',
-            'hectareas_lote' => '3000',
-            'cantidad_manzanas' => '6',
-            'ubicacion' => 'Barrio eva peron',
-        ]);
+        // Lote::create([
+        //     'nombre_lote' => 'Lote 2',
+        //     'hectareas_lote' => '3000',
+        //     'cantidad_manzanas' => '6',
+        //     'ubicacion' => 'Barrio eva peron',
+        // ]);
 
-        Parcela::create([
-            'descripcion_parcela' => 'Parcela 1',
-            'superficie_parcela' => '1',
-            'manzana' => '1',
-            'cantidad_bolsas' => '1166',
-            'ancho' => '200',
-            'largo' => '200',
-            'disponible' => '0',
-            'id_lote' => '1',
-        ]);
+        // Parcela::create([
+        //     'descripcion_parcela' => 'Parcela 1',
+        //     'superficie_parcela' => '1',
+        //     'manzana' => '1',
+        //     'cantidad_bolsas' => '1166',
+        //     'ancho' => '200',
+        //     'largo' => '200',
+        //     'disponible' => '0',
+        //     'id_lote' => '1',
+        // ]);
 
-        Parcela::create([
-            'descripcion_parcela' => 'Parcela 2',
-            'superficie_parcela' => '2',
-            'manzana' => '2',
-            'cantidad_bolsas' => '1200',
-            'ancho' => '230',
-            'largo' => '240',
-            'id_lote' => '1',
-        ]);
+        // Parcela::create([
+        //     'descripcion_parcela' => 'Parcela 2',
+        //     'superficie_parcela' => '2',
+        //     'manzana' => '2',
+        //     'cantidad_bolsas' => '1200',
+        //     'ancho' => '230',
+        //     'largo' => '240',
+        //     'id_lote' => '1',
+        // ]);
 
-        Parcela::create([
-            'descripcion_parcela' => 'Parcela 3',
-            'superficie_parcela' => '3',
-            'manzana' => '2',
-            'cantidad_bolsas' => '1300',
-            'ancho' => '260',
-            'largo' => '260',
-            'id_lote' => '2',
-        ]);
+        // Parcela::create([
+        //     'descripcion_parcela' => 'Parcela 3',
+        //     'superficie_parcela' => '3',
+        //     'manzana' => '2',
+        //     'cantidad_bolsas' => '1300',
+        //     'ancho' => '260',
+        //     'largo' => '260',
+        //     'id_lote' => '2',
+        // ]);
 
-        Venta::create([
-            'cuotas' => '120',
-            'cuotas' => '120',
-            'precio_total_terreno' => '2200000',
-            'cuota_mensual_bolsas_cemento' => '9,7',
-            'id_parcela' => '1',
-            'id_cliente' => '2',
-        ]);
+        // Venta::create([
+        //     'cuotas' => '120',
+        //     'cuotas' => '120',
+        //     'precio_total_terreno' => '2200000',
+        //     'cuota_mensual_bolsas_cemento' => '9,7',
+        //     'id_parcela' => '1',
+        //     'id_cliente' => '2',
+        // ]);
 
-        DetallePlan::create([
-            'fecha_desde' => Carbon::now()->format('Y-m-d'),
-            'fecha_hasta' => Carbon::now()->addMonths(6)->format('Y-m-d'),
-            'valor_cuota' => '17.460',
-            'id_venta' => '1',
-        ]);
+        // DetallePlan::create([
+        //     'fecha_desde' => Carbon::now()->format('Y-m-d'),
+        //     'fecha_hasta' => Carbon::now()->addMonths(6)->format('Y-m-d'),
+        //     'valor_cuota' => '17.460',
+        //     'id_venta' => '1',
+        // ]);
 
-        DetalleVenta::create([
-            'numero_cuota' => '1',
-            'fecha_maxima_a_pagar' => '2023-01-21',
-            'total_estimado_a_pagar' => '17.460',
-            'total_intereses' => '',
-            'fecha_pago' => '',
-            'total_pago' => '',
-            'id_venta' => '1',
-        ]);
+        // DetalleVenta::create([
+        //     'numero_cuota' => '1',
+        //     'fecha_maxima_a_pagar' => '2023-01-21',
+        //     'total_estimado_a_pagar' => '17.460',
+        //     'total_intereses' => '',
+        //     'fecha_pago' => '',
+        //     'total_pago' => '',
+        //     'id_venta' => '1',
+        // ]);
     }
 }

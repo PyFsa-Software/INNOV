@@ -23,6 +23,11 @@ class DetalleVenta extends Model
         'id_venta',
     ];
 
+    public function venta()
+    {
+        return $this->belongsTo(Venta::class, 'id_venta', 'id_venta');
+    }
+
     public function getIdParcelaAttribute()
     {
         $idParcela = Venta::all()->where('id_venta', '=', $this->id_venta)->value('id_parcela');

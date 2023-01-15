@@ -21,4 +21,14 @@ class Venta extends Model
         'id_parcela',
         'id_cliente',
     ];
+
+    public function cliente()
+    {
+        return $this->belongsTo(Persona::class, 'id_cliente', 'id_persona');
+    }
+
+    public function parcela()
+    {
+        return $this->belongsTo(Parcela::class, 'id_parcela', 'id_parcela');
+    }
 }

@@ -60,8 +60,8 @@
             placeholder="Ingrese el precio total de la entrega del terreno" value="{{old('promedio_cemento')}}"
             wire:model="promedioCemento" wire:keyup.debounce.500ms="calcularPlan">
         <b class="mt-4">
-            {{$promedioCementoDelMes->fecha_formateado}}: Promedio
-            ${{$promedioCementoDelMes->precio_promedio}}
+            {{$promedioCementoDelMes?->fecha_formateado}}: Promedio
+            ${{$promedioCementoDelMes?->precio_promedio}}
         </b>
     </div>
 
