@@ -2,11 +2,11 @@
 
 namespace App\Http\Livewire;
 
-use App\Exports\PlanillaExport;
 use App\Models\DetalleVenta;
+use App\Models\Lote;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
-use Maatwebsite\Excel\Facades\Excel;
+use Spatie\SimpleExcel\SimpleExcelWriter;
 
 class ReportePlanilla extends Component
 {
@@ -70,7 +70,7 @@ class ReportePlanilla extends Component
     public function submit()
     {
 
-        $totalCuotas = DetalleVenta::select(['id_lote', 'nombre', 'apellido', 'descripcion_parcela', 'numero_cuota', 'total_pago'])
+        $totalCuotas = DetalleVenta::select(['id_lote', 'nombre', 'apellido', 'descripcion_parcela', 'numero_cuota', 'total_pago', 'pagado'])
             ->join('ventas', 'detalle_ventas.id_venta', '=', 'ventas.id_venta')
             ->join('personas', 'ventas.id_cliente', '=', 'personas.id_persona')
             ->join('parcelas', 'ventas.id_parcela', '=', 'parcelas.id_parcela')
@@ -82,7 +82,57 @@ class ReportePlanilla extends Component
             return session()->flash('error', 'No se encontraron registros con los parametros seleccionados');
         }
 
-        return Excel::download(new PlanillaExport($this->anioSeleccionado, $this->mesSeleccionado), "Planilla " . $this->meses[$this->mesSeleccionado] . "-" . $this->anios[$this->anioSeleccionado] . ".xlsx");
+        return $this->armarPlanilla($totalCuotas);
+
+        // $planillaExcel->toBrowser();
+        // return Excel::download(new PlanillaExport($this->anioSeleccionado, $this->mesSeleccionado), "Planilla " . $this->meses[$this->mesSeleccionado] . "-" . $this->anios[$this->anioSeleccionado] . ".xlsx");
+    }
+
+    private function armarPlanilla($totalCuotas)
+    {
+
+        $cuotasAgrupadas = [];
+
+        foreach ($totalCuotas as $cuota) {
+            $cuotasAgrupadas[$cuota->id_lote][] = $cuota;
+        }
+
+        $lotes = Lote::all();
+
+        $planillaExcel = SimpleExcelWriter::streamDownload("planilla.xlsx");
+
+        $planillaExcel->noHeaderRow();
+        foreach ($lotes as $lote) {
+            $planillaExcel->addRow(['Lote: ', $lote->nombre_lote]);
+
+            $total = 0;
+
+            $planillaExcel->addHeader(['Cliente', 'Parcela', 'Numero Cuota', 'Pago Mensual', 'Pagado', 'Porcentaje', 'Dueño', 'Diego']);
+
+            foreach ($cuotasAgrupadas[$lote->id_lote] as $cuotas) {
+                $descuento = $cuotas->total_pago * 0.20;
+
+                $planillaExcel->addRow([
+                    "$cuotas->nombre $cuotas->apellido", $cuotas->descripcion_parcela, $cuotas->numero_cuota,
+                    $cuotas->total_pago,
+                    $cuotas->pagado,
+                    "20%",
+                    ($cuotas->total_pago - $descuento),
+                    $descuento,
+                ]);
+
+                $total += $cuotas->total_pago;
+
+            }
+            $planillaExcel->addRow(['Total: ', $total]);
+            $planillaExcel->addRow(['', '']);
+        }
+
+// return $planillaExcel->toBrowser();
+        return response()->streamDownload(function () use ($planillaExcel) {
+            $planillaExcel->close();
+        }, "Planilla " . $this->meses[$this->mesSeleccionado] . "-" . $this->anios[$this->anioSeleccionado] . ".xlsx");
+
     }
 
     public function render()

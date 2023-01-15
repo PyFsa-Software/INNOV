@@ -14,11 +14,11 @@ class ReportesController extends Controller
         return view('reportes.planilla.index');
     }
 
-    public function exportarPlanilla(Request $request)
-    {
+    // public function exportarPlanilla(Request $request)
+    // {
 
-        dd($request->all());
+    //     dd($request->all());
 
-        return Excel::download(new PlanillaExport(), 'users.xlsx');
-    }
+    //     return Excel::download(new PlanillaExport(), 'users.xlsx');
+    // }
 }

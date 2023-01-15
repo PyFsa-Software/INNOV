@@ -138,7 +138,6 @@ class ClientesController extends Controller
 
     public function estadoCliente(Persona $persona)
     {
-
         // obtener los is de parcelas compradas por una persona
         $idsParcelas = Venta::all()->where('id_cliente', '=', $persona->id_persona)->pluck('id_parcela');
 
@@ -168,25 +167,9 @@ class ClientesController extends Controller
         $cliente = Persona::all()->where('id_persona', '=', $venta->id_cliente)->first();
         $parcela = Parcela::with('lote')->where('id_parcela', '=', $cuota->id_parcela)->first();
 
-        // $data = [
-        //     'title' => 'Welcome to ItSolutionStuff.com',
-        //     'date' => date('m/d/Y'),
-        // ];
-
-        // ->setOptions(['defaultFont' => 'sans-serif'])
         $pdf = Pdf::loadView('clientes.volantePago', compact('cuota', 'venta', 'cliente', 'parcela'));
 
         return $pdf->stream(date('d-m-Y') . ".pdf", array('Attachment' => 0));
-
-        // $pdf->stream("", array("Attachment" => false));
-
-        // return $pdf->download('volantePago.pdf');
-
-        // $pdfContent = Pdf::loadView('clientes.volantePago', $data)->output();
-        // response()->streamDownload(
-        //     fn() => print($pdfContent),
-        //     "filename.pdf"
-        // );
 
     }
 
