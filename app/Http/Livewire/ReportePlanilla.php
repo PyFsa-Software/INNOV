@@ -70,12 +70,13 @@ class ReportePlanilla extends Component
     public function submit()
     {
 
-        $totalCuotas = DetalleVenta::select(['id_lote', 'nombre', 'apellido', 'descripcion_parcela', 'numero_cuota', 'total_pago', 'pagado'])
+        $totalCuotas = DetalleVenta::select(['id_lote', 'nombre', 'apellido', 'descripcion_parcela', 'numero_cuota', 'total_pago', 'pagado', 'manzana', 'precio_total_terreno', 'cuotas'])
             ->join('ventas', 'detalle_ventas.id_venta', '=', 'ventas.id_venta')
             ->join('personas', 'ventas.id_cliente', '=', 'personas.id_persona')
             ->join('parcelas', 'ventas.id_parcela', '=', 'parcelas.id_parcela')
             ->whereYear('fecha_pago', '=', $this->anioSeleccionado)
             ->whereMonth('fecha_pago', '=', $this->mesSeleccionado)
+            ->orderByRaw("manzana ASC")
             ->get();
 
         if (count($totalCuotas) === 0) {
@@ -102,18 +103,30 @@ class ReportePlanilla extends Component
         $planillaExcel = SimpleExcelWriter::streamDownload("planilla.xlsx");
 
         $planillaExcel->noHeaderRow();
+        $fecha = getMesEnLetraConAnio("01-$this->mesSeleccionado-$this->anioSeleccionado");
+
+        $planillaExcel->addRow(['PAGO DE CUOTAS: ', $fecha]);
+        $planillaExcel->addRow(['', '']);
+
         foreach ($lotes as $lote) {
             $planillaExcel->addRow(['Lote: ', $lote->nombre_lote]);
+            $planillaExcel->addRow(['', '']);
 
             $total = 0;
 
-            $planillaExcel->addHeader(['Cliente', 'Parcela', 'Numero Cuota', 'Pago Mensual', 'Pagado', 'Porcentaje', 'Dueño', 'Diego']);
+            $planillaExcel->addHeader(['Parcela', 'Cliente', 'Manzana', 'Precio', 'Cuotas', 'Numero Cuota', 'Pago Mensual', 'Pagado', 'Porcentaje', 'Dueño', 'Diego']);
 
             foreach ($cuotasAgrupadas[$lote->id_lote] as $cuotas) {
+
                 $descuento = $cuotas->total_pago * 0.20;
 
                 $planillaExcel->addRow([
-                    "$cuotas->nombre $cuotas->apellido", $cuotas->descripcion_parcela, $cuotas->numero_cuota,
+                    $cuotas->descripcion_parcela,
+                    "$cuotas->apellido $cuotas->nombre",
+                    $cuotas->manzana,
+                    $cuotas->precio_total_terreno,
+                    $cuotas->cuotas,
+                    $cuotas->numero_cuota,
                     $cuotas->total_pago,
                     $cuotas->pagado,
                     "20%",
@@ -124,7 +137,7 @@ class ReportePlanilla extends Component
                 $total += $cuotas->total_pago;
 
             }
-            $planillaExcel->addRow(['Total: ', $total]);
+            $planillaExcel->addRow(['Total x Mes: ', $total]);
             $planillaExcel->addRow(['', '']);
         }
 

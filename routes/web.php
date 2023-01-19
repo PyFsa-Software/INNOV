@@ -10,6 +10,8 @@ use App\Http\Controllers\VentasController;
 use App\Http\Middleware\VerificarActualizacionCuotas;
 use App\Http\Middleware\VerificarCuotaNoPagada;
 use App\Http\Middleware\VerificarCuotaVolantePago;
+use App\Models\Parcela;
+use App\Models\Persona;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['guest'])->group(function () {
@@ -26,7 +28,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('inicioSesion.desloguearse');
 
     route::get('/inicio', function () {
-        return view('dashboard.dashboard');
+
+        $totalParcelas = Parcela::all()->count();
+        $totalParcelasVendidas = Parcela::where('disponible', '=', 'no')->count();
+        $totalParcelasDisponibles = Parcela::where('disponible', '=', 'si')->count();
+        $totalClientes = Persona::where('cliente', '=', '1')
+            ->where('activo', '=', '1')
+            ->count();
+
+        return view('dashboard.dashboard', compact('totalParcelas', 'totalParcelasVendidas', 'totalParcelasDisponibles', 'totalClientes'));
+
     })->name('inicio');
 
     //ROUTES LOTES
