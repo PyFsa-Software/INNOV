@@ -105,43 +105,103 @@ class ReportePlanilla extends Component
         $planillaExcel->noHeaderRow();
         $fecha = getMesEnLetraConAnio("01-$this->mesSeleccionado-$this->anioSeleccionado");
 
-        $planillaExcel->addRow(['PAGO DE CUOTAS: ', $fecha]);
+        $planillaExcel->addRow(["PAGO DE CUOTAS: $fecha"]);
         $planillaExcel->addRow(['', '']);
 
         foreach ($lotes as $lote) {
+
+            $totalDuenio = 0;
+            $totalDiego = 0;
+
             $planillaExcel->addRow(['Lote: ', $lote->nombre_lote]);
             $planillaExcel->addRow(['', '']);
 
-            $total = 0;
+            // ORDENAR POR MANZANA
+            $ordenadoPorManzana = collect($cuotasAgrupadas[$lote->id_lote])->reduce(function ($array, $item) {
+                $array[$item->manzana][] = $item;
+                return $array;
+            }, []);
 
-            $planillaExcel->addHeader(['Parcela', 'Cliente', 'Manzana', 'Precio', 'Cuotas', 'Numero Cuota', 'Pago Mensual', 'Pagado', 'Porcentaje', 'Dueño', 'Diego']);
+            // ORDENAR POR DESCRIPCION DE PARCELA DE FORMA ASC
+            $ordenadoPorDescripcion = collect($ordenadoPorManzana)->map(function ($cuotas) {
 
-            foreach ($cuotasAgrupadas[$lote->id_lote] as $cuotas) {
-
-                $descuento = $cuotas->total_pago * 0.20;
-
-                $planillaExcel->addRow([
-                    $cuotas->descripcion_parcela,
-                    "$cuotas->apellido $cuotas->nombre",
-                    $cuotas->manzana,
-                    $cuotas->precio_total_terreno,
-                    $cuotas->cuotas,
-                    $cuotas->numero_cuota,
-                    $cuotas->total_pago,
-                    $cuotas->pagado,
-                    "20%",
-                    ($cuotas->total_pago - $descuento),
-                    $descuento,
+                $cuotasOrdenadas = collect($cuotas)->sortBy([
+                    fn($a, $b) => (int) $a['descripcion_parcela'] <=> (int) $b['descripcion_parcela'],
                 ]);
 
-                $total += $cuotas->total_pago;
+                return $cuotasOrdenadas;
+            });
 
-            }
-            $planillaExcel->addRow(['Total x Mes: ', $total]);
+            collect($ordenadoPorDescripcion)->each(function ($item) use ($planillaExcel, &$totalDuenio, &$totalDiego) {
+
+                $total = 0;
+
+                $planillaExcel->addHeader(['Parcela', 'Cliente', 'Manzana', 'Precio', 'Cuotas', 'Cuota', 'Monto', 'Pagado', 'Porcentaje', 'Dueño', 'Innov']);
+
+                collect($item)->each(function ($cuota) use ($planillaExcel, &$total, &$totalDuenio, &$totalDiego) {
+
+                    $descuento = $cuota->total_pago * 0.20;
+
+                    $planillaExcel->addRow([
+                        $cuota->descripcion_parcela,
+                        "$cuota->apellido $cuota->nombre",
+                        $cuota->manzana,
+                        $cuota->precio_total_terreno,
+                        $cuota->cuotas,
+                        $cuota->numero_cuota,
+                        $cuota->total_pago,
+                        $cuota->pagado,
+                        "20%",
+                        ($cuota->total_pago - $descuento),
+                        $descuento,
+                    ]);
+
+                    $total += $cuota->total_pago;
+                    $totalDuenio += $cuota->total_pago - $descuento;
+                    $totalDiego += $descuento;
+
+                });
+
+                $planillaExcel->addRow([
+                    'Total x Mes: ',
+                    $total,
+                ]);
+                $planillaExcel->addRow(['', '']);
+
+            });
+
+            $planillaExcel->addRow([
+                'Total Dueño',
+                $totalDuenio,
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+            ]);
+            $planillaExcel->addRow([
+                'Total Innov',
+                $totalDiego,
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+            ]);
+
             $planillaExcel->addRow(['', '']);
+            $planillaExcel->addRow(['', '']);
+
         }
 
-// return $planillaExcel->toBrowser();
         return response()->streamDownload(function () use ($planillaExcel) {
             $planillaExcel->close();
         }, "Planilla " . $this->meses[$this->mesSeleccionado] . "-" . $this->anios[$this->anioSeleccionado] . ".xlsx");

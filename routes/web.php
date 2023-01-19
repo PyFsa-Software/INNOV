@@ -30,8 +30,8 @@ Route::middleware(['auth'])->group(function () {
     route::get('/inicio', function () {
 
         $totalParcelas = Parcela::all()->count();
-        $totalParcelasVendidas = Parcela::where('disponible', '=', 'no')->count();
-        $totalParcelasDisponibles = Parcela::where('disponible', '=', 'si')->count();
+        $totalParcelasVendidas = Parcela::where('disponible', '=', '0')->count();
+        $totalParcelasDisponibles = Parcela::where('disponible', '=', '1')->count();
         $totalClientes = Persona::where('cliente', '=', '1')
             ->where('activo', '=', '1')
             ->count();
