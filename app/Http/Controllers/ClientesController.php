@@ -143,6 +143,7 @@ class ClientesController extends Controller
 
         // obtener las parcelas
         $parcelas = Parcela::whereIn('id_parcela', $idsParcelas)->get();
+        
 
         // dd($parcelas[1]->actualizarPrecioCuota);
         return view('clientes.estado', compact('persona', 'parcelas'));

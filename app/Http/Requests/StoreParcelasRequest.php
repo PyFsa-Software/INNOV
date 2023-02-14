@@ -23,8 +23,9 @@ class StoreParcelasRequest extends FormRequest
      */
     public function rules()
     {
+        // var_dump($this->parcela);
         return [
-            'descripcion_parcela' => 'required|unique:parcelas,descripcion_parcela,' . $this->parcela->id_parcela . ',id_parcela',
+            'descripcion_parcela' => 'required|unique:parcelas,descripcion_parcela,' . $this->parcela?->id_parcela . ',id_parcela',
             'superficie_parcela' => 'required|numeric',
             'manzana' => 'required|numeric',
             'cantidad_bolsas' => 'required|numeric',

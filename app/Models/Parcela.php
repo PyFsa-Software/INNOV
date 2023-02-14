@@ -45,10 +45,17 @@ class Parcela extends Model
     {
         $idVenta = Venta::all()->where('id_parcela', '=', $this->id_parcela)->value('id_venta');
 
-        $ultimaCuota = DetalleVenta::where('id_venta', $idVenta)
-            ->orderBy('fecha_maxima_a_pagar', 'desc')->value('fecha_maxima_a_pagar');
+        // dd($idVenta);
 
-        return fechaIgualMesActual($ultimaCuota);
+        $ultimaCuota = DetalleVenta::where('id_venta', $idVenta)
+            ->where('pagado','=','no')->count('id_detalle_venta');
+            // ->orderBy('fecha_maxima_a_pagar', 'desc')->value('fecha_maxima_a_pagar');
+
+           if ($ultimaCuota > 0) {
+            return false;
+           }
+
+        return true;
 
     }
 

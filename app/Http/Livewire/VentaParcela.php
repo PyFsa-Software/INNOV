@@ -105,12 +105,12 @@ class VentaParcela extends Component
                 ]);
             }
 
-            DetallePlan::create([
-                'fecha_desde' => $this->fechaDesdeDetallePlan,
-                'fecha_hasta' => $this->fechaHastaDetallePlan,
-                'valor_cuota' => $this->valorCuotaMensual,
-                'id_venta' => $ventaGuardada->id_venta,
-            ]);
+            // DetallePlan::create([
+            //     'fecha_desde' => $this->fechaDesdeDetallePlan,
+            //     'fecha_hasta' => $this->fechaHastaDetallePlan,
+            //     'valor_cuota' => $this->valorCuotaMensual,
+            //     'id_venta' => $ventaGuardada->id_venta,
+            // ]);
 
             $this->parcelaById->update(['disponible' => 0]);
 
@@ -118,6 +118,9 @@ class VentaParcela extends Component
 
             return redirect()->route('ventas.crear')->with('success', "Venta realizada correctamente, puede visualizarla desde el modulo de detalle de clientes.");
         } catch (\Throwable$e) {
+
+
+            
 
             // dd($e->getMessage());
             DB::rollback();

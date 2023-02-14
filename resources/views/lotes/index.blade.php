@@ -16,7 +16,7 @@
             <a href="{{route('lotes.crear')}}" class="btn btn-success">Agregar Lote</a>
             @else
 
-            <h1 class="text-center"><i class="fa fa-desktop fa-lg"></i> Listado de Lotes
+            <h1 class="text-center"><i class="fa fa-desktop fa-lg"></i>Loteos
             </h1>
 
             <x-alertas />

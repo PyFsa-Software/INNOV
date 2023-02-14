@@ -33,7 +33,7 @@
     </div>
 
     <div class="form-group">
-        <label for="cuotas">Cantidad de cuotas</label>
+        <label for="cuotas">Plan de cuotas</label>
         <input type="number" class="form-control" name="cuotas" id="cuotas"
             placeholder="Ingrese la cantidad de cuotas para la venta" value="{{old('cuotas')}}"
             wire:model="cantidadCuotas" wire:keyup.debounce.500ms="calcularPlan">

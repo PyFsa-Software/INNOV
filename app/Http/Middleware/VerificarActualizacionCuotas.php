@@ -28,9 +28,16 @@ class VerificarActualizacionCuotas
             $ultimaCuota = DetalleVenta::where('id_venta', $venta->id_venta)
                 ->orderBy('fecha_maxima_a_pagar', 'desc')->first();
 
+                // dd($ultimaCuota);
+
             $resultMismoMesCuota = Carbon::create($ultimaCuota->fecha_maxima_a_pagar)->isSameMonth();
 
-            if ($resultMismoMesCuota) {
+        
+
+            $noHayCuotas = DetalleVenta::where('id_venta', $venta)
+            ->where('pagado','=','no')->count('id_detalle_venta');
+
+            if ($noHayCuotas === 0 || $resultMismoMesCuota) {
                 $request->merge(['venta' => $venta, 'ultimaCuota' => $ultimaCuota]);
 
                 return $next($request);
