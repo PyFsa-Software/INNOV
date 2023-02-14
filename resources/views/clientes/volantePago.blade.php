@@ -23,7 +23,7 @@
 
         <div class="row mb-2">
             <div class="float-right">
-                <small>N°: <b>{{ $cuota->id_detalle_venta }}</b></small>
+                <small>N°: <b>{{ $cuota->numero_cuota }}</b></small>
                 <br>
                 <small>Fecha: <b>{{ date('d-m-Y', strtotime($cuota->fecha_pago)) }}</b></small>
             </div>
@@ -119,7 +119,7 @@
 
         <div class="row mb-2">
             <div class="float-right">
-                <small>N°: <b>{{ $cuota->id_detalle_venta }}</b></small>
+                <small>N°: <b>{{ $cuota->numero_cuota }}</b></small>
                 <br>
                 <small>Fecha: <b>{{ date('d-m-Y', strtotime($cuota->fecha_pago)) }}</b></small>
             </div>
