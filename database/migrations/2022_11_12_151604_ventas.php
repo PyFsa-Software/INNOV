@@ -17,6 +17,7 @@ return new class extends Migration
 
             $table->id('id_venta');
             $table->timestamp('fecha_venta')->useCurrent();
+            $table->date('fecha_actualizacion_precio');
             $table->integer('cuotas');
             $table->string('precio_total_terreno');
             $table->string('cuota_mensual_bolsas_cemento');

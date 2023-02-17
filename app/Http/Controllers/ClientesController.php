@@ -156,8 +156,13 @@ class ClientesController extends Controller
         $idCliente = $venta->id_cliente;
         return $dataTable->with('idVenta', $venta->id_venta)->render('clientes.cuotasVentas', compact('idCliente'));
     }
-    public function cobrarCuotas(DetalleVenta $cuota)
+    public function cobrarCuotas(DetalleVenta $cuota, Venta $venta)
     {
+        
+        // $idVenta = venta::all()->where('id_venta','=',$cuota->id_venta);
+        // $venta = $idVenta[1];
+
+     
         return view('clientes.cobrarCuotas', compact('cuota'));
     }
 

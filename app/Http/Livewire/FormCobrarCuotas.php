@@ -9,6 +9,7 @@ use Livewire\Component;
 class FormCobrarCuotas extends Component
 {
     public $cuota;
+    // public $venta;
     public $diferenciasDias = 0;
     public $totalIntereses;
     public $totalEstimadoAbonar = 0;
@@ -57,6 +58,8 @@ class FormCobrarCuotas extends Component
         $this->validate();
 
         try {
+
+
             DB::beginTransaction();
 
             $this->cuota->total_intereses = $this->totalIntereses;
@@ -65,6 +68,17 @@ class FormCobrarCuotas extends Component
             $this->cuota->pagado = 'si';
 
             $this->cuota->save();
+
+   
+
+
+            // if ($this->cuota->numero_cuota === "1") {
+            //     $this->venta->fecha_inicio_pago = Carbon::now();
+
+            //     $this->venta->save();
+            // }
+
+           
 
             DB::commit();
             return redirect()->route('clientes.estadoCuotas', $this->cuota->idParcela)->with('success', "Cuota guardada exitosamente <a href=" . route('clientes.volantePago', $this->cuota->id_detalle_venta) . " target='_blank'>Haga click aqui </a>para descargar el volante de pago."

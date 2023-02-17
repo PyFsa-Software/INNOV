@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+// use App\Models\DetalleVenta;
+use Carbon\Carbon;
 
 class Parcela extends Model
 {
@@ -43,20 +45,60 @@ class Parcela extends Model
 
     public function getActualizarPrecioCuotaAttribute()
     {
-        $idVenta = Venta::all()->where('id_parcela', '=', $this->id_parcela)->value('id_venta');
+        $idVenta = Venta::select('id_venta','fecha_actualizacion_precio','cuotas')->where('id_parcela', '=', $this->id_parcela)->get();
 
-        // dd($idVenta);
+        $cuotasPagadas = DetalleVenta::where('id_venta', $idVenta[0]->id_venta)
+            ->where('pagado','=','si')->count('id_detalle_venta');
 
-        $ultimaCuota = DetalleVenta::where('id_venta', $idVenta)
+        $cuotasPorPagar = DetalleVenta::where('id_venta', $idVenta[0]->id_venta)
             ->where('pagado','=','no')->count('id_detalle_venta');
-            // ->orderBy('fecha_maxima_a_pagar', 'desc')->value('fecha_maxima_a_pagar');
 
-           if ($ultimaCuota > 0) {
-            return false;
-           }
+        $totalCuotas = $cuotasPagadas + $cuotasPorPagar;
 
-        return true;
 
-    }
+
+   
+        $fechaActualSistema = Carbon::now();
+
+        $fechaActualizacionPrecio = Carbon::parse($idVenta[0]->fecha_actualizacion_precio);
+
+        //Simula la fecha del sistema
+        // $fechaPrueba = Carbon::create('2024/02/22');
+        
+   
+        $mesAnioActualizacion = $fechaActualizacionPrecio->format('Y-m');
+        $mesAnioActual  = $fechaActualSistema->format('Y-m');
+            
+
+        
+
+            return 
+            (($cuotasPagadas % 6 === 0 && $cuotasPorPagar === 0 && $idVenta[0]->cuotas != $cuotasPagadas)|| ($mesAnioActualizacion === $mesAnioActual && $totalCuotas != $idVenta[0]->cuotas));
+        
+
+
+        }
+
+
+        public function getVerificarCancelacionPlanAttribute()
+        {
+        
+            $idVenta = Venta::select('id_venta','fecha_actualizacion_precio','cuotas')->where('id_parcela', '=', $this->id_parcela)->get();
+
+            $cuotasPagadas = DetalleVenta::where('id_venta', $idVenta[0]->id_venta)
+                ->where('pagado','=','si')->count('id_detalle_venta');
+
+            $cuotasPorPagar = DetalleVenta::where('id_venta', $idVenta[0]->id_venta)
+                ->where('pagado','=','no')->count('id_detalle_venta');
+
+            $totalCuotas = $cuotasPagadas + $cuotasPorPagar;
+
+            // dd(($totalCuotas === $idVenta[0]->cuotas && $totalCuotas === $cuotasPagadas));
+
+            // dd(($totalCuotas === $idVenta[0]->cuotas && $totalCuotas === $cuotasPagadas))
+            return ($totalCuotas === $idVenta[0]->cuotas && $totalCuotas === $cuotasPagadas);
+            
+        }
+        
 
 }

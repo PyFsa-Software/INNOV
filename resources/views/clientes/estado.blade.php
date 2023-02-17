@@ -30,11 +30,15 @@
                         {{$parcela->cantidadDeudas > 0 ? 'Hay cuotas pendientes': 'Cliente al día'}}</h5>
                     <a href="{{route('clientes.estadoCuotas', $parcela->id_parcela)}}" class="btn btn-primary">Ver
                         Detalle</a>
-                    @if ($parcela->actualizarPrecioCuota)
-                    <a href="{{route('clientes.actualizarPrecios', $parcela->id_parcela)}}"
-                        class="btn btn-danger">Actualizar
-                        Precios</a>
+                    @if ($parcela?->verificarCancelacionPlan)
+                    <a class="btn btn-success" disabled>Cancelado</a>
                     @endif
+                    @if($parcela->actualizarPrecioCuota)
+                        <a href="{{route('clientes.actualizarPrecios', $parcela->id_parcela)}}"
+                            class="btn btn-danger">Actualizar
+                            Precios</a>
+                    @endif
+                    
                 </div>
                 {{-- <div class="card-footer text-muted">
                     2 days ago

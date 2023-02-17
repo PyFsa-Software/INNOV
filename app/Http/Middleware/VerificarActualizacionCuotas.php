@@ -25,29 +25,46 @@ class VerificarActualizacionCuotas
 
             $venta = Venta::all()->where('id_parcela', '=', $request?->parcela?->id_parcela)->first();
 
+            // dd($venta->fecha_inicio_pago);
+
+            $fechaInicioPago = Carbon::create($venta->fecha_inicio_pago);
+            
+
             $ultimaCuota = DetalleVenta::where('id_venta', $venta->id_venta)
                 ->orderBy('fecha_maxima_a_pagar', 'desc')->first();
 
-                // dd($ultimaCuota);
 
-            $resultMismoMesCuota = Carbon::create($ultimaCuota->fecha_maxima_a_pagar)->isSameMonth();
+                // dd($ultimaCuota->fecha_maxima_a_pagar);
+
+                $fechaActualSistema = Carbon::now();
+
+
+                $fechaActualizacionPrecio = Carbon::parse($venta->fecha_actualizacion_precio);
+
+                $mesAnioActualizacion = $fechaActualizacionPrecio->format('Y-m');
+                $mesAnioActual  = $fechaActualSistema->format('Y-m');
+
+            // $limiteActualizarCuota = $fechaInicioPago->diffInMonths($fechaActualSistema);           
+            
+
+            // $resultMismoMesCuota = Carbon::create($ultimaCuota->fecha_maxima_a_pagar)->isSameMonth();
 
         
 
-            $noHayCuotas = DetalleVenta::where('id_venta', $venta)
-            ->where('pagado','=','no')->count('id_detalle_venta');
+            // $noHayCuotas = DetalleVenta::where('id_venta', $venta)
+            // ->where('pagado','=','no')->count('id_detalle_venta');
 
-            if ($noHayCuotas === 0 || $resultMismoMesCuota) {
+            if ($mesAnioActualizacion === $mesAnioActual) {
                 $request->merge(['venta' => $venta, 'ultimaCuota' => $ultimaCuota]);
 
                 return $next($request);
             }
 
-            return redirect()->route('clientes.index')->with('error', 'Aún no se puede aplica la actualización de las cuotas al registro seleccionado');
+            return redirect()->route('clientes.index')->with('error', 'Aún no se puede aplicar la actualización de las cuotas al registro seleccionado');
 
         } catch (\Throwable$e) {
             dd($e->getMessage());
-            return redirect()->route('clientes.index')->with('error', 'Aún no se puede aplica la actualización de las cuotas al registro seleccionado');
+            return redirect()->route('clientes.index')->with('error', 'Aún no se puede aplicar la actualización de las cuotas al registro seleccionado');
         }
 
     }

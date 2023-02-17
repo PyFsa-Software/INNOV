@@ -90,6 +90,7 @@ class VentaParcela extends Component
                 'cuotas' => $this->cantidadCuotas,
                 'precio_total_terreno' => $this->precioTotalTerreno,
                 'cuota_mensual_bolsas_cemento' => $this->bolsasCementoMensual,
+                'fecha_actualizacion_precio'=> Carbon::now()->addMonth(6)->format('Y-m') . '-01' ,
                 // 'precio_total_entrega' => $this->precioTotalEntrega,
                 // 'precio_final' => $this->valorTotalFinanciar,
                 'id_parcela' => $this->parcelaCombo,
@@ -97,6 +98,7 @@ class VentaParcela extends Component
             ]);
 
             for ($i = 1; $i <= 6; $i++) {
+
                 DetalleVenta::create([
                     'numero_cuota' => $i,
                     'fecha_maxima_a_pagar' => Carbon::now()->addMonth($i)->format('Y-m') . '-21',

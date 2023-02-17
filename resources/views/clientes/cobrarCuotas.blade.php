@@ -19,7 +19,7 @@
                 </div>
             </div>
 
-            <livewire:form-cobrar-cuotas :cuota="$cuota" />
+            <livewire:form-cobrar-cuotas :cuota="$cuota"  />
 
         </div>
     </div>

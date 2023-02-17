@@ -17,6 +17,7 @@ class Venta extends Model
         'precio_total_terreno',
         'cuota_mensual_bolsas_cemento',
         'precio_total_entrega',
+        'fecha_actualizacion_precio',
         'precio_final',
         'id_parcela',
         'id_cliente',

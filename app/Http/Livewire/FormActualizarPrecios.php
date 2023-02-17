@@ -56,6 +56,10 @@ class FormActualizarPrecios extends Component
         try {
             DB::beginTransaction();
 
+            $this->venta->fecha_actualizacion_precio = Carbon::create($this->venta->fecha_actualizacion_precio)->addMonth(6)->format('Y-m') . '-01';
+
+            $this->venta->save();
+
             $numeroCuota = $this->ultimaCuota->numero_cuota;
             for ($i = 1; $i <= 6; $i++) {
                 $numeroCuota++;
