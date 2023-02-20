@@ -173,7 +173,8 @@ class ClientesController extends Controller
         $cliente = Persona::all()->where('id_persona', '=', $venta->id_cliente)->first();
         $parcela = Parcela::with('lote')->where('id_parcela', '=', $cuota->id_parcela)->first();
 
-        $pdf = Pdf::loadView('clientes.volantePago', compact('cuota', 'venta', 'cliente', 'parcela'));
+        $pdf = Pdf::loadView('clientes.volantePago', compact('cuota', 'venta', 'cliente', 'parcela'))
+        ->setPaper('cart', 'vertical');
 
         return $pdf->stream(date('d-m-Y') . ".pdf", array('Attachment' => 0));
 

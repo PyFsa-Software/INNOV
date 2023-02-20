@@ -21,6 +21,7 @@ class DetalleVenta extends Model
         'fecha_pago',
         'total_pago',
         'id_venta',
+        'numero_recibo',
     ];
 
     public function venta()

@@ -54,7 +54,7 @@ class VerificarActualizacionCuotas
             // $noHayCuotas = DetalleVenta::where('id_venta', $venta)
             // ->where('pagado','=','no')->count('id_detalle_venta');
 
-            if ($mesAnioActualizacion === $mesAnioActual) {
+            if (true) {
                 $request->merge(['venta' => $venta, 'ultimaCuota' => $ultimaCuota]);
 
                 return $next($request);

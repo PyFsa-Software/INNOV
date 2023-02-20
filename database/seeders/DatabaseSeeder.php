@@ -152,6 +152,7 @@ class DatabaseSeeder extends Seeder
             'total_intereses' => '',
             'fecha_pago' => '',
             'total_pago' => '',
+            'numero_recibo'=>'1500',
             'id_venta' => '1',
         ]);
     }

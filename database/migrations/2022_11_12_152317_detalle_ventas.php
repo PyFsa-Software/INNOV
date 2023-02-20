@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('fecha_pago')->nullable(true);
             $table->string('total_pago')->nullable(true);
             $table->string('pagado')->default('no');
+            $table->string('numero_recibo')->nullable(true);
 
         });
     }

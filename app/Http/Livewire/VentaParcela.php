@@ -97,7 +97,13 @@ class VentaParcela extends Component
                 'id_cliente' => $this->clienteCombo,
             ]);
 
+
+
             for ($i = 1; $i <= 6; $i++) {
+
+                // $numeroRecibo = DetalleVenta::where('id_venta',$ventaGuardada->id_venta)->orderBy('id_detalle_venta','desc')->value('numero_recibo');
+
+                // dd($numeroRecibo);
 
                 DetalleVenta::create([
                     'numero_cuota' => $i,
