@@ -159,9 +159,10 @@ class ClientesController extends Controller
     public function cobrarCuotas(DetalleVenta $cuota, Venta $venta)
     {
         
-        // $idVenta = venta::all()->where('id_venta','=',$cuota->id_venta);
+        $idVenta = venta::all()->where('id_venta','=',$cuota->id_venta);
         // $venta = $idVenta[1];
 
+        // dd($venta);// 
      
         return view('clientes.cobrarCuotas', compact('cuota'));
     }

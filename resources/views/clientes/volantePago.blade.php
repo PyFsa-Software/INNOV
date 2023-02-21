@@ -22,8 +22,6 @@
             border-radius: 2%;
             margin: 2%;
         }
-
-
         .content-fecha {
             text-align: left;
             padding-top: 15px;  
@@ -73,7 +71,7 @@
             font-size: 17px;
             display: inline-block;
             text-align: left;
-            padding-right: 155px;
+            padding-right: 175px;
             padding-left: 22px;
             padding-bottom: 5px;
         }
@@ -115,7 +113,7 @@
             display: inline-block;
             text-align: left;
             padding-left: 22px;
-            padding-right: 84px;
+            padding-right: 165px;
             padding-bottom: 5px;
         }
 
@@ -136,7 +134,7 @@
     <main>
         <div class="fecha">
             <div class="content-fecha" width="150">
-                <small>N°: <b>{{ $cuota->numero_cuota }}</b></small>
+                <small>N°: <b>{{ $cuota->numero_recibo }}</b></small>
                 <br>
                 <small>Fecha: <b>{{ date('d-m-Y', strtotime($cuota->fecha_pago)) }}</b></small>
             </div>
@@ -212,7 +210,7 @@
     <main>
         <div class="fecha">
             <div class="content-fecha" width="150">
-                <small>N°: <b>{{ $cuota->numero_cuota }}</b></small>
+                <small>N°: <b>{{ $cuota->numero_recibo }}</b></small>
                 <br>
                 <small>Fecha: <b>{{ date('d-m-Y', strtotime($cuota->fecha_pago)) }}</b></small>
             </div>
@@ -274,7 +272,7 @@
                 </div>
             </div>
             <div class="importe-total">
-                <small>Importe Total: $</small><b>$ 
+                <small>Importe Total: </small><b>$ 
                     {{ number_format($cuota->total_pago, 2, ',', '.') }}</b>
             </div>
             <br>

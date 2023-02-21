@@ -5,11 +5,12 @@ namespace App\Http\Livewire;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use App\Models\DetalleVenta;
 
 class FormCobrarCuotas extends Component
 {
     public $cuota;
-    // public $venta;
+    public $venta;
     public $diferenciasDias = 0;
     public $totalIntereses;
     public $totalEstimadoAbonar = 0;
@@ -57,15 +58,26 @@ class FormCobrarCuotas extends Component
 
         $this->validate();
 
+      
+
         try {
 
+            //  
+
+             $numeroRecibo = DetalleVenta::where('numero_recibo','!=',null)->orderBy('numero_recibo','desc')->value('numero_recibo');
+
+             
+            // dd($numeroRecibo);
 
             DB::beginTransaction();
+
+           
 
             $this->cuota->total_intereses = $this->totalIntereses;
             $this->cuota->total_pago = $this->totalAbonar;
             $this->cuota->fecha_pago = date('Y-m-d');
             $this->cuota->pagado = 'si';
+            $this->cuota->numero_recibo = $numeroRecibo === null ? 1500 : $numeroRecibo + 1;
 
             $this->cuota->save();
 
@@ -88,7 +100,7 @@ class FormCobrarCuotas extends Component
             DB::rollback();
 
             // dd($e->getMessage());
-            return redirect()->route('clientes.estadoCuotas', $this->cuota->idParcela)->with('error', 'Error al realizar la venta!');
+            return redirect()->route('clientes.estadoCuotas', $this->cuota->idParcela)->with('error', 'Error al pagar la cuota, contacte al Administrador!');
         }
 
     }
