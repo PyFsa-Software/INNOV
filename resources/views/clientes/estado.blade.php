@@ -5,56 +5,65 @@
 @section('contenido')
 
 
-<div class="main-panel">
+    <div class="main-panel">
 
-    <div class="content-wrapper d-flex justify-content-center">
+        <div class="content-wrapper d-flex justify-content-center">
 
-        <div class="col-md-12 grid-margin transparent">
+            <div class="col-md-12 grid-margin transparent">
 
-            <div class="app-title mb-5">
-                <h3 class="text-center"><i class="fa fa-desktop fa-lg"></i> Estado Cliente:
-                    {{$persona->nombre}}-{{$persona->apellido}}
-                </h3>
-                <a href="{{route('clientes.index')}}" class="btn btn-warning">Volver Atrás</a>
+                <div class="app-title mb-5">
+                    <h3 class="text-center"><i class="fa fa-desktop fa-lg"></i> Estado Cliente:
+                        {{ $persona->nombre }}-{{ $persona->apellido }}
+                    </h3>
+                    <a href="{{ route('clientes.index') }}" class="btn btn-warning">Volver Atrás</a>
 
-            </div>
-
-            <x-alertas />
-            @forelse ($parcelas as $parcela)
-            <div class="card text-center mt-3">
-                <div class="card-header ">
-                    {{$parcela->descripcion_parcela}}
                 </div>
-                <div class="card-body">
-                    <h5 class="card-title {{$parcela->cantidadDeudas > 0 ? 'text-danger': 'text-success'}}">Estado:
-                        {{$parcela->cantidadDeudas > 0 ? 'Hay cuotas pendientes': 'Cliente al día'}}</h5>
-                    <a href="{{route('clientes.estadoCuotas', $parcela->id_parcela)}}" class="btn btn-primary">Ver
-                        Detalle</a>
-                    @if ($parcela?->verificarCancelacionPlan)
-                    <a class="btn btn-success" disabled>Cancelado</a>
-                    @endif
-                    @if($parcela->actualizarPrecioCuota)
-                        <a href="{{route('clientes.actualizarPrecios', $parcela->id_parcela)}}"
-                            class="btn btn-danger">Actualizar
-                            Precios</a>
-                    @endif
-                    
-                </div>
-                {{-- <div class="card-footer text-muted">
+
+                <x-alertas />
+                @forelse ($parcelas as $parcela)
+                    <div class="card text-center mt-3">
+
+                        <div class="card-header ">
+                            <div class="card-body">
+                                <h4>{{ $parcela->descripcion_parcela }}</h4>
+                                {{-- </div> --}}
+                                <h5 class="card-title {{ $parcela->cantidadDeudas > 0 ? 'text-danger' : 'text-success' }}">
+                                    Estado:
+                                    {{ $parcela->cantidadDeudas > 0 ? 'Hay cuotas pendientes' : 'Cliente al día' }}</h5>
+                                <a href="{{ route('clientes.estadoCuotas', $parcela->id_parcela) }}"
+                                    class="btn btn-primary">Ver
+                                    Detalle</a>
+                                @if ($parcela?->verificarCancelacionPlan)
+                                    <a class="btn btn-success" disabled>Cancelado</a>
+                                @endif
+
+                                @if ($parcela->actualizarPrecioCuotaFechaLimite)
+                                    <a href="{{ route('clientes.actualizarPrecios', $parcela->id_parcela) }}"
+                                        class="btn btn-danger">Actualizar
+                                        Precios</a>
+                                @endif
+                                @if ($parcela->generarNuevasCuotas)
+                                    <a href="{{ route('clientes.actualizarPrecios', $parcela->id_parcela) }}"
+                                        class="btn btn-warning">Generar Nuevas Cuotas</a>
+                                @endif
+
+                            </div>
+                        </div>
+                        {{-- <div class="card-footer text-muted">
                     2 days ago
                 </div> --}}
-            </div>
-            @empty
+                    </div>
+                @empty
 
-            <div class="alert alert-danger alert-dismissible fade show mt-2">
-                <strong>El cliente seleccionado no tiene asignado ninguna venta.</strong>
-            </div>
-            @endforelse
+                    <div class="alert alert-danger alert-dismissible fade show mt-2">
+                        <strong>El cliente seleccionado no tiene asignado ninguna venta.</strong>
+                    </div>
+                @endforelse
 
+            </div>
         </div>
-    </div>
 
-</div>
+    </div>
 
 
 

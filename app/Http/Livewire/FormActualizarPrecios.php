@@ -61,15 +61,44 @@ class FormActualizarPrecios extends Component
             $this->venta->save();
 
             $numeroCuota = $this->ultimaCuota->numero_cuota;
-            for ($i = 1; $i <= 6; $i++) {
-                $numeroCuota++;
-                DetalleVenta::create([
-                    'numero_cuota' => $numeroCuota,
-                    'fecha_maxima_a_pagar' => Carbon::create($this->ultimaCuota->fecha_maxima_a_pagar)->addMonth($i)->format('Y-m') . '-21',
-                    'total_estimado_a_pagar' => $this->totalAbonarProximosMeses,
-                    'id_venta' => $this->venta->id_venta,
-                ]);
+
+            //Validacion de Plan de cuota Personalizado
+
+            $totalCuotas = DetalleVenta::where('id_venta','=',$this->venta->id_venta)->count('id_detalle_venta');
+
+           
+
+            $planCuota =  $this->venta->cuotas; 
+            
+            $restoCuotas = $planCuota - $totalCuotas;
+
+
+            if ($restoCuotas < 6) {
+
+                for ($i = 1; $i <= $restoCuotas; $i++) {
+                    $numeroCuota++;
+                    DetalleVenta::create([
+                        'numero_cuota' => $numeroCuota,
+                        'fecha_maxima_a_pagar' => Carbon::create($this->ultimaCuota->fecha_maxima_a_pagar)->addMonth($i)->format('Y-m') . '-21',
+                        'total_estimado_a_pagar' => $this->totalAbonarProximosMeses,
+                        'id_venta' => $this->venta->id_venta,
+                    ]);
+                }
+
+            }else{
+
+                for ($i = 1; $i <= 6; $i++) {
+                    $numeroCuota++;
+                    DetalleVenta::create([
+                        'numero_cuota' => $numeroCuota,
+                        'fecha_maxima_a_pagar' => Carbon::create($this->ultimaCuota->fecha_maxima_a_pagar)->addMonth($i)->format('Y-m') . '-21',
+                        'total_estimado_a_pagar' => $this->totalAbonarProximosMeses,
+                        'id_venta' => $this->venta->id_venta,
+                    ]);
+                }
+
             }
+
 
             DB::commit();
             return redirect()->route('clientes.estado', $this->venta->id_cliente)->with('success', "Actualización de cuotas para los proximos 6 meses guardado correctamente."

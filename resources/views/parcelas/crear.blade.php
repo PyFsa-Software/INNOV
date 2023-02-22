@@ -20,6 +20,8 @@
                 </div>
             </div>
 
+            <x-alertas />
+
             <form class="forms-sample" method="POST" action="{{route('parcelas.guardar')}}">
                 @csrf
                 <div class="form-group">
@@ -66,7 +68,7 @@
                 <a href="{{route('parcelas.index')}}" class="btn btn-danger form-control">Cancelar</a>
             </form>
 
-            <x-alertas />
+           
         </div>
     </div>
 

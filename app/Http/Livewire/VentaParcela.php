@@ -97,11 +97,18 @@ class VentaParcela extends Component
                 'id_cliente' => $this->clienteCombo,
             ]);
 
+            $totalCuotas = DetalleVenta::where('id_venta','=',$ventaGuardada->id_venta)->count('id_detalle_venta');
 
+            
+            
+            $planCuota = $ventaGuardada->cuotas; 
+            
+            $restoCuotas = $planCuota - $totalCuotas;
+            
+            // dd($restoCuotas);
 
-            for ($i = 1; $i <= 6; $i++) {
-
-               
+            if ($restoCuotas < 6) {
+                for ($i = 1; $i <= $restoCuotas; $i++) {
 
                 DetalleVenta::create([
                     'numero_cuota' => $i,
@@ -110,6 +117,19 @@ class VentaParcela extends Component
                     'id_venta' => $ventaGuardada->id_venta,
                 ]);
             }
+            }else{
+                
+                for ($i = 1; $i <= 6; $i++) {
+    
+                    DetalleVenta::create([
+                        'numero_cuota' => $i,
+                        'fecha_maxima_a_pagar' => Carbon::now()->addMonth($i)->format('Y-m') . '-21',
+                        'total_estimado_a_pagar' => $this->valorCuotaMensual,
+                        'id_venta' => $ventaGuardada->id_venta,
+                    ]);
+                }
+            }
+
 
             // DetallePlan::create([
             //     'fecha_desde' => $this->fechaDesdeDetallePlan,

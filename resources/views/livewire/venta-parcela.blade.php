@@ -1,6 +1,7 @@
 <form class="forms-sample" method="POST" wire:submit.prevent="submit">
     {{-- @csrf --}}
     <div class="form-group">
+        <x-alertas />
         <label for="id_cliente">Cliente</label>
         <select name="id_cliente" id="id_cliente" class="form-control" autofocus wire:model="clienteCombo"
             wire:change.debounce.500ms="calcularPlan">
@@ -95,7 +96,7 @@
 
     <button type="button" class="btn btn-primary mr-2 mb-2 form-control" {{$isDisabled ? 'disabled' : '' }}
         data-toggle="modal" data-target="#ventaParcela">Guardar</button>
-    <x-alertas />
+    
 
 
     <!-- Modal -->
