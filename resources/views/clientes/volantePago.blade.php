@@ -141,7 +141,7 @@
         </div>
         <div class="contenido">
             <img class="logo" height="100" width="100" alt=""
-                src="https://www.tecnopolo.it/grversion/wp-content/uploads/2019/05/INNOV-logo-Tecnopolo-Tiburtino.jpg" />
+                src="{{ asset('/img/logoInnova.jpg') }}" />
             <br>
             <div class="content-empresa">
                 <div class="info-empresa">

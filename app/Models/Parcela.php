@@ -87,7 +87,7 @@ class Parcela extends Model
 
             //Debe retornar TRUE para que aparezca el boton de "Actualizar Precios".
             return 
-            (((getFechaActual() > $fechaActualizacionPrecio) && ($totalCuotas != $idVenta[0]->cuotas) && (count($preciosPorActualizar) == 0)));
+            ((getFechaActual() > $fechaActualizacionPrecio) && ($totalCuotas != $idVenta[0]->cuotas) && (count($preciosPorActualizar) == 0));
         
 
 
@@ -114,7 +114,7 @@ class Parcela extends Model
 
             //Debe retornar TRUE para que aparezca el boton de "Generar nuevas Cuotas".
             return 
-            (($cuotasPagadas === $totalCuotas) && ($fechaActualizacionPrecio !== getFechaActual() && $totalCuotas != $idVenta[0]->cuotas));
+            (($cuotasPagadas === $totalCuotas) && ($fechaActualizacionPrecio > getFechaActual() && $totalCuotas != $idVenta[0]->cuotas));
 
     }
 
@@ -171,7 +171,7 @@ class Parcela extends Model
             $fechaActualizacion = Carbon::create($idVenta[0]->fecha_actualizacion_precio)->format('Y-m');
 
 
-            //Debe retornar TRUE para mostrar el mensaje de advertencia  
+            //Debe retornar TRUE para mostrar el mensaje de advertencia "hay cuotas desactualizadas"
             return  ((getFechaActualEditarCuota() > $fechaActualizacion) && ($cuotasPorPagar > 0) && (count($preciosPorActualizar) != 0));
              
 
