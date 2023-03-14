@@ -10,12 +10,12 @@
 
 
     <style>
-
+​
         body{
             margin: 0;
         }
         main {
-            font-family: "Times New Roman", Times, serif;
+            font-family:  'Arial', sans-serif;
             margin-top: 0%;
             border-color: black;
             border-style: solid;
@@ -38,13 +38,14 @@
 
         }
 
+
         .content-empresa{
             text-align: left;
             padding-left: 17px;
             width: 100px;
         }
         .nombre-empresa {
-            font-size: 13px;
+            font-size: 15px;
             text-align: center;
         }
         .info-empresa {
@@ -52,7 +53,7 @@
             font-size: 12px;
         }
         .nombre {
-            font-size: 17px;
+            font-size: 18px;
             display: inline-block;
             text-align: left;
             padding-right: 120px;
@@ -61,14 +62,14 @@
         }
 
         .telefono {
-            font-size: 17px;
+            font-size: 18px;
             display: inline-block;
             text-align: left;
             padding-bottom: 5px;
         }
 
         .dni {
-            font-size: 17px;
+            font-size: 18px;
             display: inline-block;
             text-align: left;
             padding-right: 175px;
@@ -77,14 +78,14 @@
         }
 
         .domicilio {
-            font-size: 17px;
+            font-size: 18px;
             display: inline-block;
             text-align: left;
             padding-bottom: 5px;
         }
 
         .pago {
-            font-size: 17px;
+            font-size: 18px;
             display: inline-block;
             text-align: left;
             padding-left: 22px;
@@ -92,7 +93,7 @@
         }
 
         .importe-total {
-            font-size: 17px;
+            font-size: 18px;
             display: inline-block;
             text-align: left;
             padding-left: 22px;
@@ -101,7 +102,7 @@
 
         .info-parcela {
 
-            font-size: 17px;
+            font-size: 18px;
             display: inline-block;
             text-align: left;
             padding-left: 22px;
@@ -109,7 +110,7 @@
         }
         .info-loteo {
 
-            font-size: 17px;
+            font-size: 18px;
             display: inline-block;
             text-align: left;
             padding-left: 22px;
@@ -118,7 +119,7 @@
         }
 
         .firma {
-            font-size: 17px;
+            font-size: 18px;
             text-align: right;
             padding-right: 20px;
             padding-bottom: 10px;
@@ -140,9 +141,10 @@
             </div>
         </div>
         <div class="contenido">
-            <img class="logo" height="100" width="100" alt=""
-                src="{{ asset('/img/logoInnova.jpg') }}" />
-            <br>
+            <div class="logo">
+                {!! $html !!} 
+            </div>
+
             <div class="content-empresa">
                 <div class="info-empresa">
                     <small class="nombre-empresa"><b> INNOV S.R.L </b></small>
@@ -154,56 +156,56 @@
 
             <div class="content-venta">
                 <div class="nombre">
-                    <small>Sr/Sra: </small><b>{{ $cliente->nombre }} {{ $cliente->apellido }}.</b>
+                        <small>Sr/Sra: </small><b>{{ $cliente->nombre }} {{ $cliente->apellido }}.</b>
+                    </div>
+                    <div class="telefono">
+                        <small>Telefono: </small> <b>{{ $cliente->celular }}.</b>
+                    </div>
+                    <br>
+                    <div class="dni">
+                        <small>Dni: </small> <b>{{ $cliente->dni }}.</b>
+                    </div>
+                    <div class="domicilio">
+                        <small>Domicilio: </small><b>{{ $cliente->domicilio }}.</b>
+                    </div>
+                    <br>
+                    <div class="pago">
+                        <small>Recibí(mos) la suma de: </small><b>{{ convertDigitsToWord($cuota->total_pago) }} pesos.</b>
+                    </div>
+                    <br>
+                    <div class="info-loteo">
+                        <small>Loteo: </small><b>{{ $parcela->lote->nombre_lote }}.</b>
+                    </div>
+                    <div class="info-parcela">
+                        <small>Parcela: </small><b> {{ $parcela->descripcion_parcela }}.</b>
+                    </div>
+                    <br>
+                    <div class="info-parcela">
+                        <small>Dimensión: </small><b>{{ $parcela->ancho }} x {{ $parcela->largo }}.</b>
+                    </div>
+                    <div class="info-parcela">
+                        <small>Manzana:</small><b>{{ $parcela->manzana }}.</b>
+                    </div>
+                    <div class="info-parcela">
+                        <small>Ubicación: </small><b>{{ $parcela->lote->ubicacion }}.</b>
+                    </div>
+                    <br>
+                    <div class="info-parcela">
+                        <small>Cuota N°: </small><b>{{ $cuota->numero_cuota }}.</b>
+                    </div>
+                    <div class="info-parcela">
+                        <small>Plan: </small><b>{{ $venta->cuotas }} Cuota/s.</b>
+                    </div>
                 </div>
-                <div class="telefono">
-                    <small>Telefono: </small> <b>{{ $cliente->celular }}.</b>
+                <div class="importe-total">
+                    <small>Importe Total: </small><b>$ {{ number_format($cuota->total_pago, 2, ',', '.') }}</b>
                 </div>
-                <br>
-                <div class="dni">
-                    <small>Dni: </small> <b>{{ $cliente->dni }}.</b>
-                </div>
-                <div class="domicilio">
-                    <small>Domicilio: </small><b>{{ $cliente->domicilio }}.</b>
-                </div>
-                <br>
-                <div class="pago">
-                    <small>Recibí(mos) la suma de: </small><b>{{ convertDigitsToWord($cuota->total_pago) }} pesos.</b>
-                </div>
-                <br>
-                <div class="info-loteo">
-                    <small>Loteo: </small><b>{{ $parcela->lote->nombre_lote }}.</b>
-                </div>
-                <div class="info-parcela">
-                    <small>Parcela: </small><b> {{ $parcela->descripcion_parcela }}.</b>
-                </div>
-                <br>
-                <div class="info-parcela">
-                    <small>Dimensión: </small><b>{{ $parcela->ancho }} x {{ $parcela->largo }}.</b>
-                </div>
-                <div class="info-parcela">
-                    <small>Manzana:</small><b>{{ $parcela->manzana }}.</b>
-                </div>
-                <div class="info-parcela">
-                    <small>Ubicación: </small><b>{{ $parcela->lote->ubicacion }}.</b>
-                </div>
-                <br>
-                <div class="info-parcela">
-                    <small>Cuota N°: </small><b>{{ $cuota->numero_cuota }}.</b>
-                </div>
-                <div class="info-parcela">
-                    <small>Plan: </small><b>{{ $venta->cuotas }} Cuota/s.</b>
-                </div>
-            </div>
-            <div class="importe-total">
-                <small>Importe Total: </small><b>$ {{ number_format($cuota->total_pago, 2, ',', '.') }}</b>
-            </div>
             <br>
             <div class="firma">
                 <small>Firma: ..............................</b>
             </div>
         </div>
-    </main>
+    </main> 
 
     <p>.....................................................................................................................................................................................    </p>
 
@@ -216,9 +218,10 @@
             </div>
         </div>
         <div class="contenido">
-            <img class="logo" height="100" width="100" alt=""
-                src="https://www.tecnopolo.it/grversion/wp-content/uploads/2019/05/INNOV-logo-Tecnopolo-Tiburtino.jpg" />
-            <br>
+            <div class="logo">
+                {!! $html !!} 
+            </div>
+
             <div class="content-empresa">
                 <div class="info-empresa">
                     <small class="nombre-empresa"><b> INNOV S.R.L </b></small>
