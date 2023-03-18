@@ -3,21 +3,17 @@
 namespace App\DataTables;
 
 use App\Models\DetalleVenta;
-use App\Models\Venta;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Services\DataTable;
 
-
-
 class CuotasVentasDataTable extends DataTable
 {
 
-
     /**
-     * = 
+     * =
      * Build DataTable class.
      *
      * @param QueryBuilder $query Results from query() method.
@@ -26,26 +22,23 @@ class CuotasVentasDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
 
-        
         // $queryWithWhere = $query->select(['id_persona', 'nombre', 'apellido', 'dni', 'correo', 'celular', 'cliente', 'activo'])
         //     ->from('personas')
         //     ->where('cliente', '=', '1');
 
         // ->setRowClass(function ($data) {
         //     return $data->activo === 0 ? 'table-danger' : 'table-success';
-            
+
         // })
 
-        
-            // dd($query->get());
-   
+        // dd($query->get());
 
         return (new EloquentDataTable($query))
             ->filterColumn('pagado', function ($query, $keyword) {
                 $query->whereRaw('pagado like ?', ["%{$keyword}%"]);
             })
             ->addColumn('total_estimado_a_pagar', function ($data) {
-        
+
                 return "$ " . number_format($data->total_estimado_a_pagar, 2, ',', '.');
             })
             ->addColumn('pagado', function ($data) {
@@ -64,9 +57,14 @@ class CuotasVentasDataTable extends DataTable
                 return "<a href='" . route('clientes.cobrarCuota', $data->id_detalle_venta) . "' class='btn btn-warning btn-sm'><i class='ti-ticket'></i></a>";
             })
             ->editColumn('fecha_maxima_a_pagar', function ($data) {
-                $estadoCuota = $data->fecha_maxima_a_pagar < date('Y-m-d') && $data->pagado === 'no' ? 'text-danger' : 'text-success';
+                try {
 
-                return "<b class='$estadoCuota'>" . Carbon::createFromFormat('Y-m-d', $data->fecha_maxima_a_pagar)->format('d/m/Y') . "</b>" .  "<b>" . ($data->fecha_pago === null ? " | No Pago" :  " | " . Carbon::createFromFormat('Y-m-d', $data->fecha_pago)->format('d/m/Y')  )  . "</b>";
+                    $estadoCuota = $data->fecha_maxima_a_pagar < date('Y-m-d') && $data->pagado === 'no' ? 'text-danger' : 'text-success';
+
+                    return "<b class='$estadoCuota'>" . Carbon::createFromFormat('Y-m-d', $data->fecha_maxima_a_pagar)->format('d/m/Y') . "</b>" . "<b>" . ($data->fecha_pago === null ? " | No Pago" : " | " . Carbon::parse($data->fecha_pago)->format('d/m/Y')) . "</b>";
+                } catch (\Throwable$th) {
+                    return $th->getMessage();
+                }
             })
             ->addColumn('editar', function ($data) {
                 return $data->actualizarCuotas ? "<a href='" . route('clientes.editarPrecioCuota', $data->id_detalle_venta) . "' class='btn btn-warning btn-sm'>Editar</a>" : "-";
@@ -76,11 +74,10 @@ class CuotasVentasDataTable extends DataTable
             })
             ->setRowClass(function ($data) {
 
-
                 return $data->actualizarCuotas ? 'table-danger' : '';
-     
+
             })
-            ->rawColumns(['Estimado Pagar','pagado', 'cobrar','editar', 'volantePago', 'fecha_maxima_a_pagar']);
+            ->rawColumns(['Estimado Pagar', 'pagado', 'cobrar', 'editar', 'volantePago', 'fecha_maxima_a_pagar']);
     }
 
     /**
@@ -95,7 +92,6 @@ class CuotasVentasDataTable extends DataTable
         return DetalleVenta::where('id_venta', '=', $this->idVenta)->with('venta')->orderBy('fecha_maxima_a_pagar', 'desc');
         // return $model->newQuery();
     }
-
 
     /**
      * Optional method if you want to use html builder.

@@ -26,6 +26,15 @@ class ClientesDataTable extends DataTable
             ->addColumn('nombre_apellido', function ($data) {
                 return $data->nombre . ' ' . $data->apellido;
             })
+            ->addColumn('dni', function ($data) {
+                return $data->dni;
+            })
+            ->addColumn('correo', function ($data) {
+                return $data->correo;
+            })
+            ->addColumn('celular', function ($data) {
+                return $data->celular;
+            })
             ->addColumn('estado', function ($data) {
 
                 return "<a href='" . route('clientes.estado', $data->id_persona) . "' class='btn btn-info btn-sm'>Estado</a>";
@@ -40,7 +49,19 @@ class ClientesDataTable extends DataTable
                 } else {
                     return "<a href='" . route('clientes.eliminar', $data->id_persona) . "' class='btn btn-danger btn-sm'>Eliminar</a>";
                 }
-            }) 
+            })
+            ->filterColumn('nombre_apellido', function ($query, $keyword) {
+                $query->whereRaw("CONCAT(nombre,' ',apellido) like ?", ["%{$keyword}%"]);
+            })
+            ->filterColumn('dni', function ($query, $keyword) {
+                $query->whereRaw("dni like ?", ["%{$keyword}%"]);
+            })
+            ->filterColumn('correo', function ($query, $keyword) {
+                $query->whereRaw("correo like ?", ["%{$keyword}%"]);
+            })
+            ->filterColumn('celular', function ($query, $keyword) {
+                $query->whereRaw("celular like ?", ["%{$keyword}%"]);
+            })
             ->rawColumns(['nombre_apellido', 'editar', 'eliminar/activar', 'estado'])
             ->setRowId('id_persona');
     }
