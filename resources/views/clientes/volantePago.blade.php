@@ -53,7 +53,7 @@
             font-size: 12px;
         }
         .nombre {
-            font-size: 18px;
+            font-size: 17px;
             display: inline-block;
             text-align: left;
             padding-right: 120px;
@@ -62,14 +62,14 @@
         }
 
         .telefono {
-            font-size: 18px;
+            font-size: 17px;
             display: inline-block;
             text-align: left;
             padding-bottom: 5px;
         }
 
         .dni {
-            font-size: 18px;
+            font-size: 17px;
             display: inline-block;
             text-align: left;
             padding-right: 175px;
@@ -78,14 +78,16 @@
         }
 
         .domicilio {
-            font-size: 18px;
+            font-size: 17px;
             display: inline-block;
-            text-align: left;
+            text-align: left;   
+            padding-right: 175px;
+            padding-left: 22px;
             padding-bottom: 5px;
         }
 
         .pago {
-            font-size: 18px;
+            font-size: 17px;
             display: inline-block;
             text-align: left;
             padding-left: 22px;
@@ -93,7 +95,7 @@
         }
 
         .importe-total {
-            font-size: 18px;
+            font-size: 17px;
             display: inline-block;
             text-align: left;
             padding-left: 22px;
@@ -102,7 +104,7 @@
 
         .info-parcela {
 
-            font-size: 18px;
+            font-size: 17px;
             display: inline-block;
             text-align: left;
             padding-left: 22px;
@@ -110,7 +112,7 @@
         }
         .info-loteo {
 
-            font-size: 18px;
+            font-size: 17px;
             display: inline-block;
             text-align: left;
             padding-left: 22px;
@@ -119,7 +121,7 @@
         }
 
         .firma {
-            font-size: 18px;
+            font-size: 17px;
             text-align: right;
             padding-right: 20px;
             padding-bottom: 10px;
@@ -165,6 +167,7 @@
                     <div class="dni">
                         <small>Dni: </small> <b>{{ $cliente->dni }}.</b>
                     </div>
+                    <br>
                     <div class="domicilio">
                         <small>Domicilio: </small><b>{{ $cliente->domicilio }}.</b>
                     </div>
@@ -206,8 +209,6 @@
             </div>
         </div>
     </main> 
-
-    <p>.....................................................................................................................................................................................    </p>
 
     <main>
         <div class="fecha">
