@@ -21,7 +21,7 @@ class FormGenerarCuotas extends Component
     public $isDisabled = true;
 
     protected $rules = [
-        'promedioCementoNuevo' => 'required|numeric|min:1',
+        'totalAbonarProximosMeses' => 'required|numeric|min:1',
     ];
 
     public function updated($propertyName)
@@ -33,23 +33,27 @@ class FormGenerarCuotas extends Component
     }
     public function mount()
     {
+
         $this->listaPromedioCemento = Precio::orderBy("fecha", "DESC")
             ->take(6)
             ->get()
-            ->each(function ($promedioFila) {
+            ?->each(function ($promedioFila) {
                 $this->promedio6Meses += $promedioFila->precio_promedio;
             });
         $this->promedio6Meses = $this->promedio6Meses / 6;
+
+      
+
     }
 
-    public function calcularActualizacion()
-    {
-        $this->validate();
+    // public function calcularActualizacion()
+    // {
+    //     $this->validate();
       
-        $this->totalAbonarProximosMeses = $this->venta->cuota_mensual_bolsas_cemento *  $this->promedioCementoNuevo;
+    //     $this->totalAbonarProximosMeses = $this->venta->cuota_mensual_bolsas_cemento *  $this->promedioCementoNuevo;
 
         
-    }
+    // }
 
     public function submit()
     {
@@ -63,7 +67,7 @@ class FormGenerarCuotas extends Component
 
             // $this->venta->save();
 
-            $numeroCuota = $this->ultimaCuota->numero_cuota;
+            $numeroCuota = $this?->ultimaCuota?->numero_cuota;
 
             //Validacion de Plan de cuota Personalizado
 

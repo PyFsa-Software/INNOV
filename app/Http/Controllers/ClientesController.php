@@ -231,6 +231,10 @@ class ClientesController extends Controller
         $venta = $request->venta;
         $ultimaCuota = $request->ultimaCuota;
 
+        // var_dump($venta);
+        // var_dump($ultimaCuota);
+        
+
         return view('clientes.generarCuotas', compact('venta', 'parcela', 'ultimaCuota'));
     }
 
