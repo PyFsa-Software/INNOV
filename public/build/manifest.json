@@ -1,0 +1,136 @@
+{
+  "resources/css/ti-icons/fonts/themify.eot": {
+    "file": "assets/themify.dff415da.eot",
+    "src": "resources/css/ti-icons/fonts/themify.eot"
+  },
+  "resources/css/feather/fonts/feather-webfont.eot": {
+    "file": "assets/feather-webfont.077b3f8b.eot",
+    "src": "resources/css/feather/fonts/feather-webfont.eot"
+  },
+  "resources/css/fonts/Nunito/Nunito-Light.eot": {
+    "file": "assets/Nunito-Light.7e3c5b1b.eot",
+    "src": "resources/css/fonts/Nunito/Nunito-Light.eot"
+  },
+  "resources/css/fonts/Nunito/Nunito-Bold.eot": {
+    "file": "assets/Nunito-Bold.248ac230.eot",
+    "src": "resources/css/fonts/Nunito/Nunito-Bold.eot"
+  },
+  "resources/css/fonts/Nunito/Nunito-SemiBold.eot": {
+    "file": "assets/Nunito-SemiBold.72b5b483.eot",
+    "src": "resources/css/fonts/Nunito/Nunito-SemiBold.eot"
+  },
+  "resources/css/fonts/Nunito/Nunito-Regular.eot": {
+    "file": "assets/Nunito-Regular.9e4b7cf9.eot",
+    "src": "resources/css/fonts/Nunito/Nunito-Regular.eot"
+  },
+  "resources/css/ti-icons/fonts/themify.woff": {
+    "file": "assets/themify.0db5c5a1.woff",
+    "src": "resources/css/ti-icons/fonts/themify.woff"
+  },
+  "resources/css/feather/fonts/feather-webfont.woff": {
+    "file": "assets/feather-webfont.0999a7c8.woff",
+    "src": "resources/css/feather/fonts/feather-webfont.woff"
+  },
+  "resources/css/fonts/Nunito/Nunito-Bold.woff2": {
+    "file": "assets/Nunito-Bold.0e242ef4.woff2",
+    "src": "resources/css/fonts/Nunito/Nunito-Bold.woff2"
+  },
+  "resources/css/fonts/Nunito/Nunito-SemiBold.woff2": {
+    "file": "assets/Nunito-SemiBold.e2d83cb7.woff2",
+    "src": "resources/css/fonts/Nunito/Nunito-SemiBold.woff2"
+  },
+  "resources/css/fonts/Nunito/Nunito-Regular.woff2": {
+    "file": "assets/Nunito-Regular.58eca693.woff2",
+    "src": "resources/css/fonts/Nunito/Nunito-Regular.woff2"
+  },
+  "resources/css/fonts/Nunito/Nunito-Light.woff2": {
+    "file": "assets/Nunito-Light.41195f45.woff2",
+    "src": "resources/css/fonts/Nunito/Nunito-Light.woff2"
+  },
+  "resources/css/feather/fonts/feather-webfont.ttf": {
+    "file": "assets/feather-webfont.c2e3bc4a.ttf",
+    "src": "resources/css/feather/fonts/feather-webfont.ttf"
+  },
+  "resources/css/fonts/Nunito/Nunito-SemiBold.woff": {
+    "file": "assets/Nunito-SemiBold.6ce642fe.woff",
+    "src": "resources/css/fonts/Nunito/Nunito-SemiBold.woff"
+  },
+  "resources/css/ti-icons/fonts/themify.ttf": {
+    "file": "assets/themify.350663a4.ttf",
+    "src": "resources/css/ti-icons/fonts/themify.ttf"
+  },
+  "resources/css/fonts/Nunito/Nunito-Bold.woff": {
+    "file": "assets/Nunito-Bold.710af879.woff",
+    "src": "resources/css/fonts/Nunito/Nunito-Bold.woff"
+  },
+  "resources/css/fonts/Nunito/Nunito-Light.woff": {
+    "file": "assets/Nunito-Light.4919f57b.woff",
+    "src": "resources/css/fonts/Nunito/Nunito-Light.woff"
+  },
+  "resources/css/fonts/Nunito/Nunito-Regular.woff": {
+    "file": "assets/Nunito-Regular.e9cd9fe7.woff",
+    "src": "resources/css/fonts/Nunito/Nunito-Regular.woff"
+  },
+  "resources/css/feather/fonts/feather-webfont.svg": {
+    "file": "assets/feather-webfont.96f8c60f.svg",
+    "src": "resources/css/feather/fonts/feather-webfont.svg"
+  },
+  "resources/css/fonts/Nunito/Nunito-SemiBold.ttf": {
+    "file": "assets/Nunito-SemiBold.b4b24a22.ttf",
+    "src": "resources/css/fonts/Nunito/Nunito-SemiBold.ttf"
+  },
+  "resources/css/ti-icons/fonts/themify.svg": {
+    "file": "assets/themify.2e242102.svg",
+    "src": "resources/css/ti-icons/fonts/themify.svg"
+  },
+  "resources/css/fonts/Nunito/Nunito-Bold.ttf": {
+    "file": "assets/Nunito-Bold.6d6092ed.ttf",
+    "src": "resources/css/fonts/Nunito/Nunito-Bold.ttf"
+  },
+  "resources/css/fonts/Nunito/Nunito-Light.ttf": {
+    "file": "assets/Nunito-Light.03c8ce12.ttf",
+    "src": "resources/css/fonts/Nunito/Nunito-Light.ttf"
+  },
+  "resources/css/fonts/Nunito/Nunito-Regular.ttf": {
+    "file": "assets/Nunito-Regular.198c3746.ttf",
+    "src": "resources/css/fonts/Nunito/Nunito-Regular.ttf"
+  },
+  "resources/js/importFilesSistema.js": {
+    "file": "assets/importFilesSistema.7c9e7bed.js",
+    "src": "resources/js/importFilesSistema.js",
+    "isEntry": true,
+    "css": [
+      "assets/importFilesSistema.58f96f46.css"
+    ],
+    "assets": [
+      "assets/feather-webfont.077b3f8b.eot",
+      "assets/feather-webfont.0999a7c8.woff",
+      "assets/feather-webfont.c2e3bc4a.ttf",
+      "assets/feather-webfont.96f8c60f.svg",
+      "assets/themify.dff415da.eot",
+      "assets/themify.0db5c5a1.woff",
+      "assets/themify.350663a4.ttf",
+      "assets/themify.2e242102.svg",
+      "assets/Nunito-Light.7e3c5b1b.eot",
+      "assets/Nunito-Light.41195f45.woff2",
+      "assets/Nunito-Light.4919f57b.woff",
+      "assets/Nunito-Light.03c8ce12.ttf",
+      "assets/Nunito-Bold.248ac230.eot",
+      "assets/Nunito-Bold.0e242ef4.woff2",
+      "assets/Nunito-Bold.710af879.woff",
+      "assets/Nunito-Bold.6d6092ed.ttf",
+      "assets/Nunito-SemiBold.72b5b483.eot",
+      "assets/Nunito-SemiBold.e2d83cb7.woff2",
+      "assets/Nunito-SemiBold.6ce642fe.woff",
+      "assets/Nunito-SemiBold.b4b24a22.ttf",
+      "assets/Nunito-Regular.9e4b7cf9.eot",
+      "assets/Nunito-Regular.58eca693.woff2",
+      "assets/Nunito-Regular.e9cd9fe7.woff",
+      "assets/Nunito-Regular.198c3746.ttf"
+    ]
+  },
+  "resources/js\\importFilesSistema.css": {
+    "file": "assets/importFilesSistema.58f96f46.css",
+    "src": "resources/js\\importFilesSistema.css"
+  }
+}
