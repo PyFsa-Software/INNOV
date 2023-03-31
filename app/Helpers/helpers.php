@@ -6,8 +6,7 @@ use Illuminate\Support\Str;
 function convertDigitsToWord(int $number): string
 {
     $f = new NumberFormatter("es", NumberFormatter::SPELLOUT);
-    return $f->format($number);
-
+    return Str::upper($f->format($number));
 }
 
 function getMesEnLetraConAnio($anio = '')

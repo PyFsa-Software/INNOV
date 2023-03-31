@@ -89,7 +89,8 @@ class CuotasVentasDataTable extends DataTable
     public function query(): QueryBuilder
     {
 
-        return DetalleVenta::where('id_venta', '=', $this->idVenta)->with('venta')->orderBy('fecha_maxima_a_pagar', 'desc');
+       return DetalleVenta::where('id_venta', '=', $this->idVenta)->with('venta')->orderByRaw("CAST(numero_cuota AS UNSIGNED) DESC");
+
         // return $model->newQuery();
     }
 
