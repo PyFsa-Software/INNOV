@@ -182,7 +182,6 @@ class ClientesController extends Controller
 
         try {
 
-            dd($request);
 
             $cuota->update($request->all());
             return back()->with('success', 'Precio Actualizado correctamente!');

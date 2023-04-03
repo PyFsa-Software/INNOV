@@ -43,9 +43,11 @@
         </table>
         <br>
         {{-- <h6 class="text-success"><b>Promedio de 6 meses: {{$promedio6Meses}}</b></h6> --}}
-        @if ( !fechaIgualMesActual($listaPromedioCemento[0]->fecha))
-        <hr>
-        <h6><b class="text-danger mt-2">Aún no se han encargado los precios del cemento del mes actual!.</b></h6>
+        @if (count($listaPromedioCemento) > 0)
+            @if (!fechaIgualMesActual($listaPromedioCemento[0]->fecha))
+            <hr>
+            <h6><b class="text-danger mt-2">Aún no se han encargado los precios del cemento del mes actual!.</b></h6>
+            @endif
         @endif
     </div>
 
