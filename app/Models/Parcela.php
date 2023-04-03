@@ -63,8 +63,13 @@ class Parcela extends Model
         $preciosPorActualizar = DetalleVenta::whereHas('venta', function($query) {
             $query->where('pagado', '=', 'no')
                   ->whereColumn('id_parcela', '=', 'ventas.id_parcela')
-                  ->where('fecha_actualizacion_precio', '<', getFechaActualizacion())->where('fecha_actualizacion','=',null);
+                  ->where('fecha_actualizacion_precio', '<', getFechaActualizacion())
+                  ->where('id_parcela', '=', $this->id_parcela)
+                  ->where('fecha_actualizacion','=',null);
         })->get();
+
+        // dd(getFechaActualizacion());
+        // dd($preciosPorActualizar);
         
         //Devuelve el total de los precios ya actualizados.   
 
@@ -84,7 +89,9 @@ class Parcela extends Model
         //Fecha de actualizacion de los precios de las cuotas.
         $fechaActualizacionPrecio = Carbon::parse($idVenta[0]?->fecha_actualizacion_precio)->format('Y-m');
 
+        // dd($fechaActualizacionPrecio, getFechaActual());
 
+            // dd(((getFechaActual() > $fechaActualizacionPrecio) && ($totalCuotas != $idVenta[0]->cuotas) && (count($preciosPorActualizar) == 0)));
             //Debe retornar TRUE para que aparezca el boton de "Actualizar Precios".
             return 
             ((getFechaActual() > $fechaActualizacionPrecio) && ($totalCuotas != $idVenta[0]->cuotas) && (count($preciosPorActualizar) == 0));

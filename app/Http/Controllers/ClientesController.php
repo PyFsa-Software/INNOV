@@ -220,6 +220,7 @@ class ClientesController extends Controller
 
     public function actualizarPrecios(Request $request, Parcela $parcela)
     {
+        // dd($request->all());
         $venta = $request->venta;
         $ultimaCuota = $request->ultimaCuota;
 

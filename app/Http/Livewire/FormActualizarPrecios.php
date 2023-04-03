@@ -22,7 +22,7 @@ class FormActualizarPrecios extends Component
     public $isDisabled = true;
 
     protected $rules = [
-        'promedioCementoNuevo' => 'required|numeric|min:1',
+        'totalAbonarProximosMeses' => 'required|numeric|min:1',
     ];
 
     public function updated($propertyName)
@@ -61,18 +61,18 @@ class FormActualizarPrecios extends Component
 
             $this->venta->save();
 
+            // dd($this->ultimaCuota);
             $numeroCuota = $this->ultimaCuota->numero_cuota;
 
             //Validacion de Plan de cuota Personalizado
 
             $totalCuotas = DetalleVenta::where('id_venta','=',$this->venta->id_venta)->count('id_detalle_venta');
 
-           
-
             $planCuota =  $this->venta->cuotas; 
             
             $restoCuotas = $planCuota - $totalCuotas;
 
+            // dd($restoCuotas, $numeroCuota);
             if ($restoCuotas < 6) {
 
                 for ($i = 1; $i <= $restoCuotas; $i++) {

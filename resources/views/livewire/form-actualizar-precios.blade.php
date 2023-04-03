@@ -44,13 +44,16 @@
     </div>
 
 
-    <div class="form-group">
+    {{-- <div class="form-group">
         <label for="promedioCementoNuevo">Promedio Cemento Nuevo: </label>
         <input type="number" class="form-control" name="promedioCementoNuevo" id="promedioCementoNuevo"
             placeholder="Ingrese el promedio del cemento para calcular la actualización"
             wire:model="promedioCementoNuevo" wire:keyup.debounce.500ms="calcularActualizacion">
-    </div>
+    </div> --}}
     <div class="form-group">
+        @if (count($listaPromedioCemento) == 0)
+                  <div class="alert alert-danger">No existen precios de cementos</div>  
+        @else
         <table class="table table-responsive">
             <thead>
                 <tr>
@@ -62,6 +65,7 @@
                 </tr>
             </thead>
             <tbody>
+            
                 @foreach ($listaPromedioCemento as $promedioCemento)
 
                 <tr>
@@ -75,6 +79,7 @@
 
             </tbody>
         </table>
+
         <br>
         <h6 class="text-success"><b>Promedio de 6 meses: {{$promedio6Meses}}</b></h6>
         @if ( !fechaIgualMesActual($listaPromedioCemento[0]->fecha))
@@ -82,11 +87,12 @@
         <h6><b class="text-danger mt-2">Aún no se han encargado los precios del cemento del mes actual!.</b></h6>
         @endif
     </div>
+    @endif
 
     <div class="form-group">
         <label for="totalAbonarProximosMeses">Total Abonar Proximo 6 Meses: </label>
         <input type="text" class="form-control" name="totalAbonarProximosMeses" id="totalAbonarProximosMeses"
-            value="{{$totalAbonarProximosMeses}}" disabled>
+            value="{{$totalAbonarProximosMeses}}" wire:model="totalAbonarProximosMeses" >
     </div>
     <div wire:loading>
         Calculando abono..
@@ -94,7 +100,7 @@
 
 
     <button class="btn btn-primary mr-2 mb-2 form-control" type="button" {{$isDisabled ? 'disabled' : '' }}
-        data-toggle="modal" data-target="#actualizarPrecios">Actualizar Precios</button>
+        data-toggle="modal" data-target="#actualizarPrecios">Generar Cuotas</button>
 
     <a href="{{ route('clientes.estado', $venta->id_cliente) }}" class="btn btn-danger form-control">Cancelar</a>
     <x-alertas />
@@ -106,7 +112,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="actualizarPreciosLabel">¿Realizar la actualización de esta venta?</h5>
+                    <h5 class="modal-title" id="actualizarPreciosLabel">¿Generar las cuotas de esta venta?</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true close-btn">×</span>
                     </button>

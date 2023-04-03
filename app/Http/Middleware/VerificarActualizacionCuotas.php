@@ -31,18 +31,17 @@ class VerificarActualizacionCuotas
             
 
             $ultimaCuota = DetalleVenta::where('id_venta', $venta->id_venta)
-                ->orderBy('fecha_maxima_a_pagar', 'desc')->first();
-
+                ->orderBy('numero_cuota', 'desc')
+                ->first();
 
                 // dd($ultimaCuota->fecha_maxima_a_pagar);
 
-                $fechaActualSistema = Carbon::now();
+            $fechaActualSistema = Carbon::now();
 
+            $fechaActualizacionPrecio = Carbon::parse($venta->fecha_actualizacion_precio);
 
-                $fechaActualizacionPrecio = Carbon::parse($venta->fecha_actualizacion_precio);
-
-                $mesAnioActualizacion = $fechaActualizacionPrecio->format('Y-m');
-                $mesAnioActual  = $fechaActualSistema->format('Y-m');
+            $mesAnioActualizacion = $fechaActualizacionPrecio->format('Y-m');
+            $mesAnioActual  = $fechaActualSistema->format('Y-m');
 
             // $limiteActualizarCuota = $fechaInicioPago->diffInMonths($fechaActualSistema);           
             
