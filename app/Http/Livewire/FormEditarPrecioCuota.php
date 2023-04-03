@@ -20,11 +20,11 @@ class FormEditarPrecioCuota extends Component
     public $promedioCementoNuevo;
     public $listaPromedioCemento;
     public $promedio6Meses;
-    public $totalAbonarProximosMeses;
+    public $precioNuevoCuota;
     public $isDisabled = true;
 
     protected $rules = [
-        'promedioCementoNuevo' => 'required|numeric|min:1',
+        'precioNuevoCuota' => 'required|numeric|min:1',
     ];
 
     public function updated($propertyName)
@@ -32,9 +32,6 @@ class FormEditarPrecioCuota extends Component
         $this->isDisabled = true;
         $this->validateOnly($propertyName);
         $this->isDisabled = false;
-
-        
-
     }
     public function mount()
     {
@@ -44,7 +41,7 @@ class FormEditarPrecioCuota extends Component
             ->each(function ($promedioFila) {
                 $this->promedio6Meses += $promedioFila->precio_promedio;
             });
-        $this->promedio6Meses = $this->promedio6Meses / 6;
+        $this->promedio6Meses = (int) $this->promedio6Meses / 6;
 
         $parcela = Venta::where('id_venta',$this->cuota->id_venta)->value('id_parcela');
 
@@ -54,14 +51,17 @@ class FormEditarPrecioCuota extends Component
  
     }
 
-    public function calcularActualizacion()
-    {
-        $this->validate();
+    // public function calcularActualizacion()
+    // {
+    //     $this->validate();
 
-        $cuotaMensualBolsasCemento = Venta::where('id_venta',$this->cuota->id_venta)->value('cuota_mensual_bolsas_cemento');
+    //     $cuotaMensualBolsasCemento = Venta::where('id_venta',$this->cuota->id_venta)->value('cuota_mensual_bolsas_cemento');
 
-        $this->totalAbonarProximosMeses =  $cuotaMensualBolsasCemento * $this->promedioCementoNuevo;
-    }
+    //     dd($cuotaMensualBolsasCemento);
+
+    //     (int) $this->totalAbonarProximosMeses =  (int) 8 * (int) intval($this->promedioCementoNuevo);
+    // }
+
 
     public function submit()
     {
@@ -70,9 +70,7 @@ class FormEditarPrecioCuota extends Component
         try {
             DB::beginTransaction();
 
-           
-
-            $this->cuota->total_estimado_a_pagar = $this->totalAbonarProximosMeses;
+            $this->cuota->total_estimado_a_pagar = $this->precioNuevoCuota;
 
             $this->cuota->fecha_actualizacion = Carbon::now()->format('Y-m');
 
@@ -86,7 +84,7 @@ class FormEditarPrecioCuota extends Component
 
             DB::rollback();
 
-            // dd($e->getMessage());
+            dd($e->getMessage());
             return redirect()->route('clientes.estadoCuotas', $this->idParcela)->with('error', 'Error al realizar la modificacion del precio de la cuota, contacte con al administrador.');
         }
     }

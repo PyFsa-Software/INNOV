@@ -2,20 +2,25 @@
 
 <form class="forms-sample" wire:submit.prevent="submit">
     @csrf
-    @method('PUT')
+    {{-- @method('PUT') --}}
     <div class="form-group">
         <label for="precio">Precio Actual de Cuota</label>
         <input type="text" class="form-control" name="precio" id="precio"
             placeholder="Ingrese el Nuevo Precio" autofocus
             value="{{old('precio', $cuota->total_estimado_a_pagar)}}" disabled>
-    </div>
-
-    <div class="form-group">
+        </div>
+        
+        <div class="form-group">
+            <label for="precioNuevoCuota">Precio Nuevo de Cuota  </label>
+            <input type="number" class="form-control" name="precioNuevoCuota" id="precioNuevoCuota"
+                value="{{$precioNuevoCuota}}" wire:model="precioNuevoCuota">
+        </div>
+    {{-- <div class="form-group">
         <label for="promedioCementoNuevo">Promedio Cemento Nuevo: </label>
         <input type="number" class="form-control" name="promedioCementoNuevo" id="promedioCementoNuevo"
             placeholder="Ingrese el promedio del cemento para calcular la actualización"
             wire:model="promedioCementoNuevo" wire:keyup.debounce.500ms="calcularActualizacion">
-    </div>
+    </div> --}}
     <div class="form-group">
         <table class="table table-responsive">
             <thead>
@@ -49,16 +54,16 @@
             <h6><b class="text-danger mt-2">Aún no se han encargado los precios del cemento del mes actual!.</b></h6>
             @endif
         @endif
+        @if (count($listaPromedioCemento) === 0)
+        <h6><b class="text-danger mt-2">Aún no se han encargado los precios del cemento.</b></h6>
+            
+        @endif
     </div>
 
-    <div class="form-group">
-        <label for="totalAbonarProximosMeses">Precio Nuevo de Cuota  </label>
-        <input type="text" class="form-control" name="totalAbonarProximosMeses" id="totalAbonarProximosMeses"
-            value="{{$totalAbonarProximosMeses}}" disabled>
-    </div>
     <div wire:loading>
         Calculando abono..
     </div>
+    <x-alertas/>
 
     <button type="submit" class="btn btn-primary mr-2 mb-2 form-control">Guardar</button>
     <a href="{{route('clientes.estadoCuotas', $idParcela)}}" class="btn btn-danger form-control">Cancelar</a>
