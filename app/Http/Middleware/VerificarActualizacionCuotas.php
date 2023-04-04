@@ -31,7 +31,7 @@ class VerificarActualizacionCuotas
             
 
             $ultimaCuota = DetalleVenta::where('id_venta', $venta->id_venta)
-                ->orderBy('numero_cuota', 'desc')
+                ->orderByRaw("CAST(numero_cuota AS UNSIGNED) DESC")
                 ->first();
 
                 // dd($ultimaCuota->fecha_maxima_a_pagar);
