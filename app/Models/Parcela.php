@@ -161,6 +161,7 @@ class Parcela extends Model
             $preciosPorActualizar = DetalleVenta::whereHas('venta', function($query) {
                 $query->where('pagado', '=', 'no')
                       ->whereColumn('id_parcela', '=', 'ventas.id_parcela')
+                      ->where('id_parcela', '=', $this->id_parcela)
                       ->where('fecha_actualizacion_precio', '<', getFechaActualizacion())->where('fecha_actualizacion','=',null);
             })->get();
 
