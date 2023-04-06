@@ -13,6 +13,8 @@ use App\Http\Middleware\VerificarCuotaVolantePago;
 use App\Http\Middleware\VerificarCuotaAnteriorPagada;
 use App\Models\Parcela;
 use App\Models\Persona;
+use App\Models\DetalleVenta;
+use App\Models\Venta;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['guest'])->group(function () {
@@ -37,7 +39,55 @@ Route::middleware(['auth'])->group(function () {
             ->where('activo', '=', '1')
             ->count();
 
-        return view('dashboard.dashboard', compact('totalParcelas', 'totalParcelasVendidas', 'totalParcelasDisponibles', 'totalClientes'));
+            $clientesCuotasVencidas = DetalleVenta::where('fecha_maxima_a_pagar', '<', date('Y-m-d'))
+            ->with(['venta' => function ($query) {
+                $query->with('cliente');
+            }])
+            ->where('pagado', '!=', 'si')
+            ->get()
+            ->groupBy(function ($detalleVenta) {
+                return $detalleVenta->venta->cliente->id_persona;
+            })
+            ->map(function ($item) {
+              return $item->unique('id_persona');
+            });
+
+            // $clientesGenerarCuotas = 
+                // $clientes = DetalleVenta::with(['venta' => function ($query) {
+                //     $query->with('cliente');
+                // }])
+                // ->get()
+                // ->groupBy(function ($detalleVenta) {
+                //     return $detalleVenta->venta->cliente->id_persona;
+                // })
+                // ->filter(function ($detalleVenta) {
+                //     $cuotasGeneradas = $detalleVenta->count('id_detalle_venta');
+                //     $cuotasPagadas = $detalleVenta->count('pagado','si');
+                   
+                //     return $cuotasGeneradas != $cuotasPagadas;
+                // })
+                // ->map(function ($item) {
+                //     return $item->unique('id_persona');
+                //   });
+            // $clientesNuevasCuotas = DetalleVenta::
+            // ->select('id_venta', DB::raw('COUNT(*) as cuotas_pagadas'))
+            // ->where('pagado', 'si')
+            // ->groupBy('id_venta')
+            // ->havingRaw('COUNT(*) != (SELECT COUNT(*) FROM detalle_ventas WHERE id_venta = ventas.id_venta)')
+            // ->with(['venta'])
+            // ->get();
+
+            
+            // dd($clientes);
+            
+            
+            
+            
+
+             
+            // dd($cuotasVencidas);
+
+        return view('dashboard.dashboard', compact('totalParcelas', 'totalParcelasVendidas', 'totalParcelasDisponibles', 'totalClientes','clientesCuotasVencidas'));
 
     })->name('inicio');
 
@@ -111,7 +161,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('clientes/cuotas/{parcela}', 'estadoCuotas')->name('clientes.estadoCuotas');
 
-        Route::get('clientes/cobrar/{cuota}', 'cobrarCuotas')->name('clientes.cobrarCuota')->middleware([VerificarCuotaNoPagada::class]);
+        Route::get('clientes/cobrar/{cuota}', 'cobrarCuotas')->name('clientes.cobrarCuota')->middleware([VerificarCuotaAnteriorPagada::class]);
 
 
         Route::get('clientes/editar-precio/{cuota}', 'editarPrecioCuota')->name('clientes.editarPrecioCuota');

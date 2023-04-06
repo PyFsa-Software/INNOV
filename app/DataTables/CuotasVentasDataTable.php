@@ -54,7 +54,7 @@ class CuotasVentasDataTable extends DataTable
                 // if ((!!$data->fecha_maxima_a_pagar < date('Y-m-d') && $data->pagado === 'no') && $data->actualizarCuotas) {
                 //     return "-";
                 // }
-                return "<a href='" . route('clientes.cobrarCuota', $data->id_detalle_venta) . "' class='btn btn-warning btn-sm'><i class='ti-ticket'></i></a>";
+                return "<a href='" . route('clientes.cobrarCuota', [$data->id_detalle_venta, $data->id_venta]) . "' class='btn btn-warning btn-sm'><i class='ti-ticket'></i></a>";
             })
             ->editColumn('fecha_maxima_a_pagar', function ($data) {
                 try {

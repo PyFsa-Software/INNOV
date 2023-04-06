@@ -22,10 +22,6 @@ class VerificarCuotaNoPagada
             return $next($request);
         }
 
-
-      
-
-
         return redirect()->route('clientes.estadoCuotas', $request?->cuota?->idParcela)->with('error', 'La cuota seleccionada ya esta pagada!');
 
     }

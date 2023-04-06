@@ -4,48 +4,98 @@
 
 @section('contenido')
 
-<!-- partial -->
-<div class="main-panel">
-    <div class="content-wrapper">
+    <!-- partial -->
+    <div class="main-panel">
+        <div class="content-wrapper">
 
-        <div class="row">
-            <div class="col-md-12 grid-margin transparent">
-                <div class="row">
-                    <div class="col-md-6 mb-4 stretch-card transparent">
-                        <div class="card card-tale">
-                            <div class="card-body">
-                                <p class="mb-4">TOTAL PARCELAS</p>
-                                <p class="fs-30 mb-2">{{$totalParcelas}}</p>
+
+
+            <div class="row">
+                <div class="col-md-12 grid-margin transparent">
+                    <div class="row">
+                        <div class="col-md-6 mb-4 stretch-card transparent">
+                            <div class="card bg-gradient-dark">
+                                <div class="card-body">
+                                    <p class="mb-4">TOTAL PARCELAS</p>
+                                    <p class="fs-30 mb-2">{{ $totalParcelas }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4 stretch-card transparent">
+                            <div class="card bg-gradient-primary">
+                                <div class="card-body">
+                                    <p class="mb-4">PARCELAS VENDIDAS</p>
+                                    <p class="fs-30 mb-2">{{ $totalParcelasVendidas }}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-4 stretch-card transparent">
-                        <div class="card card-dark-blue">
-                            <div class="card-body">
-                                <p class="mb-4">PARCELAS VENDIDAS</p>
-                                <p class="fs-30 mb-2">{{$totalParcelasVendidas}}</p>
+                    <div class="row">
+                        <div class="col-md-6 mb-4  stretch-card transparent">
+                            <div class="card bg-gradient-info">
+                                <div class="card-body">
+                                    <p class="mb-4">PARCELAS DISPONIBLES</p>
+                                    <p class="fs-30 mb-2">{{ $totalParcelasDisponibles }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4 stretch-card transparent">
+                            <div class="card bg-gradient-danger">
+                                <div class="card-body">
+                                    <p class="mb-4">TOTAL CLIENTES</p>
+                                    <p class="fs-30 mb-2">{{ $totalClientes }}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-4 stretch-card transparent">
+                            <div class="card bg-gradient-warning btn" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                <div class="card-body">
+                                    <p class="mb-4">CLIENTES CON CUOTAS VENCIDAS</p>
+                                    <p class="fs-30 mb-2">{{ count($clientesCuotasVencidas) }}</p>
+                                </div>
+                                <div class="collapse" id="collapseExample"">
+                                        <div class="card-body justify-content-end">
+                                    @foreach ($clientesCuotasVencidas as $item)
+
+                                            @foreach ($item as $persona)
+                                                <a class="dropdown-item"
+                                                    href="{{route('clientes.estado', $persona->venta->cliente->id_persona)}}">{{ $persona->venta->cliente->nombre }}
+                                                    {{ $persona->venta->cliente->apellido }}</a>
+                                            @endforeach
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- <div class="col-md-6 mb-4 stretch-card transparent">
+                        <div class="card bg-gradient-success">
+                            <div class="card-body">
+                                <p class="mb-4">CLIENTES A LOS QUE SE DEBE ACTUALIZAR SUS CUOTAS</p>
+                                <p class="fs-30 mb-2">{{ $totalClientes }}</p>
+                            </div>
+                        </div>
+                    </div> --}}
                 </div>
-                <div class="row">
-                    <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
-                        <div class="card card-light-blue">
+                {{-- <div class="row">
+                    <div class="col-md-6 mb-4 stretch-card transparent">
+                        <div class="card bg-gradient-info">
                             <div class="card-body">
-                                <p class="mb-4">PARCELAS DISPONIBLES</p>
-                                <p class="fs-30 mb-2">{{$totalParcelasDisponibles}}</p>
+                                <p class="mb-4">CLIENTES A LOS QUE SE DEBE GENERAR CUOTAS</p>
+                                <p class="fs-30 mb-2">{{ $totalClientes }}</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 stretch-card transparent">
-                        <div class="card card-light-danger">
+                    <div class="col-md-6 mb-4 stretch-card transparent">
+                        <div class="card bg-gradient-secondary">
                             <div class="card-body">
-                                <p class="mb-4">TOTAL CLIENTES</p>
-                                <p class="fs-30 mb-2">{{$totalClientes}}</p>
+                                <p class="mb-4">CLIENTES CON CUOTAS DESACTUALIZADAS</p>
+                                <p class="fs-30 mb-2">{{ $totalClientes }}</p>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
@@ -78,7 +128,7 @@
         </div>
     </footer> --}}
 
-</div>
+    </div>
 
 
 @endsection
