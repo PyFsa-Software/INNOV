@@ -51,8 +51,8 @@ class FormCobrarCuotas extends Component
     {
         $this->validate();
 
-        $this->incrementoInteres = $this->totalEstimadoAbonar * ($this->totalIntereses / 100);
-        $this->totalAbonar = $this->incrementoInteres + $this->totalEstimadoAbonar;
+        // $this->incrementoInteres = $this->totalEstimadoAbonar * ($this->totalIntereses / 100);
+        $this->totalAbonar = $this->totalIntereses + $this->totalEstimadoAbonar;
     }
 
     public function submit()

@@ -32,11 +32,11 @@
             wire:keyup='calcularAbono'>
     </div>
 
-    <div class="form-group">
+    {{-- <div class="form-group">
         <label for="incrementoInteres">Incremento: </label>
         <input type="number" class="form-control" name="incrementoInteres" id="incrementoInteres"
             value="{{old('incrementoInteres', $incrementoInteres)}}" wire:model="incrementoInteres" disabled>
-    </div>
+    </div> --}}
 
     <div class="form-group">
         <label for="total_pago">Total a Abonar: </label>

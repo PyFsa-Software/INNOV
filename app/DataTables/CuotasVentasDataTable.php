@@ -67,7 +67,7 @@ class CuotasVentasDataTable extends DataTable
                 }
             })
             ->addColumn('editar', function ($data) {
-                return $data->actualizarCuotas ? "<a href='" . route('clientes.editarPrecioCuota', $data->id_detalle_venta) . "' class='btn btn-warning btn-sm'>Editar</a>" : "-";
+                return  $data->pagado == 'no' ? "<a href='" . route('clientes.editarPrecioCuota', $data->id_detalle_venta) . "' class='btn btn-warning btn-sm'>Editar</a>" : '-';
             })
             ->addColumn('volantePago', function ($data) {
                 return $data->verificarCuotaPagada ? "<a href='" . route('clientes.volantePago', $data->id_detalle_venta) . "' class='btn btn-info btn-sm' target='_blank'><i class='ti-download'></i></a>" : "-";

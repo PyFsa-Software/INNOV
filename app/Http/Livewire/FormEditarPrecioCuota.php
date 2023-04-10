@@ -72,7 +72,10 @@ class FormEditarPrecioCuota extends Component
 
             $this->cuota->total_estimado_a_pagar = $this->precioNuevoCuota;
 
-            $this->cuota->fecha_actualizacion = Carbon::now()->format('Y-m');
+            if ($this->cuota->actualizarCuotas) {
+                
+                 $this->cuota->fecha_actualizacion = Carbon::now()->format('Y-m');
+            }
 
             $this->cuota->save();
 
