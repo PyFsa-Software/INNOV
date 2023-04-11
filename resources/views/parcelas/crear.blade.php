@@ -22,7 +22,7 @@
 
             <x-alertas />
 
-            <form class="forms-sample" method="POST" action="{{route('createWork')}}">
+            <form class="forms-sample" method="POST" action="{{route('parcelas.crear')}}">
                 @csrf
                 <div class="form-group">
                     <label for="descripcion_parcela">Descripción</label>
