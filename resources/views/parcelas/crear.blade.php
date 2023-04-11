@@ -36,7 +36,7 @@
                 </div>
                 <div class="form-group">
                     <label for="manzana">Manzana</label>
-                    <input type="number" class="form-control" name="manzana" id="manzana"
+                    <input type="text" class="form-control" name="manzana" id="manzana"
                         placeholder="Ingrese la manzana" value="{{old('manzana')}}">
                 </div>
                 <div class="form-group">
