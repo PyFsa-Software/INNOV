@@ -27,7 +27,7 @@ class StoreParcelasRequest extends FormRequest
         return [
             'descripcion_parcela' => 'required|unique:parcelas,descripcion_parcela,' . $this->parcela?->id_parcela . ',id_parcela',
             'superficie_parcela' => 'required|numeric',
-            'manzana' => 'required|numeric',
+            'manzana' => 'required',
             'cantidad_bolsas' => 'required|numeric',
             'ancho' => 'required|numeric',
             'largo' => 'required|numeric',
