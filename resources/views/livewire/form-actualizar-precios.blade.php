@@ -5,22 +5,22 @@
     <div class="form-group">
         <label for="descripcion_parcela">Descripción Parcela: </label>
         <input type="text" class="form-control" name="descripcion_parcela" id="descripcion_parcela"
-            value="{{old('descripcion_parcela', $parcela->descripcion_parcela)}}" disabled>
+            value="{{old('descripcion_parcela', $parcela?->descripcion_parcela)}}" disabled>
     </div>
     <div class="form-group">
         <label for="superficie_parcela">Superficie Parcela (M^2): </label>
         <input type="text" class="form-control" name="superficie_parcela" id="superficie_parcela"
-            value="{{old('superficie_parcela', $parcela->superficie_parcela)}}" disabled>
+            value="{{old('superficie_parcela', $parcela?->superficie_parcela)}}" disabled>
     </div>
     <div class="form-group">
         <label for="cantidad_bolsas">Cantidad Bolsas Cemento: </label>
         <input type="text" class="form-control" name="cantidad_bolsas" id="cantidad_bolsas"
-            value="{{old('cantidad_bolsas', $parcela->cantidad_bolsas)}}" disabled>
+            value="{{old('cantidad_bolsas', $parcela?->cantidad_bolsas)}}" disabled>
     </div>
     <div class="form-group">
         <label for="manzana">Manzana: </label>
         <input type="text" class="form-control" name="manzana" id="manzana"
-            value="{{old('manzana', $parcela->manzana)}}" disabled>
+            value="{{old('manzana', $parcela?->manzana)}}" disabled>
     </div>
     <div class="form-group">
         <label for="cuotas">Total Cuotas: </label>
@@ -30,17 +30,17 @@
     <div class="form-group">
         <label for="precio_total_terreno">Precio Total Terreno: </label>
         <input type="text" class="form-control" name="precio_total_terreno" id="precio_total_terreno"
-            value="{{old('precio_total_terreno', $venta->precio_total_terreno)}}" disabled>
+            value="{{old('precio_total_terreno', $venta?->precio_total_terreno)}}" disabled>
     </div>
     <div class="form-group">
         <label for="cuota_mensual_bolsas_cemento">Cuota Mensual Bolsa Cemento: </label>
         <input type="text" class="form-control" name="cuota_mensual_bolsas_cemento" id="cuota_mensual_bolsas_cemento"
-            value="{{old('cuota_mensual_bolsas_cemento', $venta->cuota_mensual_bolsas_cemento)}}" disabled>
+            value="{{old('cuota_mensual_bolsas_cemento', $venta?->cuota_mensual_bolsas_cemento)}}" disabled>
     </div>
     <div class="form-group">
         <label for="totalAbonadoMensual">Total Abonado Mensual: </label>
         <input type="text" class="form-control" name="totalAbonadoMensual" id="totalAbonadoMensual"
-            value="{{old('totalAbonadoMensual', $ultimaCuota->total_estimado_a_pagar)}}" disabled>
+            value="{{old('totalAbonadoMensual', $ultimaCuota?->total_estimado_a_pagar)}}" disabled>
     </div>
 
 
@@ -82,7 +82,7 @@
 
         <br>
         <h6 class="text-success"><b>Promedio de 6 meses: {{$promedio6Meses}}</b></h6>
-        @if ( !fechaIgualMesActual($listaPromedioCemento[0]->fecha))
+        @if ( !fechaIgualMesActual($listaPromedioCemento[0]?->fecha))
         <hr>
         <h6><b class="text-danger mt-2">Aún no se han encargado los precios del cemento del mes actual!.</b></h6>
         @endif
@@ -102,7 +102,7 @@
     <button class="btn btn-primary mr-2 mb-2 form-control" type="button" {{$isDisabled ? 'disabled' : '' }}
         data-toggle="modal" data-target="#actualizarPrecios">Generar Cuotas</button>
 
-    <a href="{{ route('clientes.estado', $venta->id_cliente) }}" class="btn btn-danger form-control">Cancelar</a>
+    <a href="{{ route('clientes.estado', $venta?->id_cliente) }}" class="btn btn-danger form-control">Cancelar</a>
     <x-alertas />
 
 
