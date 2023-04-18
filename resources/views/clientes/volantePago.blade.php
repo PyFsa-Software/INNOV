@@ -27,7 +27,7 @@
             padding-top: 15px;  
         }
         .fecha {
-            font-size: 15px;
+            font-size: 13px;
             float: right;
             padding-right: 10px;
         }
@@ -45,31 +45,32 @@
             width: 100px;
         }
         .nombre-empresa {
-            font-size: 15px;
+            font-size: 13px;
             text-align: center;
         }
         .info-empresa {
             text-align: center;
-            font-size: 12px;
+            font-size: 13px;
         }
         .nombre {
-            font-size: 17px;
+            font-size: 13px;
             display: inline-block;
             text-align: left;
-            padding-right: 120px;
+            padding-right: 200px;
             padding-left: 22px;
             padding-bottom: 5px;
         }
 
         .telefono {
-            font-size: 17px;
+            font-size: 13px;
             display: inline-block;
+            padding-left: 22px;
             text-align: left;
             padding-bottom: 5px;
         }
 
         .dni {
-            font-size: 17px;
+            font-size: 13px;
             display: inline-block;
             text-align: left;
             padding-right: 175px;
@@ -78,7 +79,7 @@
         }
 
         .domicilio {
-            font-size: 17px;
+            font-size: 13px;
             display: inline-block;
             text-align: left;   
             padding-right: 175px;
@@ -87,7 +88,7 @@
         }
 
         .pago {
-            font-size: 17px;
+            font-size: 13px;
             display: inline-block;
             text-align: left;
             padding-left: 22px;
@@ -95,7 +96,7 @@
         }
 
         .importe-total {
-            font-size: 17px;
+            font-size: 13px;
             display: inline-block;
             text-align: left;
             padding-left: 22px;
@@ -104,24 +105,24 @@
 
         .info-parcela {
 
-            font-size: 17px;
+            font-size: 13px;
             display: inline-block;
             text-align: left;
-            padding-left: 22px;
+            padding-left: 20px;
             padding-bottom: 5px;
         }
         .info-loteo {
 
-            font-size: 17px;
+            font-size: 13px;
             display: inline-block;
             text-align: left;
             padding-left: 22px;
-            padding-right: 165px;
+            padding-right: 195px;
             padding-bottom: 5px;
         }
 
         .firma {
-            font-size: 17px;
+            font-size: 13px;
             text-align: right;
             padding-right: 20px;
             padding-bottom: 10px;
@@ -160,6 +161,7 @@
                 <div class="nombre">
                         <small>Sr/Sra: </small><b>{{ $cliente->nombre }} {{ $cliente->apellido }}.</b>
                     </div>
+                    <br>
                     <div class="telefono">
                         <small>Telefono: </small> <b>{{ $cliente->celular }}.</b>
                     </div>
