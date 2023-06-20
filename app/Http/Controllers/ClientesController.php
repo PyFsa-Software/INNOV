@@ -226,6 +226,12 @@ class ClientesController extends Controller
 
         return view('clientes.actualizarPrecios', compact('venta', 'parcela', 'ultimaCuota'));
     }
+
+    public function cobrarTodo()
+    {
+        return view('clientes.cobrarTodo');
+    }
+
     public function generarCuotas(Request $request, Parcela $parcela)
     {
         $venta = $request->venta;

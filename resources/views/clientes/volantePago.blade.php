@@ -16,7 +16,7 @@
 
         main {
             font-family: 'Arial', sans-serif;
-            margin-top: 0%;
+            margin-top: -20px;
             border-color: black;
             border-style: solid;
             border-radius: 2%;
@@ -140,13 +140,12 @@
 <body>
 
 
-
     <main>
         <div class="fecha">
             <div class="content-fecha" width="150">
-                <small>N°: <b>{{ $cuota->numero_recibo }}</b></small>
+                <small>N°: <b>1717</b></small>
                 <br>
-                <small>Fecha: <b>{{ date('d-m-Y', strtotime($cuota->fecha_pago)) }}</b></small>
+                <small>Fecha: <b>12-05-2023</b></small>
             </div>
         </div>
         <div class="contenido">
@@ -181,7 +180,7 @@
                 </div>
                 <br>
                 <div class="pago">
-                    <small>Recibí(mos) la suma de: </small><b>{{ convertDigitsToWord($cuota->total_pago) }} pesos.</b>
+                    <small>Recibí(mos) la suma de: </small><b> DOS MILLONES NOVECIENTOS VEINTICINCO MIL pesos.</b>
                 </div>
                 <br>
                 <div class="info-loteo">
@@ -202,14 +201,14 @@
                 </div>
                 <br>
                 <div class="info-parcela">
-                    <small>Cuota N°: </small><b>{{ $cuota->numero_cuota }}.</b>
+                    <small>Cuota N°: </small><b>10-160 CANCELACIÓN.</b>
                 </div>
                 <div class="info-parcela">
                     <small>Plan: </small><b>{{ $venta->cuotas }} Cuota/s.</b>
                 </div>
             </div>
             <div class="importe-total">
-                <small>Importe Total: </small><b>$ {{ number_format($cuota->total_pago, 2, ',', '.') }}</b>
+                <small>Importe Total: </small><b>$ 2.925.000</b>
             </div>
             <br>
             <div class="firma">
