@@ -23,25 +23,25 @@
             <form class="forms-sample" method="POST" action="{{route('clientes.guardar')}}">
                 @csrf
                 <div class="form-group">
-                    <label for="nombre">Nombre Cliente</label>
+                    <label for="nombre">Nombre Cliente<span class="text-danger">*</span></label>
                     <input type="text" class="form-control" name="nombre" id="nombre"
                         placeholder="Ingrese el nombre del cliente" autofocus value="{{old('nombre')}}">
                 </div>
 
                 <div class="form-group">
-                    <label for="apellido">Apellido Cliente</label>
+                    <label for="apellido">Apellido Cliente<span class="text-danger">*</span></label>
                     <input type="text" class="form-control" name="apellido" id="apellido"
                         placeholder="Ingrese el apellido del cliente" value="{{old('apellido')}}">
                 </div>
 
                 <div class="form-group">
-                    <label for="dni">Dni Cliente</label>
+                    <label for="dni">Dni Cliente<span class="text-danger">*</span></label>
                     <input type="text" class="form-control" name="dni" id="dni" placeholder="Ingrese el dni del cliente"
                         value="{{old('dni')}}">
                 </div>
 
                 <div class="form-group">
-                    <label for="domicilio">Domicilio Cliente</label>
+                    <label for="domicilio">Domicilio Cliente<span class="text-danger">*</span></label>
                     <input type="text" class="form-control" name="domicilio" id="domicilio"
                         placeholder="Ingrese el domicilio del cliente" value="{{old('domicilio')}}">
                 </div>

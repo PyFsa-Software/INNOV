@@ -37,22 +37,22 @@
                 </div>
                 <div class="form-group">
                     <label for="manzana">Manzana</label>
-                    <input type="number" class="form-control" name="manzana" id="manzana"
+                    <input type="text" class="form-control" name="manzana" id="manzana"
                         placeholder="Ingrese la manzana" value="{{old('manzana', $parcela->manzana)}}">
                 </div>
                 <div class="form-group">
                     <label for="cantidad_bolsas">Cantidad de Bolsas de Cemento</label>
-                    <input type="number" class="form-control" name="cantidad_bolsas" id="cantidad_bolsas"
+                    <input type="text" class="form-control" name="cantidad_bolsas" id="cantidad_bolsas"
                         placeholder="Ingrese la Cantidad" value="{{old('cantidad_bolsas', $parcela->cantidad_bolsas)}}">
                 </div>
                 <div class="form-group">
                     <label for="ancho">Ancho</label>
-                    <input type="number" class="form-control" name="ancho" id="ancho" placeholder="Ingrese el ancho"
+                    <input type="text" class="form-control" name="ancho" id="ancho" placeholder="Ingrese el ancho"
                         value="{{old('ancho', $parcela->ancho)}}">
                 </div>
                 <div class="form-group">
                     <label for="largo">Largo</label>
-                    <input type="number" class="form-control" name="largo" id="largo" placeholder="Ingrese el largo"
+                    <input type="text" class="form-control" name="largo" id="largo" placeholder="Ingrese el largo"
                         value="{{old('largo', $parcela->largo)}}">
                 </div>
                 <div class="form-group">

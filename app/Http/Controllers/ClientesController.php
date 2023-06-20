@@ -45,10 +45,18 @@ class ClientesController extends Controller
     public function store(StoreClientesRequest $request)
     {
         // dd($request->all());
+
+        $dataPersona = $request->all();
+
+        $dataPersona["celular"] = $dataPersona["celular"] != "" ? $dataPersona["celular"] : "";
+        $dataPersona["correo"] = $dataPersona["correo"] != "" ? $dataPersona["correo"] : "";
+        // dd($dataPersona);
+
         try {
-            Persona::create($request->all());
+            Persona::create($dataPersona);
             return back()->with('success', 'Cliente creado correctamente!');
         } catch (\Throwable$th) {
+            dd($th);
             return back()->with('error', 'Error al crear al registrar el cliente!');
 
         }
@@ -87,7 +95,11 @@ class ClientesController extends Controller
     public function update(StoreClientesRequest $request, Persona $persona)
     {
         try {
-            $persona->update($request->all());
+            $dataPersona = $request->all();
+
+            $dataPersona["celular"] = $dataPersona["celular"] != "" ? $dataPersona["celular"] : "";
+            $dataPersona["correo"] = $dataPersona["correo"] != "" ? $dataPersona["correo"] : "";
+            $persona->update($dataPersona);
             return back()->with('success', 'Cliente editado correctamente!');
         } catch (\Throwable$th) {
             return back()->with('error', 'Error al actualizar los datos del cliente!');

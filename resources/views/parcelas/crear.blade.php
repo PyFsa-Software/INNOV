@@ -31,7 +31,7 @@
                 </div>
                 <div class="form-group">
                     <label for="superficie_parcela">Superficie</label>
-                    <input type="number" class="form-control" name="superficie_parcela" id="superficie_parcela"
+                    <input type="text" class="form-control" name="superficie_parcela" id="superficie_parcela"
                         placeholder="Ingrese la superficie" value="{{old('superficie_parcela')}}">
                 </div>
                 <div class="form-group">
@@ -41,17 +41,17 @@
                 </div>
                 <div class="form-group">
                     <label for="cantidad_bolsas">Cantidad de Bolsas de Cemento</label>
-                    <input type="number" class="form-control" name="cantidad_bolsas" id="cantidad_bolsas"
+                    <input type="text" class="form-control" name="cantidad_bolsas" id="cantidad_bolsas"
                         placeholder="Ingrese la Cantidad" value="{{old('cantidad_bolsas')}}">
                 </div>
                 <div class="form-group">
                     <label for="ancho">Ancho</label>
-                    <input type="number" class="form-control" name="ancho" id="ancho" placeholder="Ingrese el ancho"
+                    <input type="text" class="form-control" name="ancho" id="ancho" placeholder="Ingrese el ancho"
                         value="{{old('ancho')}}">
                 </div>
                 <div class="form-group">
                     <label for="largo">Largo</label>
-                    <input type="number" class="form-control" name="largo" id="largo" placeholder="Ingrese el largo"
+                    <input type="text" class="form-control" name="largo" id="largo" placeholder="Ingrese el largo"
                         value="{{old('largo')}}">
                 </div>
                 <div class="form-group">
