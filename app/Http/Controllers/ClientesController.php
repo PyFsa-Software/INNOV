@@ -169,32 +169,22 @@ class ClientesController extends Controller
         $venta = Venta::select('id_venta', 'id_cliente')->where('id_parcela', '=', $idParcela)->first();
 
         $idCliente = $venta->id_cliente;
-        return $dataTable->with('idVenta', $venta->id_venta)->render('clientes.cuotasVentas', compact('idCliente'));
+        return $dataTable->with('idVenta', $venta->id_venta)->render('clientes.cuotasVentas', compact('idCliente', 'idParcela'));
     }
-    public function cobrarCuotas(DetalleVenta $cuota, Venta $venta)
-    {
-        
-        $idVenta = venta::all()->where('id_venta','=',$cuota->id_venta);
-        // $venta = $idVenta[1];
-
-        // dd($venta);// 
-     
-        return view('clientes.cobrarCuotas', compact('cuota'));
-    }
-
+    
     public function editarPrecioCuota(DetalleVenta $cuota)
     {
-
+        
         // dd($cuota);
         return view('clientes.editarPrecioCuota', compact('cuota'));
     }
-
+    
     public function updatePrecioCuota(StoreClientesRequest $request, DetalleVenta $cuota)
     {
 
         try {
 
-
+            
             $cuota->update($request->all());
             return back()->with('success', 'Precio Actualizado correctamente!');
         } catch (\Throwable$th) {
@@ -239,9 +229,30 @@ class ClientesController extends Controller
         return view('clientes.actualizarPrecios', compact('venta', 'parcela', 'ultimaCuota'));
     }
 
-    public function cobrarTodo()
+    public function cobrarCuotas(DetalleVenta $cuota, Venta $venta)
     {
-        return view('clientes.cobrarTodo');
+        
+        $idVenta = venta::all()->where('id_venta','=',$cuota->id_venta);
+        // $venta = $idVenta[1];
+
+        // dd($venta);// 
+     
+        return view('clientes.cobrarCuotas', compact('cuota'));
+    }
+
+    public function cobrarTodo($idParcela)
+    {
+
+
+        $venta = Venta::where('id_parcela', $idParcela)->first();
+
+        $cantidadCuotasGeneradas = DetalleVenta::where('id_venta', $venta->id_venta)->count();
+
+        $cantidadCuotasPagadas = DetalleVenta::where('id_venta', $venta->id_venta)->where('pagado','si')->count();
+
+        
+
+        return view('clientes.cobrarTodo', compact('venta', 'cantidadCuotasGeneradas', 'cantidadCuotasPagadas'));
     }
 
     public function generarCuotas(Request $request, Parcela $parcela)

@@ -13,8 +13,7 @@
                 <h1 class="text-center"><i class="fa fa-desktop fa-lg"></i> Listado Cuotas
                 </h1>
                 <a href="{{ route('clientes.estado', $idCliente) }}" class="btn btn-warning mb-2">Volver Atrás</a>
-                <a href="{{ route('clientes.cobrarTodo', $idCliente) }}" class="btn btn-success mb-2">Pagar Todo <i
-                        class='ti-ticket'></i></a>
+                <a href="{{ route('clientes.cobrarTodo', $idParcela) }}" class="btn btn-success mb-2">Pago Multiple </a>
                 <x-alertas />
                 <p class="text-center"><b style="color: red;">DD-MM-AAAA</b> Cuota Vencida <b>|</b>
                     🟥 Debe Actualizar el Precio de la Cuota</p>
