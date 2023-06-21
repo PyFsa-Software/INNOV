@@ -180,7 +180,7 @@
                 </div>
                 <br>
                 <div class="pago">
-                    <small>Recibí(mos) la suma de: </small><b> DOS MILLONES NOVECIENTOS VEINTICINCO MIL pesos.</b>
+                    <small>Recibí(mos) la suma de: </small><b>{{ convertDigitsToWord($cuota->total_pago) }} pesos.</b>
                 </div>
                 <br>
                 <div class="info-loteo">
@@ -201,14 +201,14 @@
                 </div>
                 <br>
                 <div class="info-parcela">
-                    <small>Cuota N°: </small><b>10-160 CANCELACIÓN.</b>
+                    <small>Cuota N°: </small><b>{{ $cuota->numero_cuota }}</b>
                 </div>
                 <div class="info-parcela">
                     <small>Plan: </small><b>{{ $venta->cuotas }} Cuota/s.</b>
                 </div>
             </div>
             <div class="importe-total">
-                <small>Importe Total: </small><b>$ 2.925.000</b>
+                <small>Importe Total: </small><b>$ {{ number_format($cuota->total_pago, 2, ',', '.') }}</b>
             </div>
             <br>
             <div class="firma">
