@@ -2,12 +2,10 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\DetalleVenta;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
-use App\Models\DetalleVenta;
-use Illuminate\Http\Request;
-
 
 class FormCobrarCuotas extends Component
 {
@@ -60,83 +58,70 @@ class FormCobrarCuotas extends Component
 
         $this->validate();
 
-      
-
         try {
 
-            //  
+            //
 
-             $numeroRecibo = DetalleVenta::where('numero_recibo','!=',null)->orderBy('numero_recibo','desc')->value('numero_recibo');
+            $numeroRecibo = DetalleVenta::where('numero_recibo', '!=', null)->orderBy('numero_recibo', 'desc')->value('numero_recibo');
 
-             
             // dd($numeroRecibo);
 
             DB::beginTransaction();
 
-
-            
             $fechaMaximaPagar = Carbon::create($this->cuota->fecha_maxima_a_pagar)->format('Y-m');
-            
 
-           if ($fechaMaximaPagar == getFechaActual() || $fechaMaximaPagar < getFechaActual() ) {
-            $this->cuota->total_intereses = $this->totalIntereses;
-            $this->cuota->total_pago = $this->totalAbonar;
-            $this->cuota->fecha_pago = date('Y-m-d');
-            $this->cuota->pagado = 'si';
-            $this->cuota->numero_recibo = $numeroRecibo === null ? 1500 : $numeroRecibo + 1;
+            if ($fechaMaximaPagar == getFechaActual() || $fechaMaximaPagar < getFechaActual()) {
+                $this->cuota->total_intereses = $this->totalIntereses;
+                $this->cuota->total_pago = $this->totalAbonar;
+                $this->cuota->fecha_pago = date('Y-m-d');
+                $this->cuota->pagado = 'si';
+                $this->cuota->numero_recibo = $numeroRecibo === null ? 1500 : $numeroRecibo + 1;
 
-            $this->cuota->save();
-            
-           }elseif($fechaMaximaPagar > getFechaActual()){
+                $this->cuota->save();
 
+            } elseif ($fechaMaximaPagar > getFechaActual()) {
 
-            $diferenciaDeMeses = Carbon::create($this->cuota->fecha_maxima_a_pagar)->diffInMonths(getFechaActual());
+                $diferenciaDeMeses = Carbon::create($this->cuota->fecha_maxima_a_pagar)->diffInMonths(getFechaActual());
 
-            // dd($diferenciaDeMeses);
+                // dd($diferenciaDeMeses);
 
+                $this->cuota->fecha_maxima_a_pagar = Carbon::create($this->cuota->fecha_maxima_a_pagar)->subMonth($diferenciaDeMeses)->format('Y-m') . '-21';
+                $this->cuota->total_intereses = $this->totalIntereses;
+                $this->cuota->total_pago = $this->totalAbonar;
+                $this->cuota->fecha_pago = date('Y-m-d');
+                $this->cuota->pagado = 'si';
+                $this->cuota->numero_recibo = $numeroRecibo === null ? 1500 : $numeroRecibo + 1;
 
-            $this->cuota->fecha_maxima_a_pagar = Carbon::create($this->cuota->fecha_maxima_a_pagar)->subMonth($diferenciaDeMeses)->format('Y-m') . '-21';
-            $this->cuota->total_intereses = $this->totalIntereses;
-            $this->cuota->total_pago = $this->totalAbonar;
-            $this->cuota->fecha_pago = date('Y-m-d');
-            $this->cuota->pagado = 'si';
-            $this->cuota->numero_recibo = $numeroRecibo === null ? 1500 : $numeroRecibo + 1;
+                $cuotaPagada = $this->cuota->save();
 
-            $cuotaPagada = $this->cuota->save();
+                DB::commit();
+                // dd($this->cuota);
 
+                $cuotasPosterioresPagar = DetalleVenta::where('id_venta', $this->cuota->id_venta)->where('pagado', 'no')->orderByRaw("CAST(numero_cuota AS UNSIGNED) ASC")->get();
 
-            DB::commit();
-            // dd($this->cuota);
-            
-            $cuotasPosterioresPagar = DetalleVenta::where('id_venta',$this->cuota->id_venta)->where('pagado','no')->orderByRaw("CAST(numero_cuota AS UNSIGNED) ASC")->get();
+                $cuotasPosterioresPagar->reduce(function ($fecha, $cuotasSinPagar) {
 
-            
-            $cuotasPosterioresPagar->reduce(function ($fecha, $cuotasSinPagar) {
-               
-                
-                $proximaFecha = Carbon::create($fecha)->addMonth(1)->format('Y-m') . '-21';
+                    $proximaFecha = Carbon::create($fecha)->addMonth(1)->format('Y-m') . '-21';
 
-                $cuotasSinPagar->fecha_maxima_a_pagar = $proximaFecha;
-                
-                $cuotasSinPagar->save();
+                    $cuotasSinPagar->fecha_maxima_a_pagar = $proximaFecha;
 
-                return $proximaFecha;
-                
-            },$this->cuota->fecha_maxima_a_pagar );
-   
-        
-           }
-        
+                    $cuotasSinPagar->save();
+
+                    return $proximaFecha;
+
+                }, $this->cuota->fecha_maxima_a_pagar);
+
+            }
 
             DB::commit();
 
             return redirect()->route('clientes.estadoCuotas', $this->cuota->idParcela)->with('success', "Cuota guardada exitosamente <a href=" . route('clientes.volantePago', $this->cuota->id_detalle_venta) . " target='_blank'>Haga click aqui </a>para descargar el volante de pago."
             );
-        } catch (\Throwable$e) {
+        } catch (\Throwable $e) {
 
+            // dd($e);
             DB::rollback();
 
-            // dd($e->getMessage());
             return redirect()->route('clientes.estadoCuotas', $this->cuota->idParcela)->with('error', 'Error al pagar la cuota, contacte al Administrador!');
         }
 

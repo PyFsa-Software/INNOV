@@ -67,7 +67,29 @@ class FormGenerarCuotas extends Component
 
             // $this->venta->save();
 
+
+            
+
+
             $numeroCuota = $this?->ultimaCuota?->numero_cuota;
+
+            if ($numeroCuota == null) {
+                $numeroCuota = 0;
+
+                for ($i = 0; $i <= 6; $i++) {
+                    $numeroCuota++;
+                    DetalleVenta::create([
+                        'numero_cuota' => $numeroCuota,
+                        'fecha_maxima_a_pagar' => Carbon::now()->addMonth($i)->format('Y-m') . '-21',
+                        'total_estimado_a_pagar' => $this->totalAbonarProximosMeses,
+                        'id_venta' => $this->venta->id_venta,
+                    ]);
+                }
+
+                DB::commit();
+                return redirect()->route('clientes.estado', $this->venta->id_cliente)->with('success', "Actualización de cuotas para los proximos 6 meses guardado correctamente."
+                );
+            }
 
             //Validacion de Plan de cuota Personalizado
 
@@ -114,7 +136,7 @@ class FormGenerarCuotas extends Component
 
             DB::rollback();
 
-            // dd($e->getMessage());
+            dd($e->getMessage());
             return redirect()->route('clientes.estado', $this->venta->id_cliente)->with('error', 'Error al realizar la actualización de cuotas para los proximos 6 meses, contacte con al administrador.');
         }
 
