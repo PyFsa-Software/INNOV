@@ -143,9 +143,9 @@
     <main>
         <div class="fecha">
             <div class="content-fecha" width="150">
-                <small>N°: <b>1717</b></small>
+                <small>N°: <b>{{ $cuota->numero_recibo }}</b></small>
                 <br>
-                <small>Fecha: <b>12-05-2023</b></small>
+                <small>Fecha: <b>{{ date('d-m-Y', strtotime($cuota->fecha_pago)) }}</b></small>
             </div>
         </div>
         <div class="contenido">
