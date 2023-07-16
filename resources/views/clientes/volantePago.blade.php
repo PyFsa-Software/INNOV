@@ -16,7 +16,7 @@
 
         main {
             font-family: 'Arial', sans-serif;
-            margin-top: 0%;
+            margin-top: -20px;
             border-color: black;
             border-style: solid;
             border-radius: 2%;
@@ -140,7 +140,6 @@
 <body>
 
 
-
     <main>
         <div class="fecha">
             <div class="content-fecha" width="150">
@@ -206,7 +205,7 @@
                 </div>
                 <br>
                 <div class="info-parcela">
-                    <small>Cuota N°: </small><b>{{ $cuota->numero_cuota }}.</b>
+                    <small>Cuota N°: </small><b>{{ $cuota->numero_cuota }}</b>
                 </div>
                 <div class="info-parcela">
                     <small>Plan: </small><b>{{ $venta->cuotas }} Cuota/s.</b>

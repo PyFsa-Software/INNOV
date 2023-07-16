@@ -164,6 +164,8 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('clientes/cobrar/{cuota}', 'cobrarCuotas')->name('clientes.cobrarCuota')->middleware([VerificarCuotaAnteriorPagada::class]);
 
+        Route::get('clientes/cobrar-todo', 'cobrarTodo')->name('clientes.cobrarTodo');
+
 
         Route::get('clientes/editar-precio/{cuota}', 'editarPrecioCuota')->name('clientes.editarPrecioCuota');
         Route::put('clientes/editar-precio/{cuota}', 'updatePrecioCuota')->name('clientes.modificarPrecioCuota');

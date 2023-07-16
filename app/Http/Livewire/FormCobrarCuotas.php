@@ -127,9 +127,9 @@ class FormCobrarCuotas extends Component
             );
         } catch (\Throwable $e) {
 
+            // dd($e);
             DB::rollback();
 
-            // dd($e->getMessage());
             return redirect()->route('clientes.estadoCuotas', $this->cuota->idParcela)->with('error', 'Error al pagar la cuota, contacte al Administrador!');
         }
 
