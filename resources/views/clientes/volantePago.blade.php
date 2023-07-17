@@ -10,7 +10,7 @@
 
 
     <style>
-        ​ body {
+        body {
             margin: 0;
         }
 
@@ -44,7 +44,7 @@
         .content-empresa {
             text-align: left;
             padding-left: 17px;
-            width: 100px;
+            width: 120px;
         }
 
         .nombre-empresa {
@@ -147,9 +147,9 @@
                 <br>
                 <small>Fecha: <b>{{ date('d-m-Y', strtotime($cuota->fecha_pago)) }}</b></small>
                 <br>
-                <small>Teléfono:</small>
+                <small>3704-712224</small>
                 <br>
-                <small>Dirección:</small>
+                <small>España 101,Galería Orquin, local 10 P.B</small>
             </div>
         </div>
         <div class="contenido">
@@ -161,7 +161,7 @@
                 <div class="info-empresa">
                     <small class="nombre-empresa"><b> INNOV S.R.L </b></small>
                     <br>
-                    <small>CUIT: 30-71226835-9</small>
+                    <small>CUIT: 30-71804836-9</small>
                 </div>
             </div>
             <br>

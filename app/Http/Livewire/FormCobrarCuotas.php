@@ -2,11 +2,9 @@
 
 namespace App\Http\Livewire;
 
-use App\Enums\FormasPago;
 use App\Models\DetalleVenta;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rule;
 use Livewire\Component;
 
 class FormCobrarCuotas extends Component
@@ -32,7 +30,7 @@ class FormCobrarCuotas extends Component
     {
         return [
             'totalIntereses' => 'required|numeric|min:0',
-            'formaPago' => ['required', Rule::in(array_values(FormasPago::toArray()))],
+            'formaPago' => 'required',
         ];
     }
 
