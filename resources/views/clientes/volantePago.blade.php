@@ -10,7 +10,7 @@
 
 
     <style>
-        ​ body {
+        body {
             margin: 0;
         }
 
@@ -44,7 +44,7 @@
         .content-empresa {
             text-align: left;
             padding-left: 17px;
-            width: 100px;
+            width: 120px;
         }
 
         .nombre-empresa {
@@ -146,6 +146,10 @@
                 <small>N°: <b>{{ $cuota->numero_recibo }}</b></small>
                 <br>
                 <small>Fecha: <b>{{ date('d-m-Y', strtotime($cuota->fecha_pago)) }}</b></small>
+                <br>
+                <small>3704-712224</small>
+                <br>
+                <small>España 101,Galería Orquin, local 10 P.B</small>
             </div>
         </div>
         <div class="contenido">
@@ -157,7 +161,7 @@
                 <div class="info-empresa">
                     <small class="nombre-empresa"><b> INNOV S.R.L </b></small>
                     <br>
-                    <small>CUIT: 30-71226835-9</small>
+                    <small>CUIT: 30-71804836-9</small>
                 </div>
             </div>
             <br>
@@ -166,10 +170,10 @@
                 <div class="nombre">
                     <small>Sr/Sra: </small><b>{{ $cliente->nombre }} {{ $cliente->apellido }}.</b>
                 </div>
-                <br>
+                {{-- <br>
                 <div class="telefono">
                     <small>Telefono: </small> <b>{{ $cliente->celular }}.</b>
-                </div>
+                </div> --}}
                 <br>
                 <div class="dni">
                     <small>Dni: </small> <b>{{ $cliente->dni }}.</b>
@@ -180,7 +184,7 @@
                 </div>
                 <br>
                 <div class="pago">
-                    <small>Recibí(mos) la suma de: </small><b>{{ convertDigitsToWord($cuota->total_pago) }} pesos.</b>
+                    <small>Recibí(mos) la suma de: </small><b>PESOS {{ convertDigitsToWord($cuota->total_pago) }}.</b>
                 </div>
                 <br>
                 <div class="info-loteo">
@@ -206,9 +210,17 @@
                 <div class="info-parcela">
                     <small>Plan: </small><b>{{ $venta->cuotas }} Cuota/s.</b>
                 </div>
+                <br>
+                <div class="info-parcela">
+                    <small>Forma de Pago: </small><b>{{ $cuota->forma_pago ?? '-' }}.</b>
+                </div>
             </div>
             <div class="importe-total">
-                <small>Importe Total: </small><b>$ {{ number_format($cuota->total_pago, 2, ',', '.') }}</b>
+                <small>Importe Total: </small><b>$ {{ number_format($cuota->total_pago, 2, ',', '.') }}.</b>
+            </div>
+            <br>
+            <div class="importe-total">
+                <small>Concepto de: ..............................</b>
             </div>
             <br>
             <div class="firma">
@@ -216,7 +228,7 @@
             </div>
         </div>
     </main>
-    {{-- 
+    {{--
     <main>
         <div class="fecha">
             <div class="content-fecha" width="150">

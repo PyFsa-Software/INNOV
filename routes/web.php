@@ -6,6 +6,7 @@ use App\Http\Controllers\LotesController;
 use App\Http\Controllers\ParcelasController;
 use App\Http\Controllers\PreciosController;
 use App\Http\Controllers\ReportesController;
+use App\Http\Controllers\VentasCanceladasController;
 use App\Http\Controllers\VentasController;
 use App\Http\Middleware\VerificarActualizacionCuotas;
 use App\Http\Middleware\VerificarCuotaNoPagada;
@@ -186,5 +187,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('reportes/planilla', 'planilla')->name('reportes.planilla');
         Route::post('reportes/planilla', 'exportarPlanilla')->name('reportes.exportarPlanilla');
     });
+
+    // ROUTE FOR VENTAS CANCELADAS
+    Route::controller(VentasCanceladasController::class)->group(function () {
+        Route::get('ventas-canceladas/listado', 'index')->name('ventasCanceladas.index');
+        Route::get('ventas-canceladas/volante/{venta}', 'imprimirVolanteCancelacion')->name('ventasCanceladas.imprimirVolanteCancelacion');
+    });
+
 
 });

@@ -10,22 +10,32 @@ use Livewire\Component;
 class FormCobrarCuotas extends Component
 {
     public $cuota;
+    public $formasDePagos;
     public $venta;
     public $diferenciasDias = 0;
     public $totalIntereses;
     public $totalEstimadoAbonar = 0;
     public $incrementoInteres = 0;
     public $totalAbonar = 0;
+    public $formaPago = "";
     public $isDisabled = true;
     // public $pagado = false;
 
-    protected $rules = [
-        'totalIntereses' => 'required|numeric|min:0',
-    ];
+    // protected $rules = [
+    //     'totalIntereses' => 'required|numeric|min:0',
+    //     'formasDePagos' => 'required',
+    // ];
+
+    public function rules()
+    {
+        return [
+            'totalIntereses' => 'required|numeric|min:0',
+            'formaPago' => 'required',
+        ];
+    }
 
     public function mount()
     {
-
         $this->totalEstimadoAbonar = (int) $this->cuota->total_estimado_a_pagar;
 
         $result = Carbon::createFromFormat('Y-m-d', $this->cuota->fecha_maxima_a_pagar)->isPast();
@@ -39,10 +49,12 @@ class FormCobrarCuotas extends Component
 
     public function updated($propertyName)
     {
-        $this->isDisabled = true;
-        $this->validateOnly($propertyName);
-        $this->isDisabled = false;
-
+        try {
+            $this->validateOnly($propertyName);
+            $this->isDisabled = false;
+        } catch (\Throwable $e) {
+            $this->isDisabled = true;
+        }
     }
 
     public function calcularAbono()
@@ -55,16 +67,9 @@ class FormCobrarCuotas extends Component
 
     public function submit()
     {
-
         $this->validate();
-
         try {
-
-            //
-
             $numeroRecibo = DetalleVenta::where('numero_recibo', '!=', null)->orderBy('numero_recibo', 'desc')->value('numero_recibo');
-
-            // dd($numeroRecibo);
 
             DB::beginTransaction();
 
@@ -91,6 +96,7 @@ class FormCobrarCuotas extends Component
                 $this->cuota->fecha_pago = date('Y-m-d');
                 $this->cuota->pagado = 'si';
                 $this->cuota->numero_recibo = $numeroRecibo === null ? 1500 : $numeroRecibo + 1;
+                $this->cuota->forma_pago = $this->formaPago;
 
                 $cuotaPagada = $this->cuota->save();
 

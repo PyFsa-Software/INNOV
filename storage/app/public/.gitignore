@@ -1,2 +1,8 @@
-*
-!.gitignore
+!/.gitignore
+!/img/logoInnova.jpg
+
+# Ignorar todo en la raíz, excepto los archivos anteriores
+/*
+
+# Excepto las carpetas que deseas incluir
+!/img
