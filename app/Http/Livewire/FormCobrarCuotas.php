@@ -98,6 +98,8 @@ class FormCobrarCuotas extends Component
                 $this->cuota->numero_recibo = $numeroRecibo === null ? 1500 : $numeroRecibo + 1;
                 $this->cuota->forma_pago = $this->formaPago;
 
+                dd($this->cuota);
+
                 $cuotaPagada = $this->cuota->save();
 
                 DB::commit();
