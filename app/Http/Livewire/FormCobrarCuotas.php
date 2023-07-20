@@ -30,7 +30,7 @@ class FormCobrarCuotas extends Component
     {
         return [
             'totalIntereses' => 'required|numeric|min:0',
-            'formaPago' => 'required',
+            'forma_pago' => 'required',
         ];
     }
 
