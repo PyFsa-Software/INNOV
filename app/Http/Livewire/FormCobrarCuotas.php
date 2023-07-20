@@ -17,7 +17,7 @@ class FormCobrarCuotas extends Component
     public $totalEstimadoAbonar = 0;
     public $incrementoInteres = 0;
     public $totalAbonar = 0;
-    public $forma_pago = "";
+    public $formaPago = "";
     public $isDisabled = true;
     // public $pagado = false;
 
@@ -30,7 +30,7 @@ class FormCobrarCuotas extends Component
     {
         return [
             'totalIntereses' => 'required|numeric|min:0',
-            'forma_pago' => 'required',
+            'formaPago' => 'required',
         ];
     }
 
@@ -96,9 +96,8 @@ class FormCobrarCuotas extends Component
                 $this->cuota->fecha_pago = date('Y-m-d');
                 $this->cuota->pagado = 'si';
                 $this->cuota->numero_recibo = $numeroRecibo === null ? 1500 : $numeroRecibo + 1;
-                $this->cuota->forma_pago = $this->forma_pago;
+                $this->cuota->forma_pago = $this->formaPago;
 
-                dd($this->forma_pago);
 
                 $cuotaPagada = $this->cuota->save();
 

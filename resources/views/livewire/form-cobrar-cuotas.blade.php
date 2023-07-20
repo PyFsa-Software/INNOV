@@ -27,8 +27,8 @@
 
     <div class="form-group">
         <label for="total_abonado">Formas de Pago: </label>
-        <select class="form-control" name="forma_pago" id="forma_pago">
-            <option value="0" selected disabled>Seleccione una forma de pago</option>
+        <select class="form-control" name="forma_pago" id="forma_pago" wire:model="formaPago">
+            <option value="" selected disabled>Seleccione una forma de pago</option>
             @foreach ($formasDePagos as $key => $value)
                 <option value="{{ $key }}">{{ $value }}</option>
             @endforeach
