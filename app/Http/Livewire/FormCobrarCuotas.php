@@ -81,6 +81,8 @@ class FormCobrarCuotas extends Component
                 $this->cuota->fecha_pago = date('Y-m-d');
                 $this->cuota->pagado = 'si';
                 $this->cuota->numero_recibo = $numeroRecibo === null ? 1500 : $numeroRecibo + 1;
+                $this->cuota->forma_pago = $this->formaPago;
+
 
                 $this->cuota->save();
 
