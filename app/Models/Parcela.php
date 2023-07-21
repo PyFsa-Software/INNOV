@@ -121,10 +121,8 @@ class Parcela extends Model
 
             //Debe retornar TRUE para que aparezca el boton de "Generar nuevas Cuotas".
 
-            dd((($cuotasPagadas === $totalCuotas) && ($fechaActualizacionPrecio > getFechaActual() && $totalCuotas != $idVenta[0]->cuotas)));
-
             return 
-            (($cuotasPagadas === $totalCuotas) && ($fechaActualizacionPrecio > getFechaActual() && $totalCuotas != $idVenta[0]->cuotas));
+            (($cuotasPagadas === $totalCuotas) && ($fechaActualizacionPrecio >= getFechaActual() && $totalCuotas != $idVenta[0]->cuotas));
 
     }
 
