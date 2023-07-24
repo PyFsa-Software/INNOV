@@ -3,7 +3,7 @@
 <div class="alert alert-danger mt-2">
     <ul>
         @foreach ($errors->all() as $error)
-        <li>{{ $error }}</li>
+        <li>{!! $error !!}</li>
         @endforeach
     </ul>
 </div>

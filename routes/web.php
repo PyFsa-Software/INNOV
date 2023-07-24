@@ -116,12 +116,16 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('parcelas/crear', 'CrearParcelaView')->name('parcelas.crear');
         Route::post('parcelas/crear', 'CrearParcela')->name('parcelas.guardar');
-
+        
         Route::get('parcelas/editar/{parcela}', 'EditarParcelaView')->name('parcelas.editar');
         Route::put('parcelas/editar/{parcela}', 'EditarParcela')->name('parcelas.modificar');
 
         Route::get('parcelas/eliminar/{parcela}', 'EliminarParcelaView')->name('parcelas.borrar');
         Route::delete('parcelas/eliminar/{parcela}', 'EliminarParcela')->name('parcelas.eliminar');
+        
+        
+        Route::get('parcelas/crear-multiple', 'CrearParcelasMultiplesView')->name('parcelas.crearParcelasMultiples');
+        // Route::post('parcelas/crear-multiple', 'CrearParcela')->name('parcelas.guardar');
 
     });
 
