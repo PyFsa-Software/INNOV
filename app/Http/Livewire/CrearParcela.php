@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use App\Models\Parcela;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 
@@ -15,6 +14,8 @@ class CrearParcela extends Component
     public $idLote = "0";
     public $cantidadParcelas;
     public $manzana;
+    public $ancho;
+    public $largo;
     public $inputs = [];
     public $isDisabled = true;
 
@@ -40,7 +41,7 @@ class CrearParcela extends Component
         'idLote.exists' => 'El campo Lote seleccionado no existe.',
         'manzana.required' => 'El campo Manzana es obligatorio.',
         'manzana.string' => 'El campo Manzana debe ser una cadena de caracteres.',
-        'manza.regex' => 'El campo Manzana debe ser una letra mayúscula.',
+        'manzana.regex' => 'El campo Manzana debe ser una letra mayúscula.',
         'manzana.unique' => 'El campo Manzana ya existe en el lote seleccionado.',
         'inputs.*.descripcion_parcela.required' => 'El campo Descripción de Parcela es obligatorio.',
         'inputs.*.descripcion_parcela.string' => 'El campo Descripción de Parcela debe ser una cadena de caracteres.',
@@ -66,7 +67,7 @@ class CrearParcela extends Component
             'manzana' => [
                 'required',
                 'string',
-                'regex:/^[A-Z]+$/',
+                'regex:/^[A-Z0-9]+$/',
                 Rule::unique('parcelas')->where(function ($query) {
                     return $query->where('id_lote', $this->idLote);
                 }),
@@ -76,6 +77,8 @@ class CrearParcela extends Component
                 'string',
                 'unique:parcelas,descripcion_parcela',
             ],
+            'ancho' => 'required|numeric|min:1',
+            'largo' => 'required|numeric|min:1',
             'inputs.*.superficie_parcela' => 'required|numeric|min:0',
             'inputs.*.cantidad_bolsas' => 'required|numeric|min:0',
             'inputs.*.ancho' => 'required|numeric|min:0',
@@ -99,6 +102,7 @@ class CrearParcela extends Component
                     $this->addError($field, $message);
                 }
             }
+            return;
         }
     }
 
@@ -109,32 +113,50 @@ class CrearParcela extends Component
         for ($i = 1; $i <= $this->cantidadParcelas; $i++) {
             $inputs[] = [
                 'numero_parcela' => $this->inputs[$i - 1]['numero_parcela'] ?? $i,
-                'descripcion_parcela' => $this->inputs[$i - 1]['descripcion_parcela'] ?? ' Parcela ' . $i,
-                'superficie_parcela' => $this->inputs[$i - 1]['superficie_parcela'] ?? '',
+                'descripcion_parcela' => $this->inputs[$i - 1]['descripcion_parcela'] ?? ' Parcela ' . $i . '-Manzana ' . $this->manzana,
+                'superficie_parcela' => $this->inputs[$i - 1]['superficie_parcela'] ?? intval($this->ancho) * intval($this->largo),
                 'manzana' => $this->manzana,
                 'cantidad_bolsas' => $this->inputs[$i - 1]['cantidad_bolsas'] ?? '',
-                'ancho' => $this->inputs[$i - 1]['ancho'] ?? '',
-                'largo' => $this->inputs[$i - 1]['largo'] ?? '',
+                'ancho' => $this->inputs[$i - 1]['ancho'] ?? intval($this->ancho),
+                'largo' => $this->inputs[$i - 1]['largo'] ?? intval($this->largo),
             ];
         }
-
         $this->inputs = $inputs;
     }
 
     public function updatedManzana()
     {
         $this->generarInputs();
+        for($i = 0; $i < count($this->inputs); $i++){
+            $this->inputs[$i]['descripcion_parcela'] = ' Parcela ' . $this->inputs[$i]['numero_parcela'] . '-Manzana ' . $this->manzana;
+        }
     }
 
     public function updatedCantidadParcelas()
     {
-        // $this->validate();
         $this->generarInputs();
     }
     public function updatedInputs()
     {
         $this->validateInputs();
     }
+
+    public function updatedAncho()
+    {
+        foreach ($this->inputs as $key => $input) {
+            $this->inputs[$key]['ancho'] = intval($this->ancho);
+            $this->inputs[$key]['superficie_parcela'] = intval($this->ancho) * intval($this->largo);
+        }
+    }
+
+    public function updatedLargo()
+    {
+        foreach ($this->inputs as $key => $input) {
+            $this->inputs[$key]['largo'] = intval($this->largo);
+            $this->inputs[$key]['superficie_parcela'] = intval($this->ancho) * intval($this->largo);
+        }
+    }
+
 
     public function validateInputs()
     {

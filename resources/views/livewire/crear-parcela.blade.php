@@ -16,7 +16,7 @@
     <div class="form-group">
         <label for="manzana">Manzana</label>
         <input type="text" class="form-control" name="manzana" id="manzana" placeholder="Ingrese la manzana"
-            value="{{old('manzana')}}" wire:model.debounce.500ms="manzana" wire:model.uppercase>
+            value="{{old('manzana')}}" wire:model.debounce.500ms="manzana" autocomplete="off">
         @error('manzana')
         <div class="text-danger"><b>{{ $message }}</b></div>
         @enderror
@@ -27,6 +27,25 @@
             placeholder="Ingrese las cantidades de parcelas a generar" value="{{old('cantidad_parcelas')}}"
             wire:model.debounce.1000ms="cantidadParcelas">
         @error('cantidadParcelas')
+        <div class="text-danger"><b>{{ $message }}</b></div>
+        @enderror
+    </div>
+
+    {{-- add ancho and largo --}}
+    <div class="form-group">
+        <label for="ancho">Ancho</label>
+        <input type="nummber" class="form-control" name="ancho" id="ancho" placeholder="Ingrese el ancho"
+            value="{{old('ancho')}}" wire:model.debounce.500ms="ancho">
+        @error('ancho')
+        <div class="text-danger"><b>{{ $message }}</b></div>
+        @enderror
+    </div>
+
+    <div class="form-group">
+        <label for="largo">Largo</label>
+        <input type="nummber" class="form-control" name="largo" id="largo" placeholder="Ingrese el largo"
+            value="{{old('largo')}}" wire:model.debounce.500ms="largo">
+        @error('largo')
         <div class="text-danger"><b>{{ $message }}</b></div>
         @enderror
     </div>
@@ -55,15 +74,6 @@
                 wire:model="inputs.{{ $index }}.descripcion_parcela" placeholder="Ingrese una descripción">
             @error('inputs.'.$index.'.descripcion_parcela')
             <div class="text-red-500">{{ $message }}</div>
-            @enderror
-        </div>
-        <div class="form-group">
-            <label for="superficie_parcela_{{ $index }}" class="control-label">Superficie de la parcela:</label>
-            <input type="text" id="superficie_parcela_{{ $index }}" name="superficie_parcela[]"
-                class="form-control @error('inputs.'.$index.'.superficie_parcela') is-invalid @enderror"
-                wire:model="inputs.{{ $index }}.superficie_parcela" placeholder="Ingrese la superficie">
-            @error('inputs.'.$index.'.superficie_parcela')
-            <div class="text-danger"><b>{{ $message }}</b></div>
             @enderror
         </div>
         <div class="form-group">
@@ -99,6 +109,15 @@
                 class="form-control @error('inputs.'.$index.'.largo') is-invalid @enderror"
                 wire:model="inputs.{{ $index }}.largo" placeholder="Ingrese el largo">
             @error('inputs.'.$index.'.largo')
+            <div class="text-danger"><b>{{ $message }}</b></div>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="superficie_parcela_{{ $index }}" class="control-label">Superficie de la parcela:</label>
+            <input type="text" id="superficie_parcela_{{ $index }}" name="superficie_parcela[]"
+                class="form-control @error('inputs.'.$index.'.superficie_parcela') is-invalid @enderror"
+                wire:model="inputs.{{ $index }}.superficie_parcela" placeholder="Ingrese la superficie">
+            @error('inputs.'.$index.'.superficie_parcela')
             <div class="text-danger"><b>{{ $message }}</b></div>
             @enderror
         </div>
