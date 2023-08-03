@@ -28,6 +28,7 @@
                 {{ $parcela->descripcion_parcela }}
                 (Lote: {{ $parcela->lote->nombre_lote }})
                 (Bolsas Cemento: {{ $parcela->cantidad_bolsas }})
+                (Manzana: {{ $parcela->manzana }})
             </option>
             @endforeach
         </select>
