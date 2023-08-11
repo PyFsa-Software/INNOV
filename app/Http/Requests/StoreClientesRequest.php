@@ -26,7 +26,7 @@ class StoreClientesRequest extends FormRequest
         return [
             'nombre' => 'required|max:100',
             'apellido' => 'required|max:100',
-            'dni' => 'required|numeric|digits:8|unique:personas,dni,' . $this->persona?->id_persona . ',id_persona',
+            'dni' => 'required|unique:personas,dni,' . $this->persona?->id_persona . ',id_persona',
             'domicilio' => 'required|max:150|unique:personas,domicilio,' . $this->persona?->id_persona . ',id_persona',
             'celular' => 'nullable|numeric|digits:10|unique:personas,celular,' . $this->persona?->id_persona . ',id_persona',
             'correo' => 'nullable|email|unique:personas,correo,' . $this->persona?->id_persona . ',id_persona',

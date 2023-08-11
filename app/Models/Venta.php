@@ -32,4 +32,9 @@ class Venta extends Model
     {
         return $this->belongsTo(Parcela::class, 'id_parcela', 'id_parcela');
     }
+
+    public function detalleVenta()
+    {
+        return $this->hasMany(DetalleVenta::class, 'id_venta', 'id_venta');
+    }
 }

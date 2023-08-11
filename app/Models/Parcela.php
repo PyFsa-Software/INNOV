@@ -120,8 +120,9 @@ class Parcela extends Model
             $fechaActualizacionPrecio = Carbon::parse($idVenta[0]->fecha_actualizacion_precio)->format('Y-m');
 
             //Debe retornar TRUE para que aparezca el boton de "Generar nuevas Cuotas".
+
             return 
-            (($cuotasPagadas === $totalCuotas) && ($fechaActualizacionPrecio > getFechaActual() && $totalCuotas != $idVenta[0]->cuotas));
+            (($cuotasPagadas === $totalCuotas) && ($fechaActualizacionPrecio >= getFechaActual() && $totalCuotas != $idVenta[0]->cuotas));
 
     }
 

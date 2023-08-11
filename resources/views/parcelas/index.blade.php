@@ -12,7 +12,10 @@
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
             @if (count($parcelas) === 0)
-            <a href="{{route('parcelas.crear')}}" class="btn btn-success">Agregar Parcela</a>
+            <a href="{{route('parcelas.crear')}}" class="btn btn-success mr-3">Agregar Parcela</a>
+            <div class="mb-2"></div>
+
+            <a href="{{route('parcelas.crearParcelasMultiples')}}" class="btn btn-success">Agregar Mutiples Parcelas</a>
 
             <h2 class="text-center mt-5 text-danger"><i class="fa fa-desktop fa-lg"></i> Aun no hay Parcelas cargadas
             </h2>
@@ -23,7 +26,10 @@
 
             <x-alertas />
 
-            <a href="{{route('parcelas.crear')}}" class="btn btn-success mb-2">Agregar Parcela</a>
+            <a href="{{route('parcelas.crear')}}" class="btn btn-success mr-3">Agregar Parcela</a>
+            <a href="{{route('parcelas.crearParcelasMultiples')}}" class="btn btn-success" style="background-color: #00c7ff;">Agregar Mutiples Parcelas</a>
+
+            <div class="mb-2"></div>
 
             <div class="table-responsive">
 

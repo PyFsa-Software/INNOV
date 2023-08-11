@@ -6,6 +6,7 @@ use App\Http\Controllers\LotesController;
 use App\Http\Controllers\ParcelasController;
 use App\Http\Controllers\PreciosController;
 use App\Http\Controllers\ReportesController;
+use App\Http\Controllers\VentasCanceladasController;
 use App\Http\Controllers\VentasController;
 use App\Http\Middleware\VerificarActualizacionCuotas;
 use App\Http\Middleware\VerificarCuotaNoPagada;
@@ -115,12 +116,16 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('parcelas/crear', 'CrearParcelaView')->name('parcelas.crear');
         Route::post('parcelas/crear', 'CrearParcela')->name('parcelas.guardar');
-
+        
         Route::get('parcelas/editar/{parcela}', 'EditarParcelaView')->name('parcelas.editar');
         Route::put('parcelas/editar/{parcela}', 'EditarParcela')->name('parcelas.modificar');
 
         Route::get('parcelas/eliminar/{parcela}', 'EliminarParcelaView')->name('parcelas.borrar');
         Route::delete('parcelas/eliminar/{parcela}', 'EliminarParcela')->name('parcelas.eliminar');
+        
+        
+        Route::get('parcelas/crear-multiple', 'CrearParcelasMultiplesView')->name('parcelas.crearParcelasMultiples');
+        // Route::post('parcelas/crear-multiple', 'CrearParcela')->name('parcelas.guardar');
 
     });
 
@@ -186,5 +191,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('reportes/planilla', 'planilla')->name('reportes.planilla');
         Route::post('reportes/planilla', 'exportarPlanilla')->name('reportes.exportarPlanilla');
     });
+
+    // ROUTE FOR VENTAS CANCELADAS
+    Route::controller(VentasCanceladasController::class)->group(function () {
+        Route::get('ventas-canceladas/listado', 'index')->name('ventasCanceladas.index');
+        Route::get('ventas-canceladas/volante/{venta}', 'imprimirVolanteCancelacion')->name('ventasCanceladas.imprimirVolanteCancelacion');
+    });
+
 
 });

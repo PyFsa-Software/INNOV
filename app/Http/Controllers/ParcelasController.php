@@ -105,4 +105,13 @@ class ParcelasController extends Controller
 
         }
     }
+
+    public function CrearParcelasMultiplesView()
+    {
+
+        $lotes = Lote::all();
+
+        return view('parcelas.crearMultple', compact('lotes'));
+
+    }
 }

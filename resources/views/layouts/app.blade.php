@@ -99,7 +99,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('clientes.index')}}" aria-expanded="false"
                             aria-controls="tables">
-                            <i class="icon-grid-2 menu-icon"></i>
+                            <i class="icon-head menu-icon"></i>
                             <span class="menu-title">CLIENTES</span>
                             <i class="menu-arrow"></i>
                         </a>
@@ -111,12 +111,39 @@
                         </div> --}}
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('ventas.crear')}}" aria-expanded="false" aria-controls="auth">
-                            <i class="icon-head menu-icon"></i>
+                        <a class="nav-link" href="#" data-toggle="dropdown">
+                            <i class="icon-circle-plus menu-icon"></i>
                             <span class="menu-title">VENTAS</span>
                             <i class="menu-arrow"></i>
                         </a>
+                        <div class="dropdown-menu navbar-dropdown"
+                            aria-labelledby="profileDropdown">
+                            <a class="dropdown-item" href="{{route('ventas.crear')}}">
+                                <i class="icon-plus text-primary"></i>
+                                Realizar Venta
+                            </a>
+                            <a class="dropdown-item" href="{{route('ventasCanceladas.index')}}">
+                                <i class="icon-ban text-primary"></i>
+                                Ventas Canceladas
+                            </a>
+                        </div>
                     </li>
+                    {{-- <li class="nav-item nav-profile dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+                            NOMBRE-USUARIO
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown"
+                            aria-labelledby="profileDropdown">
+                            <a class="dropdown-item">
+                                <i class="ti-settings text-primary"></i>
+                                Settings
+                            </a>
+                            <a class="dropdown-item">
+                                <i class="ti-power-off text-primary"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </li> --}}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('lotes.index') }}">
                             <i class="icon-columns menu-icon"></i>
