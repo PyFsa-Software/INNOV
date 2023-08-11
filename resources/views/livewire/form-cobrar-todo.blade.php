@@ -25,12 +25,13 @@
     <div class="form-group">
         <label for="total_cuotas_a_pagar">Ingrese el total de cuotas a pagar: </label>
         <input type="number" class="form-control" required name="total_cuotas_a_pagar" id="total_cuotas_a_pagar"
-            value="">
+            value="" wire:model="validaciones">
     </div>
 
     <div class="form-group">
         <label for="precio_cuota">Precio de la cuota: </label>
-        <input type="number" class="form-control" required name="precio_cuota" id="precio_cuota" value="">
+        <input type="number" class="form-control" required name="precio_cuota" id="precio_cuota" value=""
+            wire:model="precioCuotas">
     </div>
 
     {{-- <div class="form-group">
@@ -50,6 +51,16 @@
         <input type="number" class="form-control" name="total_pago" id="total_pago" value="" disabled>
     </div> --}}
 
+    <div wire:model="cantidadCuotasPagar" class="form-group">
+        <div class=" alert aler-warning">
+            @if ($cuotasSinPagar > 0)
+                <p>Se generaran {{ $cantidadCuotasPagar }} cuotas ya que hay {{ $cuotasSinPagar }} cuota/s generadas sin
+                    pagar
+                </p>
+            @endif
+        </div>
+    </div>
+
     <div wire:loading>
         Calculando abono..
     </div>
@@ -61,6 +72,8 @@
 
     <a href="{{ url()->previous() }}" class="btn btn-danger form-control">Cancelar</a>
     <x-alertas />
+
+
 
 
     <!-- Modal -->
