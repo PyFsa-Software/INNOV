@@ -31,19 +31,21 @@ class ParcelasDataTable extends DataTable
                 return $data->lote->nombre_lote;
             })
             ->addColumn('estado', function ($data) {
-
                 if ($data->disponible === 1) {
                     $spamDisponible = "<span class='badge badge-success'>Disponible</span>";
                     return $spamDisponible;
                 }
-
                 $spamVendido = "<span class='badge badge-danger'>Vendido</span>";
-
                 return $spamVendido;
             })
+            ->filterColumn('estado', function ($query) {
+                if (strtolower(request('search')["value"]) === "disponible") {
+                    $query->where('disponible', 1);
+                } elseif (strtolower(request('search')["value"]) === "vendido") {
+                    $query->where('disponible', 0);
+                }
+            })
             ->addColumn('editar', function ($data) {
-
-                // dd($data->disponible);
                 if ($data->disponible === 0) {
                     return "<span class='badge badge-warning'>No disponible</span>";
                 } else {
