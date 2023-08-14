@@ -109,22 +109,25 @@
         }
 
         .info-parcela {
-
             font-size: 13px;
             display: inline-block;
-            text-align: left;
+            /* text-align: left; */
             padding-left: 20px;
             padding-bottom: 5px;
         }
 
         .info-loteo {
-
             font-size: 13px;
             display: inline-block;
-            text-align: left;
-            padding-left: 22px;
+            /* text-align: left; */
+            /* padding-left: 22px;
             padding-right: 195px;
-            padding-bottom: 5px;
+            padding-bottom: 5px; */
+            margin-left: 20px;
+        }
+
+        .info-loteo > b {
+            padding-right: 10px;
         }
 
         .firma {
@@ -189,20 +192,20 @@
                 <br>
                 <div class="info-loteo">
                     <small>Loteo: </small><b>{{ $parcela->lote->nombre_lote }}.</b>
-                </div>
-                <div class="info-parcela">
                     <small>Parcela: </small><b> {{ $parcela->descripcion_parcela }}.</b>
+                    <small>Manzana:</small><b>{{ $parcela->manzana }}.</b>
+                    <small>Ubicación: </small><b>{{ $parcela->lote->ubicacion }}.</b>
                 </div>
+                {{-- <div class="info-parcela">
+                </div> --}}
                 <br>
                 <div class="info-parcela">
                     <small>Dimensión: </small><b>{{ $parcela->ancho }} x {{ $parcela->largo }}.</b>
                 </div>
-                <div class="info-parcela">
-                    <small>Manzana:</small><b>{{ $parcela->manzana }}.</b>
+                {{-- <div class="info-parcela">
                 </div>
                 <div class="info-parcela">
-                    <small>Ubicación: </small><b>{{ $parcela->lote->ubicacion }}.</b>
-                </div>
+                </div> --}}
                 <br>
                 <div class="info-parcela">
                     <small>Cuota N°: </small><b>{{ $cuota->numero_cuota }}</b>

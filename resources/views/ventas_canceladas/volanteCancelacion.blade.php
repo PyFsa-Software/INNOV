@@ -105,24 +105,24 @@
         }
 
         .info-parcela {
-
             font-size: 13px;
             display: inline-block;
             text-align: left;
             padding-left: 20px;
             padding-bottom: 5px;
         }
-
         .info-loteo {
-
             font-size: 13px;
             display: inline-block;
-            text-align: left;
-            padding-left: 22px;
+            /* text-align: left; */
+            /* padding-left: 22px;
             padding-right: 195px;
-            padding-bottom: 5px;
+            padding-bottom: 5px; */
+            margin-left: 20px;
         }
-
+        .info-loteo > b {
+            padding-right: 10px;
+        }
         .firma {
             font-size: 13px;
             text-align: right;
@@ -178,20 +178,23 @@
                 <br>
                 <div class="info-loteo">
                     <small>Loteo: </small><b>{{ $venta->parcela->lote->nombre_lote }}.</b>
-                </div>
-                <div class="info-parcela">
                     <small>Parcela: </small><b> {{ $venta->parcela->descripcion_parcela }}.</b>
+                    <small>Manzana:</small><b>{{ $venta->parcela->manzana }}.</b>
+                    <small>Ubicación: </small><b>{{ $venta->parcela->lote->ubicacion }}.</b>
                 </div>
+                {{-- <div class="info-parcela">
+                    <small>Parcela: </small><b> {{ $venta->parcela->descripcion_parcela }}.</b>
+                </div> --}}
                 <br>
                 <div class="info-parcela">
                     <small>Dimensión: </small><b>{{ $venta->parcela->ancho }} x {{ $venta->parcela->largo }}.</b>
                 </div>
-                <div class="info-parcela">
+                {{-- <div class="info-parcela">
                     <small>Manzana:</small><b>{{ $venta->parcela->manzana }}.</b>
-                </div>
-                <div class="info-parcela">
+                </div> --}}
+                {{-- <div class="info-parcela">
                     <small>Ubicación: </small><b>{{ $venta->parcela->lote->ubicacion }}.</b>
-                </div>
+                </div> --}}
                 <br>
                 <div class="info-parcela">
                     <small>Plan: </small><b>{{ $venta->cuotas }} Cuota/s. CANCELACIÓN.</b>
