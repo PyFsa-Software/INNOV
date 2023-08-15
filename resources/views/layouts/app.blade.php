@@ -97,12 +97,18 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('clientes.index')}}" aria-expanded="false"
+                        <a class="nav-link" href="{{ route('clientes.index') }}" aria-expanded="false"
                             aria-controls="tables">
                             <i class="icon-head menu-icon"></i>
                             <span class="menu-title">CLIENTES</span>
                             <i class="menu-arrow"></i>
                         </a>
+                        <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
+                            <a class="dropdown-item" href="{{ route('ventasCanceladas.index') }}">
+                                <i class="icon-ban text-primary"></i>
+                                Pagos Multiples
+                            </a>
+                        </div>
                         {{-- <div class="collapse" id="tables">
                             <ul class="nav flex-column sub-menu">
                                 <li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">Basic
@@ -116,13 +122,12 @@
                             <span class="menu-title">VENTAS</span>
                             <i class="menu-arrow"></i>
                         </a>
-                        <div class="dropdown-menu navbar-dropdown"
-                            aria-labelledby="profileDropdown">
-                            <a class="dropdown-item" href="{{route('ventas.crear')}}">
+                        <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
+                            <a class="dropdown-item" href="{{ route('ventas.crear') }}">
                                 <i class="icon-plus text-primary"></i>
                                 Realizar Venta
                             </a>
-                            <a class="dropdown-item" href="{{route('ventasCanceladas.index')}}">
+                            <a class="dropdown-item" href="{{ route('ventasCanceladas.index') }}">
                                 <i class="icon-ban text-primary"></i>
                                 Ventas Canceladas
                             </a>
@@ -180,7 +185,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('precios.index')}}" aria-expanded="false"
+                        <a class="nav-link" href="{{ route('precios.index') }}" aria-expanded="false"
                             aria-controls="icons">
                             <i class="icon-contract menu-icon"></i>
                             <span class="menu-title">PRECIOS</span>
@@ -197,7 +202,7 @@
                         <div class="collapse" id="ui-basic">
                             <ul class="nav flex-column sub-menu">
                                 <li class="nav-item"> <a class="nav-link"
-                                        href="{{route('reportes.planilla')}}">Planilla</a></li>
+                                        href="{{ route('reportes.planilla') }}">Planilla</a></li>
                                 {{-- <li class="nav-item"> <a class="nav-link"
                                         href="pages/ui-features/dropdowns.html">Dropdowns</a></li>
                                 <li class="nav-item"> <a class="nav-link"
