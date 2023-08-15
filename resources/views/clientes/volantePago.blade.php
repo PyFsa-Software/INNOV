@@ -171,7 +171,7 @@
 
             <div class="content-venta">
                 <div class="nombre">
-                    <small>Sr/Sra: </small><b>{{ $cliente->nombre }} {{ $cliente->apellido }}.</b>
+                    <small>Sr/Sra: </small><b>{{ getFormatNombreApellido($cliente?->nombre, $cliente?->apellido) }}.</b>
                 </div>
                 {{-- <br>
                 <div class="telefono">
@@ -183,24 +183,24 @@
                 </div>
                 <br>
                 <div class="domicilio">
-                    <small>Domicilio: </small><b>{{ $cliente->domicilio }}.</b>
+                    <small>Domicilio: </small><b>{{ $cliente?->domicilio }}.</b>
                 </div>
                 <br>
                 <div class="pago">
-                    <small>Recibí(mos) la suma de: </small><b>PESOS {{ convertDigitsToWord($cuota->total_pago) }}.</b>
+                    <small>Recibí(mos) la suma de: </small><b>PESOS {{ convertDigitsToWord($cuota?->total_pago) }}.</b>
                 </div>
                 <br>
                 <div class="info-loteo">
-                    <small>Loteo: </small><b>{{ $parcela->lote->nombre_lote }}.</b>
-                    <small>Parcela: </small><b> {{ $parcela->descripcion_parcela }}.</b>
-                    <small>Manzana:</small><b>{{ $parcela->manzana }}.</b>
-                    <small>Ubicación: </small><b>{{ $parcela->lote->ubicacion }}.</b>
+                    <small>Loteo: </small><b>{{ $parcela?->lote->nombre_lote }}.</b>
+                    <small>Parcela: </small><b> {{ $parcela?->descripcion_parcela }}.</b>
+                    <small>Manzana:</small><b>{{ $parcela?->manzana }}.</b>
+                    <small>Ubicación: </small><b>{{ $parcela?->lote->ubicacion }}.</b>
                 </div>
                 {{-- <div class="info-parcela">
                 </div> --}}
                 <br>
                 <div class="info-parcela">
-                    <small>Dimensión: </small><b>{{ $parcela->ancho }} x {{ $parcela->largo }}.</b>
+                    <small>Dimensión: </small><b>{{ $parcela?->ancho }} x {{ $parcela?->largo }}.</b>
                 </div>
                 {{-- <div class="info-parcela">
                 </div>
@@ -208,22 +208,22 @@
                 </div> --}}
                 <br>
                 <div class="info-parcela">
-                    <small>Cuota N°: </small><b>{{ $cuota->numero_cuota }}</b>
+                    <small>Cuota N°: </small><b>{{ $cuota?->numero_cuota }}</b>
                 </div>
                 <div class="info-parcela">
-                    <small>Plan: </small><b>{{ $venta->cuotas }} Cuota/s.</b>
+                    <small>Plan: </small><b>{{ $venta?->cuotas }} Cuota/s.</b>
                 </div>
                 <br>
                 <div class="info-parcela">
-                    <small>Forma de Pago: </small><b>{{ $cuota->forma_pago ?? '-' }}.</b>
+                    <small>Forma de Pago: </small><b>{{ $cuota?->forma_pago ?? '-' }}.</b>
                 </div>
             </div>
             <div class="importe-total">
-                <small>Importe Total: </small><b>$ {{ number_format($cuota->total_pago, 2, ',', '.') }}.</b>
+                <small>Importe Total: </small><b>$ {{ number_format($cuota?->total_pago, 2, ',', '.') }}.</b>
             </div>
             <br>
             <div class="importe-total">
-                <small>Concepto de: ..............................</b>
+                <small>Concepto de: <b>{{ $cuota?->concepto_de ?? ".............................." }}.</b>
             </div>
             <br>
             <div class="firma">

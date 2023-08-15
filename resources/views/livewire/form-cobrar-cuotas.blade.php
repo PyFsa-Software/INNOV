@@ -63,6 +63,17 @@
             value="{{ old('total_pago', $totalAbonar) }}" disabled>
     </div>
 
+    {{-- add select conceptoDeOpcionesSelect --}}
+    <div class="form-group">
+        <label for="conceptoDe">Concepto De: </label>
+        <select class="form-control" name="conceptoDe" id="conceptoDe" wire:model="conceptoDe">
+            <option value="" selected disabled>Seleccione un concepto</option>
+            @foreach ($conceptoDeOpcionesSelect as $key => $value)
+                <option value="{{ $value }}">{{ $value }}</option>
+            @endforeach
+        </select>
+    </div>
+
     <div wire:loading>
         Calculando abono..
     </div>
@@ -97,5 +108,17 @@
             </div>
         </div>
     </div>
-
+    <script>
+        // Obtener el botón "Continuar"
+    const continuarBtn = document.querySelector('#cobroCuota button[type="submit"]');
+    
+    // Escuchar el evento "click" en el botón "Continuar"
+    continuarBtn.addEventListener('click', () => {
+        // Obtener el modal
+        const modal = document.querySelector('#cobroCuota');
+    
+        // Cerrar el modal
+        $(modal).modal('hide');
+    });
+    </script>
 </form>

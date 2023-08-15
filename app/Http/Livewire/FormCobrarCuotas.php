@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Enums\ConceptoDe;
 use App\Models\DetalleVenta;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +19,9 @@ class FormCobrarCuotas extends Component
     public $incrementoInteres = 0;
     public $totalAbonar = 0;
     public $formaPago = "";
+    public $conceptoDe = "";
     public $isDisabled = true;
+    public $conceptoDeOpcionesSelect = [];
     // public $pagado = false;
 
     // protected $rules = [
@@ -31,6 +34,7 @@ class FormCobrarCuotas extends Component
         return [
             'totalIntereses' => 'required|numeric|min:0',
             'formaPago' => 'required',
+            'conceptoDe' => 'required',
         ];
     }
 
@@ -39,6 +43,7 @@ class FormCobrarCuotas extends Component
         $this->totalEstimadoAbonar = (int) $this->cuota->total_estimado_a_pagar;
 
         $result = Carbon::createFromFormat('Y-m-d', $this->cuota->fecha_maxima_a_pagar)->isPast();
+        $this->conceptoDeOpcionesSelect = ConceptoDe::toArray();
 
         if ($result) {
             $date = Carbon::parse($this->cuota->fecha_maxima_a_pagar);
@@ -59,10 +64,9 @@ class FormCobrarCuotas extends Component
 
     public function calcularAbono()
     {
-        $this->validate();
-
         // $this->incrementoInteres = $this->totalEstimadoAbonar * ($this->totalIntereses / 100);
         $this->totalAbonar = $this->totalIntereses + $this->totalEstimadoAbonar;
+        $this->validate();
     }
 
     public function submit()
@@ -82,6 +86,7 @@ class FormCobrarCuotas extends Component
                 $this->cuota->pagado = 'si';
                 $this->cuota->numero_recibo = $numeroRecibo === null ? 1500 : $numeroRecibo + 1;
                 $this->cuota->forma_pago = $this->formaPago;
+                $this->cuota->concepto_de = $this->conceptoDe;
 
 
                 $this->cuota->save();
@@ -99,6 +104,7 @@ class FormCobrarCuotas extends Component
                 $this->cuota->pagado = 'si';
                 $this->cuota->numero_recibo = $numeroRecibo === null ? 1500 : $numeroRecibo + 1;
                 $this->cuota->forma_pago = $this->formaPago;
+                $this->cuota->concepto_de = $this->conceptoDe;
 
 
                 $cuotaPagada = $this->cuota->save();

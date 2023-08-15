@@ -24,12 +24,16 @@
                 @csrf
                 <div class="form-group">
                     <label for="nombre">Nombre Cliente<span class="text-danger">*</span></label>
+                    <br>
+                    <small class="text-danger">Para añadir varios varios nombres usar el siguiente caracter para separarlos: <b>"/".</b></small>
                     <input type="text" class="form-control" name="nombre" id="nombre"
                         placeholder="Ingrese el nombre del cliente" autofocus value="{{old('nombre')}}">
                 </div>
 
                 <div class="form-group">
                     <label for="apellido">Apellido Cliente<span class="text-danger">*</span></label>
+                    <br>
+                    <small class="text-danger">Para añadir varios varios apellidos usar el siguiente caracter para separarlos: <b>"/".</b></small>
                     <input type="text" class="form-control" name="apellido" id="apellido"
                         placeholder="Ingrese el apellido del cliente" value="{{old('apellido')}}">
                 </div>

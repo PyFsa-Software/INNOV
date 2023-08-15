@@ -161,7 +161,7 @@
 
             <div class="content-venta">
                 <div class="nombre">
-                    <small>Sr/Sra: </small><b>{{ $venta->cliente->nombre }} {{ $venta->cliente->apellido }}.</b>
+                    <small>Sr/Sra: </small><b>{{getFormatNombreApellido($venta?->cliente->->nombre, $venta?->cliente->->apellido) }}.</b>
                 </div>
                 <br>
                 <div class="dni">
@@ -205,11 +205,11 @@
             </div>
             <br>
             <div class="importe-total">
-                <small>Concepto de: ..............................</b>
+                <small>Concepto de: <b>{{ $cuota?->concepto_de ?? ".............................." }}.</b>
             </div>
             <br>
             <div class="firma">
-                <small>Firma: ..............................</b>
+                <small>Firma: ..............................
             </div>
         </div>
     </main>
