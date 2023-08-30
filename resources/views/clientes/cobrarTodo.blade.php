@@ -14,12 +14,12 @@
                 <div class="app-title mb-5">
 
                     <div>
-                        <h1 class="text-center"><i class="fa fa-desktop fa-lg"></i> Cancelar Plan
+                        <h1 class="text-center"><i class="fa fa-desktop fa-lg"></i> Pago Multiple
                         </h1>
                     </div>
                 </div>
 
-                <livewire:form-cobrar-todo />
+                <livewire:form-cobrar-todo :venta="$venta" :cuotasGeneradas="$cantidadCuotasGeneradas" :cuotasPagadas="$cantidadCuotasPagadas" :formasDePagos="$formasDePagos" />
 
             </div>
         </div>

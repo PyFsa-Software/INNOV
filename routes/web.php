@@ -168,7 +168,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('clientes/cobrar/{cuota}', 'cobrarCuotas')->name('clientes.cobrarCuota')->middleware([VerificarCuotaAnteriorPagada::class]);
 
-        Route::get('clientes/cobrar-todo', 'cobrarTodo')->name('clientes.cobrarTodo');
+        Route::get('clientes/cobrar-todo/{parcela}', 'cobrarTodo')->name('clientes.cobrarTodo');
 
 
         Route::get('clientes/editar-precio/{cuota}', 'editarPrecioCuota')->name('clientes.editarPrecioCuota');
@@ -176,9 +176,15 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('clientes/volante-pago/{cuota}', 'generarVolantePago')->name('clientes.volantePago')->middleware(VerificarCuotaVolantePago::class);
 
+        Route::get('clientes/volante-pago-multiple/{numeroRecibo}', 'generarVolantePagoMultiple')->name('clientes.volantePagoMultiple');
+
         Route::get('clientes/actualizar-precios/{parcela}', 'actualizarPrecios')->name('clientes.actualizarPrecios')->middleware(VerificarActualizacionCuotas::class);
 
         Route::get('clientes/generar-cuotas/{parcela}', 'generarCuotas')->name('clientes.generarCuotas')->middleware(VerificarActualizacionCuotas::class);
+
+        //PAGOS MULTIPLES
+
+        Route::get('clientes/pagos-multiples/{parcela}', 'volantesPagosMultiples')->name('clientes.pagosMultiples');
 
     });
 
@@ -191,6 +197,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('reportes/planilla', 'planilla')->name('reportes.planilla');
         Route::post('reportes/planilla', 'exportarPlanilla')->name('reportes.exportarPlanilla');
     });
+
 
     // ROUTE FOR VENTAS CANCELADAS
     Route::controller(VentasCanceladasController::class)->group(function () {
