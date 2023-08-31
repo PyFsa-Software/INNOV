@@ -19,7 +19,8 @@
                     </div>
                 </div>
 
-                <livewire:form-cobrar-todo :venta="$venta" :cuotasGeneradas="$cantidadCuotasGeneradas" :cuotasPagadas="$cantidadCuotasPagadas" :formasDePagos="$formasDePagos" />
+                <livewire:form-cobrar-todo :venta="$venta" :cuotasGeneradas="$cantidadCuotasGeneradas" :cuotasPagadas="$cantidadCuotasPagadas" :formasDePagos="$formasDePagos"
+                    :precioActual="$precioActual" />
 
             </div>
         </div>

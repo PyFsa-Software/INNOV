@@ -23,22 +23,32 @@
             value={{ $venta->cuotas }} disabled>
     </div>
     <div class="form-group">
+        <label for="precio_cuota">Precio actual de la Cuota: </label>
+        <input type="number" class="form-control" disabled required name="precio_cuota" id="precio_cuota"
+            value={{ $precioActual }}>
+    </div>
+    <div class="form-group">
         <label for="total_cuotas_a_pagar">Ingrese el total de cuotas a pagar: </label>
         <input type="number" class="form-control" required name="total_cuotas_a_pagar" id="total_cuotas_a_pagar"
             value="" wire:keyup="actualizarCantidadCuotas($event.target.value)">
     </div>
 
     <div class="form-group">
-        <label for="precio_cuota">Precio de la cuota: </label>
-        <input type="number" class="form-control" required name="precio_cuota" id="precio_cuota" value=""
-            wire:model="precioCuotas">
-    </div>
-    <div class="form-group">
+        <label for="forma_pago">Forma de Pago: </label>
         <select class="form-control" name="forma_pago" id="forma_pago" wire:model="formaPago" required>
             <option value="" disabled>Seleccione una forma de pago</option>
             @foreach ($formasDePagos as $key => $value)
                 <option value="{{ $key }}" @if ($formaPago === $key) selected @endif>
                     {{ $value }}</option>
+            @endforeach
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="conceptoDe">Concepto De: </label>
+        <select class="form-control" name="conceptoDe" id="conceptoDe" wire:model="conceptoDe"required>
+            <option value="" selected disabled>Seleccione un concepto</option>
+            @foreach ($conceptoDeOpcionesSelect as $key => $value)
+                <option value="{{ $value }}">{{ $value }}</option>
             @endforeach
         </select>
     </div>

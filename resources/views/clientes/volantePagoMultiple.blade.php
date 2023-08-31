@@ -222,7 +222,7 @@
             </div>
             <br>
             <div class="importe-total">
-                <small>Concepto de: ..............................</b>
+                <small>Concepto de: <b> {{ $conceptoDe ? $conceptoDe : '..............................' }} </b>
             </div>
             <br>
             <div class="firma">

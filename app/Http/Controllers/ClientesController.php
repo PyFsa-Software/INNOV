@@ -215,40 +215,43 @@ class ClientesController extends Controller
 
 
     public function generarVolantePagoMultiple($numeroRecibo)
-{
-    $detalleVentas = DetalleVenta::where('numero_recibo', $numeroRecibo)->get();
+    {
+        $detalleVentas = DetalleVenta::where('numero_recibo', $numeroRecibo)->get();
+
+        // dd($detalleVentas);
+
+        if ($detalleVentas->isEmpty()) {
+
+            return back()->with('error', 'No se encontraron cuotas con el número de recibo ingresado!');
+        }
+
+        $totalPago = $detalleVentas->sum('total_pago');
+
+        $conceptoDe = $detalleVentas[0]->concepto_de;
 
 
 
-    if ($detalleVentas->isEmpty()) {
-        
-        return back()->with('error', 'No se encontraron cuotas con el número de recibo ingresado!');
+
+        $venta = Venta::all()->where('id_parcela', '=', $detalleVentas->first()->id_parcela)->first();
+        $cliente = Persona::all()->where('id_persona', '=', $venta->id_cliente)->first();
+        $parcela = Parcela::with('lote')->where('id_parcela', '=', $detalleVentas->first()->id_parcela)->first();
+
+        // Obtener el rango de números de cuota
+        $numeroPrimeraCuota = $detalleVentas->first()->numero_cuota;
+        $numeroUltimaCuota = $detalleVentas->last()->numero_cuota;
+
+        $pathLogo = Storage::path('public/img/logoInnova.jpg');
+        $logo = file_get_contents($pathLogo);
+
+        $html = '<img src="data:image/svg+xml;base64,' . base64_encode($logo) . '"  width="100" height="100" />';
+
+
+
+        $pdf = Pdf::loadView('clientes.volantePagoMultiple', compact('detalleVentas', 'venta', 'cliente', 'parcela', 'pathLogo', 'html', 'numeroPrimeraCuota', 'numeroUltimaCuota', 'totalPago', 'conceptoDe'))
+            ->setPaper('cart', 'vertical');
+
+        return $pdf->stream(date('d-m-Y') . ".pdf", array('Attachment' => 0));
     }
-
-    $totalPago = $detalleVentas->sum('total_pago');
-
-   
-
-    $venta = Venta::all()->where('id_parcela', '=', $detalleVentas->first()->id_parcela)->first();
-    $cliente = Persona::all()->where('id_persona', '=', $venta->id_cliente)->first();
-    $parcela = Parcela::with('lote')->where('id_parcela', '=', $detalleVentas->first()->id_parcela)->first();
-
-    // Obtener el rango de números de cuota
-    $numeroPrimeraCuota = $detalleVentas->first()->numero_cuota;
-    $numeroUltimaCuota = $detalleVentas->last()->numero_cuota;
-
-    $pathLogo = Storage::path('public/img/logoInnova.jpg');
-    $logo = file_get_contents($pathLogo);
-
-    $html = '<img src="data:image/svg+xml;base64,' . base64_encode($logo) . '"  width="100" height="100" />';
-
-
-
-    $pdf = Pdf::loadView('clientes.volantePagoMultiple', compact('detalleVentas', 'venta', 'cliente', 'parcela', 'pathLogo', 'html', 'numeroPrimeraCuota', 'numeroUltimaCuota', 'totalPago'))
-        ->setPaper('cart', 'vertical');
-
-    return $pdf->stream(date('d-m-Y') . ".pdf", array('Attachment' => 0));
-}
 
 
 
@@ -276,8 +279,15 @@ class ClientesController extends Controller
 
         $formasDePagos = FormasPago::toArray();
 
+        $maxPrecioActual = DetalleVenta::where('id_venta', $venta->id_venta)
+            ->selectRaw('MAX(CAST(total_estimado_a_pagar AS DECIMAL(10, 2))) as max_precio')
+            ->first();
 
-        return view('clientes.cobrarTodo', compact('venta', 'cantidadCuotasGeneradas', 'cantidadCuotasPagadas', 'formasDePagos'));
+        $precioActual = $maxPrecioActual->max_precio ?? 0.0;
+
+
+
+        return view('clientes.cobrarTodo', compact('venta', 'cantidadCuotasGeneradas', 'cantidadCuotasPagadas', 'formasDePagos', 'precioActual'));
     }
 
     public function volantesPagosMultiples(PagosMultiplesDataTable $dataTable, $idParcela)

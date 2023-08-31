@@ -13,6 +13,7 @@
                 <h1 class="text-center mb-5"><i class="fa fa-desktop fa-lg"></i> Listado Pagos Multiples
                 </h1>
                 <a href="{{ route('clientes.estadoCuotas', $idParcela) }}" class="btn btn-warning mb-2">Volver Atrás</a>
+                <br>
                 <x-alertas />
 
                 <div class="table-responsive">

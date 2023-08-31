@@ -21,6 +21,7 @@ class DetalleVenta extends Model
         'total_estimado_a_pagar',
         'total_intereses',
         'fecha_pago',
+        'pagado',
         'total_pago',
         'id_venta',
         'numero_recibo',

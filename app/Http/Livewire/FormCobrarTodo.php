@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Enums\ConceptoDe;
 use Livewire\Component;
 use App\Models\DetalleVenta;
 use App\Models\Venta;
@@ -19,6 +20,9 @@ class FormCobrarTodo extends Component
     public $cuotasSinPagar = 0;
     public $formaPago = "";
     public $message = "";
+    public $conceptoDeOpcionesSelect = [];
+    public $conceptoDe = "";
+    public $precioActual;
 
     public function actualizarCantidadCuotas($value)
     {
@@ -45,8 +49,8 @@ class FormCobrarTodo extends Component
         // Validaciones iniciales
         $this->validate([
             'cantidadCuotasPagar' => 'required|integer|min:1',
-            'precioCuotas' => 'required|numeric|min:0',
             'formaPago' => 'required',
+            'conceptoDe' => 'required',
         ]);
 
         // Otras validaciones como la cantidad de cuotas generadas sin pagar
@@ -70,8 +74,9 @@ class FormCobrarTodo extends Component
                     $cuota->pagado = 'si';
                     $cuota->numero_recibo = $numeroRecibo;
                     $cuota->forma_pago = $this->formaPago;
-                    $cuota->total_pago = $this->precioCuotas;
+                    $cuota->total_pago = $this->precioActual;
                     $cuota->fecha_pago = Carbon::now()->format('Y-m-d');
+                    $cuota->concepto_de = $this->conceptoDe;
                     $cuota->save();
                 }
             }
@@ -82,12 +87,13 @@ class FormCobrarTodo extends Component
                     'numero_cuota' => $ultimaCuota,
                     'fecha_maxima_a_pagar' => Carbon::now()->addMonth($i)->format('Y-m') . '-21',
                     'fecha_pago' => Carbon::now()->format('Y-m-d'),
-                    'total_estimado_a_pagar' => $this->precioCuotas,
-                    'total_pago' => $this->precioCuotas,
+                    'total_estimado_a_pagar' => $this->precioActual,
+                    'total_pago' => $this->precioActual,
                     'pagado' => 'si',
                     'numero_recibo' => $numeroRecibo,
                     'id_venta' => $this->venta->id_venta,
                     'forma_pago' => $this->formaPago,
+                    'concepto_de' => $this->conceptoDe,
                 ]);
 
             }
@@ -97,6 +103,7 @@ class FormCobrarTodo extends Component
             return redirect()->route('clientes.estado', $this->venta->id_cliente)
                 ->with('success', "Cuotas generadas y pagadas correctamente.");
         } catch (\Throwable $e) {
+            // dd($e);
             DB::rollback();
             return redirect()->route('clientes.estadoCuotas', $parcela->parcela->id_parcela)
                 ->with('error', 'Error al generar y pagar cuotas. Contacte al administrador.');
@@ -105,6 +112,9 @@ class FormCobrarTodo extends Component
 
     public function render()
     {
+        $this->conceptoDeOpcionesSelect = ConceptoDe::toArray();
+
+
         return view('livewire.form-cobrar-todo', [
             'disabled' => $this->message !== '' ? true : false,
         ]);
