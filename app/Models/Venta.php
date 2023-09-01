@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Venta extends Model
 {
@@ -36,5 +37,12 @@ class Venta extends Model
     public function detalleVenta()
     {
         return $this->hasMany(DetalleVenta::class, 'id_venta', 'id_venta');
+    }
+
+    public function maxNumeroRecibo()
+    {
+        return $this->hasOne(DetalleVenta::class, 'id_venta')
+            ->select('id_venta', DB::raw('MAX(CAST(numero_recibo AS UNSIGNED)) as max_numero_recibo'))
+            ->groupBy('id_venta');
     }
 }

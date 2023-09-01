@@ -6,6 +6,7 @@ use App\Models\DetalleVenta;
 use App\Models\Lote;
 use App\Models\Venta;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Services\DataTable;
@@ -40,10 +41,10 @@ class VentasCanceladasDataTable extends DataTable
 
             // add colum for href volante
             ->addColumn('volante', function ($data) {
-                return '<a href="'.route('ventasCanceladas.imprimirVolanteCancelacion',$data->id_venta).'" class="btn btn-warning btn-sm" target="_blank">Volante</a>';
+                return '<a href="' . route('ventasCanceladas.imprimirVolanteCancelacion', $data->maxNumeroRecibo->max_numero_recibo) . '" class="btn btn-warning btn-sm" target="_blank">Volante</a>';
             })
 
-            ->rawColumns(['nombre_apellido_cliente','total_cuotas', 'parcela', 'lote', 'volante'])
+            ->rawColumns(['nombre_apellido_cliente', 'total_cuotas', 'parcela', 'lote', 'volante'])
             ->setRowId('id_persona');
     }
 
@@ -57,11 +58,13 @@ class VentasCanceladasDataTable extends DataTable
     {
         return $model::whereHas('detalleVenta', function ($query) {
             $query->selectRaw('id_venta, COUNT(*) as total_cuotas')
-                  ->where('pagado', '=', 'si')
-                  ->groupBy('id_venta')
-                  ->havingRaw('total_cuotas = ventas.cuotas');
-        })->with('cliente', 'parcela');
+                ->where('pagado', '=', 'si')
+                ->groupBy('id_venta')
+                ->havingRaw('total_cuotas = ventas.cuotas');
+        })
+            ->with('cliente', 'parcela', 'maxNumeroRecibo');
     }
+
 
     /**
      * Optional method if you want to use html builder.
@@ -74,7 +77,7 @@ class VentasCanceladasDataTable extends DataTable
             ->setTableId('tablaVentasCanceladas')
             ->columns($this->getColumns())
             ->minifiedAjax()
-        //->dom('Bfrtip')
+            //->dom('Bfrtip')
             ->orderBy(1)
             ->parameters([
                 'responsive' => true,

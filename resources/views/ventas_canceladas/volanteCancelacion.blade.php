@@ -111,6 +111,7 @@
             padding-left: 20px;
             padding-bottom: 5px;
         }
+
         .info-loteo {
             font-size: 13px;
             display: inline-block;
@@ -120,9 +121,11 @@
             padding-bottom: 5px; */
             margin-left: 20px;
         }
-        .info-loteo > b {
+
+        .info-loteo>b {
             padding-right: 10px;
         }
+
         .firma {
             font-size: 13px;
             text-align: right;
@@ -137,9 +140,9 @@
     <main>
         <div class="fecha">
             <div class="content-fecha" width="180">
-                {{-- <small>N°: <b>{{ $cuota->numero_recibo }}</b></small> --}}
+                <small>N°: <b>{{ $detalleVentas[0]->numero_recibo }}</b></small>
                 <br>
-                <small>Fecha: <b>{{ date('d-m-Y', strtotime($fechaCancelacion)) }}</b></small>
+                <small>Fecha: <b>{{ date('d-m-Y', strtotime($detalleVentas[0]->fecha_pago)) }}</b></small>
                 <br>
                 <small>3704-712224</small>
                 <br>
@@ -161,15 +164,15 @@
 
             <div class="content-venta">
                 <div class="nombre">
-                    <small>Sr/Sra: </small><b>{{getFormatNombreApellido($venta?->cliente->->nombre, $venta?->cliente->->apellido) }}.</b>
+                    <small>Sr/Sra: </small><b>{{ getFormatNombreApellido($cliente->nombre, $cliente->apellido) }}.</b>
                 </div>
                 <br>
                 <div class="dni">
-                    <small>Dni: </small> <b>{{ $venta->cliente->dni }}.</b>
+                    <small>Dni: </small> <b>{{ $cliente->dni }}.</b>
                 </div>
                 <br>
                 <div class="domicilio">
-                    <small>Domicilio: </small><b>{{ $venta->cliente->domicilio }}.</b>
+                    <small>Domicilio: </small><b>{{ $cliente->domicilio }}.</b>
                 </div>
                 <br>
                 <div class="pago">
@@ -205,7 +208,7 @@
             </div>
             <br>
             <div class="importe-total">
-                <small>Concepto de: <b>{{ $cuota?->concepto_de ?? ".............................." }}.</b>
+                <small>Concepto de: <b>{{ $concepto_de ?? '..............................' }}.</b>
             </div>
             <br>
             <div class="firma">

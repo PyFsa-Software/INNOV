@@ -34,6 +34,15 @@ class PagosMultiplesDataTable extends DataTable
 
                 return $data->min_numero_cuota . " al " . $data->max_numero_cuota;
             })
+            ->addColumn('Cancelado', function ($data) {
+
+                $cuotaMax = (int)$data->max_numero_cuota;
+
+                if ($data->venta->cuotas == $cuotaMax && $data->pagado == 'si') {
+                    return "<span class='badge badge-success'>CANCELADO</span>";
+                }
+                return "<span class='badge badge-danger'>NO</span>";
+            })
             ->addColumn('pagado', function ($data) {
                 if ($data->pagado == 'no') {
                     return "<span class='badge badge-danger'>NO</span>";
@@ -44,9 +53,15 @@ class PagosMultiplesDataTable extends DataTable
                 return "$ " . number_format($data->total_pago_agrupado, 2, ',', '.');
             })
             ->addColumn('volantePago', function ($data) {
+                $cuotaMax = (int)$data->max_numero_cuota;
+
+                if ($data->venta->cuotas == $cuotaMax && $data->pagado == 'si') {
+                    return $data->verificarCuotaPagada ? "<a href='" . route('ventasCanceladas.imprimirVolanteCancelacion', $data->numero_recibo) . "' class='btn btn-info btn-sm' target='_blank'><i class='ti-download'></i></a>" : "-";
+                }
+
                 return $data->verificarCuotaPagada ? "<a href='" . route('clientes.volantePagoMultiple', $data->numero_recibo) . "' class='btn btn-info btn-sm' target='_blank'><i class='ti-download'></i></a>" : "-";
             })
-            ->rawColumns(['FechaPago','Cuotas','totalPago', 'pagado', 'volantePago']);
+            ->rawColumns(['FechaPago','Cuotas','Cancelado','totalPago', 'pagado', 'volantePago']);
     }
 
     /**
@@ -57,11 +72,11 @@ class PagosMultiplesDataTable extends DataTable
      */
     public function query(): QueryBuilder
     {
-        $subquery = DetalleVenta::select(
+        $subquery = DetalleVenta::with('venta')->select(
             'numero_recibo',
             DB::raw('SUM(total_pago) as total_pago_agrupado'),
-            DB::raw('MIN(numero_cuota) as min_numero_cuota'),
-            DB::raw('MAX(numero_cuota) as max_numero_cuota')
+            DB::raw('MIN(CAST(numero_cuota AS UNSIGNED)) as min_numero_cuota'),
+            DB::raw('MAX(CAST(numero_cuota AS UNSIGNED)) as max_numero_cuota')
         )
         ->where('id_venta', '=', $this->idVenta)
         ->groupBy('numero_recibo')
@@ -111,6 +126,8 @@ class PagosMultiplesDataTable extends DataTable
             ['name' => 'FechaPago', 'title' => 'Fecha de Pago', 'data' => 'FechaPago', 'searchable' => false, 'orderable' => false, 'className' => 'text-center', 'className' => 'text-center'],
             
             ['name' => 'Cuotas', 'title' => 'Cuotas', 'data' => 'Cuotas', 'searchable' => false, 'orderable' => false, 'className' => 'text-center', 'className' => 'text-center'],
+
+            ['name' => 'Cancelado', 'title' => 'Cancelado', 'data' => 'Cancelado', 'searchable' => false, 'orderable' => false, 'className' => 'text-center', 'className' => 'text-center'],
 
             ['name' => 'pagado', 'title' => 'Pagado', 'data' => 'pagado', 'searchable' => false, 'orderable' => false, 'className' => 'text-center', 'className' => 'text-center'],
 

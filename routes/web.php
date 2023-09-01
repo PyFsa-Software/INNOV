@@ -202,7 +202,7 @@ Route::middleware(['auth'])->group(function () {
     // ROUTE FOR VENTAS CANCELADAS
     Route::controller(VentasCanceladasController::class)->group(function () {
         Route::get('ventas-canceladas/listado', 'index')->name('ventasCanceladas.index');
-        Route::get('ventas-canceladas/volante/{venta}', 'imprimirVolanteCancelacion')->name('ventasCanceladas.imprimirVolanteCancelacion');
+        Route::get('ventas-canceladas/volante/{numeroRecibo}', 'imprimirVolanteCancelacion')->name('ventasCanceladas.imprimirVolanteCancelacion');
     });
 
 

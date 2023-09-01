@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\DataTables\VentasCanceladasDataTable;
 use App\Models\DetalleVenta;
+use App\Models\Parcela;
+use App\Models\Persona;
 use App\Models\Venta;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
@@ -29,20 +31,39 @@ class VentasCanceladasController extends Controller
         return $dataTable->render('ventas_canceladas.index', compact('ventasCanceladas'));
     }
 
-    public function imprimirVolanteCancelacion($venta)
+    public function imprimirVolanteCancelacion($numeroRecibo)
     {
-        $venta = Venta::where('id_venta', $venta)->with('cliente', 'parcela', 'detalleVenta')->first();
-        $fechaCancelacion = $venta->detalleVenta->last()->fecha_pago;
-        $totalPago = $venta->detalleVenta->reduce(function ($carry, $item) {
-            return $carry + $item->total_pago;
-        }, 0);
+        $detalleVentas = DetalleVenta::where('numero_recibo', $numeroRecibo)->get();
+
+        // dd($detalleVentas);
+
+        if ($detalleVentas->isEmpty()) {
+
+            return back()->with('error', 'No se encontraron cuotas con el número de recibo ingresado!');
+        }
+
+        $totalPago = $detalleVentas->sum('total_pago');
+
+        $conceptoDe = $detalleVentas[0]->concepto_de;
+
+
+
+
+        $venta = Venta::all()->where('id_parcela', '=', $detalleVentas->first()->id_parcela)->first();
+        $cliente = Persona::all()->where('id_persona', '=', $venta->id_cliente)->first();
+        $parcela = Parcela::with('lote')->where('id_parcela', '=', $detalleVentas->first()->id_parcela)->first();
+
+        // Obtener el rango de números de cuota
+        $numeroPrimeraCuota = $detalleVentas->first()->numero_cuota;
+        $numeroUltimaCuota = $detalleVentas->last()->numero_cuota;
 
         $pathLogo = Storage::path('public/img/logoInnova.jpg');
         $logo = file_get_contents($pathLogo);
 
         $html = '<img src="data:image/svg+xml;base64,' . base64_encode($logo) . '"  width="100" height="100" />';
 
-        $pdf = Pdf::loadView('ventas_canceladas.volanteCancelacion', compact('venta', 'html', 'fechaCancelacion', 'totalPago'))
+
+        $pdf = Pdf::loadView('ventas_canceladas.volanteCancelacion', compact('detalleVentas', 'venta', 'cliente', 'parcela', 'pathLogo', 'html', 'numeroPrimeraCuota', 'numeroUltimaCuota', 'totalPago', 'conceptoDe'))
             ->setPaper('cart', 'vertical');
 
         return $pdf->stream(date('d-m-Y') . ".pdf", array('Attachment' => 0));
