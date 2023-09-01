@@ -107,6 +107,8 @@ class FormCobrarTodo extends Component
          
             } else {
                 // Si no hay suficientes cuotas no pagadas, pagar todas y generar y pagar las que faltan
+                
+
                 $cuotasNoPagadas->each(function ($cuota) use (&$numeroRecibo) {
                     $cuota->update([
                         'pagado' => 'si',
@@ -119,7 +121,9 @@ class FormCobrarTodo extends Component
                     ]);
                 });
 
-                $cuotasFaltantes = $this->cantidadCuotasPorPagar - count($cuotasNoPagadas);
+
+                $cuotasFaltantes = $this->cantidadCuotasPagar - count($cuotasNoPagadas);
+
 
                 for ($i = 1; $i <= $cuotasFaltantes; $i++) {
                     $ultimaCuota++;
