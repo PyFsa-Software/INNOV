@@ -8,14 +8,17 @@ use App\Models\DetalleVenta;
 use App\Models\Venta;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Livewire\WithValidation;
 
 class FormCobrarTodo extends Component
 {
+
     public $venta;
     public $formasDePagos;
     public $cuotasGeneradas;
     public $cuotasPagadas;
-    public $cantidadCuotasPagar;
+    public $cantidadCuotasPagar = '';
+    public $cantidadCuotasPorPagar = 0;
     public $precioCuotas;
     public $cuotasSinPagar = 0;
     public $formaPago = "";
@@ -23,39 +26,56 @@ class FormCobrarTodo extends Component
     public $conceptoDeOpcionesSelect = [];
     public $conceptoDe = "";
     public $precioActual;
+    public $isDisabled = true;
 
-    public function actualizarCantidadCuotas($value)
+    protected $rules = [
+        'cantidadCuotasPagar' => 'required|integer|min:0',
+        'formaPago' => 'required',
+        'conceptoDe' => 'required',
+    ];
+
+    public function mount()
     {
-        $this->cantidadCuotasPagar = $value;
+        $this->conceptoDeOpcionesSelect = ConceptoDe::toArray();
+    }
+
+    public function updatedCantidadCuotasPagar()
+    {
+        $this->resetValidation();
 
         $restoCuotas = $this->venta->cuotas - $this->cuotasPagadas;
-    
-        $this->cuotasSinPagar =  $this->cuotasGeneradas - $this->cuotasPagadas;
-    
+        $this->cuotasSinPagar = $this->cuotasGeneradas - $this->cuotasPagadas;
+
         $this->message = "";
-    
-        if (intval($this->cantidadCuotasPagar) > $restoCuotas) {
-            $this->message = "No se pueden pagar más de $restoCuotas cuotas.";
-            $this->cantidadCuotasPagar = $restoCuotas;
-        } elseif (intval($this->cuotasSinPagar) > 0 && intval($this->cantidadCuotasPagar) > intval($this->cuotasSinPagar)) {
-            $this->cantidadCuotasPagar = intval($this->cantidadCuotasPagar) - intval($this->cuotasSinPagar);
-        } elseif (intval($this->cantidadCuotasPagar) == 1) {
-            $this->message = "En este módulo no se puede pagar una sola cuota.";
+        $this->isDisabled = true;
+
+
+        if ($this->cantidadCuotasPagar < 2) {
+            $this->addError('cantidadCuotasPagar', 'La cantidad de cuotas a pagar debe ser mayor que dos.');
+            // O cualquier otro valor predeterminado
+        } elseif ($this->cantidadCuotasPagar > $restoCuotas) {
+            // $this->cantidadCuotasPagar = $restoCuotas;
+            $this->addError('cantidadCuotasPagar', "No se pueden pagar más de $restoCuotas cuotas.");
+        } elseif ($this->cuotasSinPagar > 0 && $this->cantidadCuotasPagar <= $this->cuotasSinPagar) {
+            $this->cantidadCuotasPorPagar = $this->cuotasSinPagar - $this->cantidadCuotasPagar;
+            $this->message = "Se pagaran $this->cantidadCuotasPagar cuota(s) de las que ya existen. Ya que actualmente hay $this->cuotasSinPagar cuota(s) generada(s) sin pagar.";
+
+
+            $this->isDisabled = false;
+        } elseif ($this->cuotasSinPagar >= 0 && $this->cantidadCuotasPagar >= $this->cuotasSinPagar) {
+            $this->cantidadCuotasPorPagar = $this->cantidadCuotasPagar - $this->cuotasSinPagar;
+            $this->message = "Se generarán $this->cantidadCuotasPorPagar cuota(s) adicionales. Actualmente hay $this->cuotasSinPagar cuota(s) generada(s) sin pagar.";
+
+
+
+            $this->isDisabled = false;
         }
     }
 
     public function submit()
     {
-        // Validaciones iniciales
-        $this->validate([
-            'cantidadCuotasPagar' => 'required|integer|min:1',
-            'formaPago' => 'required',
-            'conceptoDe' => 'required',
-        ]);
-
-        // Otras validaciones como la cantidad de cuotas generadas sin pagar
-
         try {
+            $this->validate();
             DB::beginTransaction();
 
             $parcela = Venta::where('id_venta', '=', $this->venta->id_venta)->with('parcela')->first();
@@ -68,47 +88,68 @@ class FormCobrarTodo extends Component
 
             $cuotasNoPagadas = DetalleVenta::where('id_venta', '=', $this->venta->id_venta)
                 ->where('pagado', '=', 'no')->get();
+
+            if (count($cuotasNoPagadas) >= $this->cantidadCuotasPorPagar) {
+                // Si hay suficientes cuotas no pagadas, pagar solo la cantidad requerida
+                $this->cantidadCuotasPagar = intval($this->cantidadCuotasPagar);
+                        $cuotasNoPagadas->take($this->cantidadCuotasPagar)->each(function ($cuota) use (&$numeroRecibo) {
+                            $cuota->update([
+                                'pagado' => 'si',
+                                'numero_recibo' => $numeroRecibo,
+                                'forma_pago' => $this->formaPago,
+                                'total_estimado_a_pagar' => $this->precioActual,
+                                'total_pago' => $this->precioActual,
+                                'fecha_pago' => Carbon::now()->format('Y-m-d'),
+                                'concepto_de' => $this->conceptoDe,
+                            ]);
+                        });
             
-            if (count($cuotasNoPagadas) > 0) {
-                foreach ($cuotasNoPagadas as $cuota) {
-                    $cuota->pagado = 'si';
-                    $cuota->numero_recibo = $numeroRecibo;
-                    $cuota->forma_pago = $this->formaPago;
-                    $cuota->total_pago = $this->precioActual;
-                    $cuota->fecha_pago = Carbon::now()->format('Y-m-d');
-                    $cuota->concepto_de = $this->conceptoDe;
-                    $cuota->save();
+         
+            } else {
+                // Si no hay suficientes cuotas no pagadas, pagar todas y generar y pagar las que faltan
+                $cuotasNoPagadas->each(function ($cuota) use (&$numeroRecibo) {
+                    $cuota->update([
+                        'pagado' => 'si',
+                        'numero_recibo' => $numeroRecibo,
+                        'forma_pago' => $this->formaPago,
+                        'total_estimado_a_pagar' => $this->precioActual,
+                        'total_pago' => $this->precioActual,
+                        'fecha_pago' => Carbon::now()->format('Y-m-d'),
+                        'concepto_de' => $this->conceptoDe,
+                    ]);
+                });
+
+                $cuotasFaltantes = $this->cantidadCuotasPorPagar - count($cuotasNoPagadas);
+
+                for ($i = 1; $i <= $cuotasFaltantes; $i++) {
+                    $ultimaCuota++;
+                    DetalleVenta::create([
+                        'numero_cuota' => $ultimaCuota,
+                        'fecha_maxima_a_pagar' => Carbon::now()->addMonth($i)->format('Y-m') . '-21',
+                        'fecha_pago' => Carbon::now()->format('Y-m-d'),
+                        'total_estimado_a_pagar' => $this->precioActual,
+                        'total_pago' => $this->precioActual,
+                        'pagado' => 'si',
+                        'numero_recibo' => $numeroRecibo,
+                        'id_venta' => $this->venta->id_venta,
+                        'forma_pago' => $this->formaPago,
+                        'concepto_de' => $this->conceptoDe,
+                    ]);
                 }
-            }
-
-            for ($i = 1; $i <= $this->cantidadCuotasPagar; $i++) {
-                $ultimaCuota++;
-                DetalleVenta::create([
-                    'numero_cuota' => $ultimaCuota,
-                    'fecha_maxima_a_pagar' => Carbon::now()->addMonth($i)->format('Y-m') . '-21',
-                    'fecha_pago' => Carbon::now()->format('Y-m-d'),
-                    'total_estimado_a_pagar' => $this->precioActual,
-                    'total_pago' => $this->precioActual,
-                    'pagado' => 'si',
-                    'numero_recibo' => $numeroRecibo,
-                    'id_venta' => $this->venta->id_venta,
-                    'forma_pago' => $this->formaPago,
-                    'concepto_de' => $this->conceptoDe,
-                ]);
-
             }
 
             DB::commit();
 
-            return redirect()->route('clientes.estado', $this->venta->id_cliente)
+            return redirect()->route('clientes.estadoCuotas', $parcela->parcela->id_parcela)
                 ->with('success', "Cuotas generadas y pagadas correctamente.");
         } catch (\Throwable $e) {
-            // dd($e);
+            dd($e);
             DB::rollback();
             return redirect()->route('clientes.estadoCuotas', $parcela->parcela->id_parcela)
                 ->with('error', 'Error al generar y pagar cuotas. Contacte al administrador.');
         }
     }
+
 
     public function render()
     {

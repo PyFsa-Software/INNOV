@@ -12,11 +12,15 @@
 
                 <h1 class="text-center mb-5"><i class="fa fa-desktop fa-lg"></i> Listado Cuotas
                 </h1>
-                <a href="{{ route('clientes.estado', $idCliente) }}" class="btn btn-warning mb-2">Volver Atrás</a>
-                <a href="{{ route('clientes.cobrarTodo', $idParcela) }}" class="btn btn-success mb-2">Pago Multiple </a>
-                <x-alertas />
-                <a href="{{ route('clientes.pagosMultiples', $idParcela) }}" class="btn btn-primary mb-2">Volantes de Pagos
+                <a style="height: 20px; line-height: 0px;" href="{{ route('clientes.estado', $idCliente) }}"
+                    class="btn btn-warning mb-2">Volver
+                    Atrás</a>
+                <a style="height: 20px;line-height: 0px;" href="{{ route('clientes.cobrarTodo', $idParcela) }}"
+                    class="btn btn-success mb-2">Pago Multiple </a>
+                <a style="height: 20px; line-height: 0px;" href="{{ route('clientes.pagosMultiples', $idParcela) }}"
+                    class="btn btn-primary mb-2">Volantes de Pagos
                     Multiples </a>
+                <x-alertas />
                 <p class="text-center mt-3"><b style="color: red;">DD-MM-AAAA</b> Cuota Vencida <b>|</b>
                     🟥 Debe Actualizar el Precio de la Cuota</p>
                 <div class="table-responsive">
