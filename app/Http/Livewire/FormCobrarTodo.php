@@ -27,6 +27,7 @@ class FormCobrarTodo extends Component
     public $conceptoDe = "";
     public $precioActual;
     public $isDisabled = true;
+    public $parcela;
 
     protected $rules = [
         'cantidadCuotasPagar' => 'required|integer|min:0',
@@ -36,6 +37,7 @@ class FormCobrarTodo extends Component
 
     public function mount()
     {
+        $this->parcela = Venta::where('id_venta', '=', $this->venta->id_venta)->with('parcela')->first();
         $this->conceptoDeOpcionesSelect = ConceptoDe::toArray();
     }
 
