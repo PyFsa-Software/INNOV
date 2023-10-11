@@ -69,7 +69,7 @@
         Realizar Cobro
     </button>
 
-    <a href="{{ url()->previous() }}" class="btn btn-danger form-control">Cancelar</a>
+    <a href="{{ route('clientes.estadoCuotas', $parcela->parcela->id_parcela) }}" class="btn btn-danger form-control">Cancelar</a>
     <x-alertas />
 
     <!-- Modal -->
