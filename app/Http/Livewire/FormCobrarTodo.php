@@ -89,7 +89,7 @@ class FormCobrarTodo extends Component
             $cuotasNoPagadas = DetalleVenta::where('id_venta', '=', $this->venta->id_venta)
                 ->where('pagado', '=', 'no')->get();
 
-            if (count($cuotasNoPagadas) >= $this->cantidadCuotasPorPagar) {
+            if (count($cuotasNoPagadas) >=  $this->cantidadCuotasPagar) {
                 // Si hay suficientes cuotas no pagadas, pagar solo la cantidad requerida
                 $this->cantidadCuotasPagar = intval($this->cantidadCuotasPagar);
                         $cuotasNoPagadas->take($this->cantidadCuotasPagar)->each(function ($cuota) use (&$numeroRecibo) {
