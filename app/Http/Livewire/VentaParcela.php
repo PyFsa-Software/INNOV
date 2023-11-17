@@ -17,7 +17,7 @@ class VentaParcela extends Component
     public $clientes;
     public $parcelas;
     public $promedioCementoDelMes;
-
+    public $formasDePagos;
     // seleccionar usuario
     public $clienteCombo = "";
     public $parcelaCombo = "";
@@ -32,6 +32,7 @@ class VentaParcela extends Component
     public $fechaHastaDetallePlan;
     public $bolsasCementoMensual;
     public $valorCuotaMensual;
+    public $importeEntrega;
     // public $valorTotalFinanciar;
     public $precioTotalTerreno;
 
@@ -43,6 +44,7 @@ class VentaParcela extends Component
         'cantidadCuotas' => 'required|numeric|integer|min:1|int',
         // 'precioTotalEntrega' => 'required|numeric|min:1',
         'promedioCemento' => 'required|numeric|integer|min:1',
+        'importeEntrega' => 'required|numeric|min:1',
     ];
 
     public function updated($propertyName)
@@ -93,6 +95,7 @@ class VentaParcela extends Component
                 'fecha_actualizacion_precio'=> Carbon::now()->addMonth(6)->format('Y-m') . '-01' ,
                 // 'precio_total_entrega' => $this->precioTotalEntrega,
                 // 'precio_final' => $this->valorTotalFinanciar,
+                'importe_entrega' => $this->importeEntrega,
                 'id_parcela' => $this->parcelaCombo,
                 'id_cliente' => $this->clienteCombo,
             ]);

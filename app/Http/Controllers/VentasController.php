@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\VentasDataTable;
+use App\Enums\FormasPago;
 use App\Models\Parcela;
 use App\Models\Persona;
 use App\Models\Precio;
 use App\Models\Venta;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
+use Exception;
+use Illuminate\Support\Facades\Storage;
 
 class VentasController extends Controller
 {
@@ -19,7 +24,7 @@ class VentasController extends Controller
     {
 
         $ventas = Venta::all();
-        return $dataTable->render('ventas.index', compact('ventas'));
+        return $dataTable->render('ventas_realizadas.index', compact('ventas'));
 
     }
 
@@ -44,8 +49,50 @@ class VentasController extends Controller
 
         $promedioCemento = Precio::orderBy('fecha', 'desc')->first();
 
-        return view('ventas.crear', compact('clientes', 'parcelas', 'promedioCemento'));
+        $formasDePagos = FormasPago::toArray();
+
+        return view('ventas.crear', compact('clientes', 'parcelas', 'promedioCemento', 'formasDePagos'));
     }
+
+      /**
+         * Generate a payment voucher for a specific sale.
+         *
+         * @param  int  $id
+         * @return \Illuminate\Http\Response
+         */
+        public function generarVolantePago($id)
+        {
+            try {
+                // Obtener la venta por su ID
+                $venta = Venta::findOrFail($id);
+
+                // Obtener la persona asociada a la venta
+                $cliente = Persona::where('id_persona', $venta->id_cliente)->first();
+
+
+                $parcela = Parcela::where('id_parcela', $venta->id_parcela)->with('lote')->first();
+                
+                $pathLogo = Storage::path('public/img/logoInnova.jpg');
+                $logo = file_get_contents($pathLogo);
+                $html = '<img src="data:image/svg+xml;base64,' . base64_encode($logo) . '"  width="100" height="100" />';
+                
+                $fecha_venta = Carbon::parse($venta->fecha_venta);
+                $fecha_venta->format('d/m/Y');
+
+                // Generar el volante de pago en formato PDF
+                $pdf = Pdf::loadView('ventas_realizadas.volante_pago', compact('venta', 'cliente', 'html','fecha_venta', 'parcela'))->setPaper('cart', 'vertical');
+                
+                return $pdf->stream(date('d-m-Y') . ".pdf", array('Attachment' => 0));
+                // Descargar el PDF
+                // return $pdf->download('volante_pago.pdf');
+            } catch (Exception $e) {
+                return response()->json([
+                    'mensaje' => "Se produjo un error al generar el volante de pago. Por favor, contacte al administrador.",
+                ], 400);
+            }
+        }
+
+    
 
     // public function calcularPlan(Request $request)
     // {

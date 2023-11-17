@@ -5,6 +5,7 @@ namespace App\DataTables;
 use App\Models\DetalleVenta;
 use App\Models\Lote;
 use App\Models\Venta;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -20,40 +21,37 @@ class VentasDataTable extends DataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
-        $queryWithWhere = $query->select(['p1.id_persona', 'p1.nombre', 'p1.apellido', 'p1.dni', 'p1.cliente', 'v1.fecha_venta', 'p2.superficie_parcela', 'p2.id_lote', 'v1.cuotas', 'v1.id_venta'])
-            ->from('ventas', 'v1')
-            ->join('personas as p1', 'p1.id_persona', '=', 'v1.id_cliente')
-            ->join('parcelas as p2', 'p2.id_parcela', '=', 'v1.id_parcela')
-            ->where('p1.cliente', '=', '1');
-        // dd($queryWithWhere);
-
-        return (new EloquentDataTable($queryWithWhere))
+        return (new EloquentDataTable($query))
             ->addColumn('nombre_apellido_cliente', function ($data) {
-                return $data->nombre . ' ' . $data->apellido;
+                return $data?->cliente?->nombre . ' ' . $data?->cliente?->apellido;
+            })
+            ->addColumn('dni', function ($data) {
+                return $data?->cliente?->dni;
             })
             ->addColumn('lote', function ($data) {
-                $lote = Lote::find($data->id_lote);
-                return $lote->nombre_lote;
+                return $data?->parcela?->lote?->nombre_lote;
             })
-            ->addColumn('cantidad_cuotas_pagadas', function ($data) {
-                $totalRegistrosDetalleVenta = DetalleVenta::where(
-                    [
-                        ['id_venta', '=', $data->id_venta],
-                        ['pagado', '=', '1'],
-                    ]
-                );
-
-                if (!$totalRegistrosDetalleVenta) {
-                    return "0/" . $data->cuotas;
-                }
-
-                return $totalRegistrosDetalleVenta->count() . "/" . $data->cuotas;
+            ->addColumn('parcela', function ($data) {
+                return $data?->parcela?->descripcion_parcela;
             })
-            ->addColumn('editar', function ($data) {
-                $btn = "<a href='" . route('clientes.editar', $data->id_persona) . "' class='btn btn-warning btn-sm'>Editar</a>";
-                return $btn;
+            ->addColumn('fecha_venta', function ($data) {
+                $fecha = Carbon::parse($data?->fecha_venta);
+                return $fecha->format('d/m/Y');
             })
-            ->rawColumns(['nombre_apellido_cliente', 'lote', 'cantidad_cuotas_pagadas', 'editar'])
+            ->addColumn('volante_pago', function ($data) {
+                return "<a href='" . route('ventas.volantePago', $data->id_venta) . "' class='btn btn-info btn-sm' target='_blank'><i class='ti-download'></i></a>";
+            })
+            ->filterColumn('nombre_apellido_cliente', function ($query, $keyword) {
+                $query->whereHas('cliente', function ($q) use ($keyword) {
+                    $q->whereRaw("CONCAT(nombre,' ',apellido) like ?", ["%{$keyword}%"]);
+                });
+            })
+            ->filterColumn('dni', function ($query, $keyword) {
+                $query->whereHas('cliente', function ($q) use ($keyword) {
+                    $q->where('dni', 'like', "%{$keyword}%");
+                });
+            })
+            ->rawColumns(['nombre_apellido_cliente','dni', 'lote','parcela','fecha_venta', 'volante_pago'])
             ->setRowId('id_persona');
     }
 
@@ -65,7 +63,7 @@ class VentasDataTable extends DataTable
      */
     public function query(Venta $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model::with('cliente', 'parcela.lote');
     }
 
     /**
@@ -96,12 +94,11 @@ class VentasDataTable extends DataTable
     {
         return [
             ['name' => 'nombre_apellido_cliente', 'title' => 'Cliente', 'data' => 'nombre_apellido_cliente'],
-            ['name' => 'dni', 'title' => 'DNI', 'data' => 'dni'],
-            ['name' => 'superficie_parcela', 'title' => 'Superficie Parcela', 'data' => 'superficie_parcela'],
-            ['name' => 'lote', 'title' => 'Lote', 'data' => 'lote'],
-            ['name' => 'cantidad_cuotas_pagadas', 'title' => 'Cantidad Cuotas Pagadas', 'data' => 'cantidad_cuotas_pagadas'],
-            ['name' => 'fecha_venta', 'title' => 'Fecha Venta', 'data' => 'fecha_venta'],
-            ['name' => 'editar', 'title' => 'Editar', 'data' => 'editar'],
+            ['name' => 'dni', 'title' => 'DNI', 'data' => 'dni', 'className' => 'text-center'],
+            ['name' => 'lote', 'title' => 'Lote', 'data' => 'lote', 'className' => 'text-center'],
+            ['name' => 'parcela', 'title' => 'Parcela', 'data' => 'parcela', 'className' => 'text-center'],
+            ['name' => 'fecha_venta', 'title' => 'Fecha Venta', 'data' => 'fecha_venta', 'className' => 'text-center'],
+            ['name' => 'volante_pago', 'title' => 'Volante de Pago', 'data' => 'volante_pago', 'className' => 'text-center'],
             // ['name' => 'eliminar', 'title' => 'Eliminar', 'data' => 'eliminar'],
         ];
     }

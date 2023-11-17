@@ -191,7 +191,12 @@ Route::middleware(['auth'])->group(function () {
     // ROUTES VENTAS
     Route::controller(VentasController::class)->group(function () {
         Route::get('ventas/crear', 'create')->name('ventas.crear');
+        Route::get('ventas/listado', 'index')->name('ventas.listado');
+        Route::get('ventas/volante-pago/{venta}', 'generarVolantePago')->name('ventas.volantePago');
     });
+
+
+
     // ROUTES REPORTES
     Route::controller(ReportesController::class)->group(function () {
         Route::get('reportes/planilla', 'planilla')->name('reportes.planilla');

@@ -8,10 +8,10 @@
             <option value="" disabled selected>Seleccione un cliente</option>
 
             @foreach ($clientes as $cliente)
-            <option value="{{ $cliente->id_persona }}" @selected(old('id_cliente')==$cliente->id_persona)>
-                {{ $cliente->nombre }} {{ $cliente->apellido }}
-                ({{ $cliente->dni }})
-            </option>
+                <option value="{{ $cliente->id_persona }}" @selected(old('id_cliente') == $cliente->id_persona)>
+                    {{ $cliente->nombre }} {{ $cliente->apellido }}
+                    ({{ $cliente->dni }})
+                </option>
             @endforeach
 
             {{-- <option value="1">Marcos Franco (43711063)</option> --}}
@@ -24,12 +24,12 @@
             wire:change.debounce.500ms="calcularPlan">
             <option value="" disabled selected>Seleccione una parcela</option>
             @foreach ($parcelas as $parcela)
-            <option value="{{ $parcela->id_parcela }}" @selected(old('id_parcela')==$parcela->id_parcela)>
-                {{ $parcela->descripcion_parcela }}
-                (Lote: {{ $parcela->lote->nombre_lote }})
-                (Bolsas Cemento: {{ $parcela->cantidad_bolsas }})
-                (Manzana: {{ $parcela->manzana }})
-            </option>
+                <option value="{{ $parcela->id_parcela }}" @selected(old('id_parcela') == $parcela->id_parcela)>
+                    {{ $parcela->descripcion_parcela }}
+                    (Lote: {{ $parcela->lote->nombre_lote }})
+                    (Bolsas Cemento: {{ $parcela->cantidad_bolsas }})
+                    (Manzana: {{ $parcela->manzana }})
+                </option>
             @endforeach
         </select>
     </div>
@@ -37,14 +37,14 @@
     <div class="form-group">
         <label for="cuotas">Plan de cuotas</label>
         <input type="number" class="form-control" name="cuotas" id="cuotas"
-            placeholder="Ingrese la cantidad de cuotas para la venta" value="{{old('cuotas')}}"
+            placeholder="Ingrese la cantidad de cuotas para la venta" value="{{ old('cuotas') }}"
             wire:model="cantidadCuotas" wire:keyup.debounce.500ms="calcularPlan">
     </div>
 
     <div class="form-group">
         <label for="precio_total_terreno">Precio Terreno</label>
         <input type="text" class="form-control" name="precio_total_terreno" id="precio_total_terreno"
-            placeholder="Ingrese el precio total del terreno" value="{{old('precio_total_terreno')}}" disabled
+            placeholder="Ingrese el precio total del terreno" value="{{ old('precio_total_terreno') }}" disabled
             wire:model="precioTotalTerreno">
     </div>
 
@@ -59,11 +59,11 @@
     <div class="form-group">
         <label for="promedio_cemento">Promedio Cemento</label>
         <input type="number" class="form-control" name="promedio_cemento" id="promedio_cemento"
-            placeholder="Ingrese el precio total de la entrega del terreno" value="{{old('promedio_cemento')}}"
+            placeholder="Ingrese el precio total de la entrega del terreno" value="{{ old('promedio_cemento') }}"
             wire:model="promedioCemento" wire:keyup.debounce.500ms="calcularPlan">
         <b class="mt-4">
-            {{$promedioCementoDelMes?->fecha_formateado}}: Promedio
-            ${{$promedioCementoDelMes?->precio_promedio}}
+            {{ $promedioCementoDelMes?->fecha_formateado }}: Promedio
+            ${{ $promedioCementoDelMes?->precio_promedio }}
         </b>
     </div>
 
@@ -89,15 +89,27 @@
         <input type="number" class="form-control" name="valor_cuota" id="valor_cuota" disabled
             wire:model="valorCuotaMensual">
     </div>
+    <select class="form-control" name="forma_pago" id="forma_pago" wire:model="formaPago">
+        <option value="" disabled>Seleccione una forma de pago</option>
+        @foreach ($formasDePagos as $key => $value)
+            <option value="{{ $key }}" @if ($formaPago === $key) selected @endif>
+                {{ $value }}</option>
+        @endforeach
+    </select>
+    <div class="form-group">
+        <label for="importeEntrega">Importe Entrega</label>
+        <input type="number" class="form-control" name="importeEntrega" id="importeEntrega"
+            wire:model="importeEntrega">
+    </div>
 
 
     <div wire:loading>
         Calculando
     </div>
 
-    <button type="button" class="btn btn-primary mr-2 mb-2 form-control" {{$isDisabled ? 'disabled' : '' }}
+    <button type="button" class="btn btn-primary mr-2 mb-2 form-control" {{ $isDisabled ? 'disabled' : '' }}
         data-toggle="modal" data-target="#ventaParcela">Guardar</button>
-    
+
 
 
     <!-- Modal -->
