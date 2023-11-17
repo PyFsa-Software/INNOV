@@ -89,13 +89,18 @@
         <input type="number" class="form-control" name="valor_cuota" id="valor_cuota" disabled
             wire:model="valorCuotaMensual">
     </div>
-    <select class="form-control" name="forma_pago" id="forma_pago" wire:model="formaPago">
-        <option value="" disabled>Seleccione una forma de pago</option>
-        @foreach ($formasDePagos as $key => $value)
-            <option value="{{ $key }}" @if ($formaPago === $key) selected @endif>
-                {{ $value }}</option>
-        @endforeach
-    </select>
+
+    <div class="form-group">
+        <label for="total_abonado">Formas de Pago: </label>
+        <select class="form-control" name="forma_pago" id="forma_pago" wire:model="formaPago">
+            <option value="" disabled>Seleccione una forma de pago</option>
+            @foreach ($formasDePagos as $key => $value)
+                <option value="{{ $key }}" @if ($formaPago === $key) selected @endif>
+                    {{ $value }}</option>
+            @endforeach
+        </select>
+    </div>
+
     <div class="form-group">
         <label for="importeEntrega">Importe Entrega</label>
         <input type="number" class="form-control" name="importeEntrega" id="importeEntrega"

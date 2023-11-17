@@ -18,6 +18,7 @@ class VentaParcela extends Component
     public $parcelas;
     public $promedioCementoDelMes;
     public $formasDePagos;
+    public $formaPago = "";
     // seleccionar usuario
     public $clienteCombo = "";
     public $parcelaCombo = "";
@@ -96,6 +97,7 @@ class VentaParcela extends Component
                 // 'precio_total_entrega' => $this->precioTotalEntrega,
                 // 'precio_final' => $this->valorTotalFinanciar,
                 'importe_entrega' => $this->importeEntrega,
+                'forma_pago' => $this->formaPago,
                 'id_parcela' => $this->parcelaCombo,
                 'id_cliente' => $this->clienteCombo,
             ]);
