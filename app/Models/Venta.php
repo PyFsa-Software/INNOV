@@ -20,8 +20,11 @@ class Venta extends Model
         'precio_total_entrega',
         'fecha_actualizacion_precio',
         'precio_final',
+        'importe_entrega',
+        'forma_pago',
         'id_parcela',
         'id_cliente',
+        'concepto_de'
     ];
 
     public function cliente()

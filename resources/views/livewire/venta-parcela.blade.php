@@ -41,6 +41,55 @@
             wire:model="cantidadCuotas" wire:keyup.debounce.500ms="calcularPlan">
     </div>
 
+
+    <div class="form-group">
+        <label for="promedio_cemento">Promedio Cemento</label>
+        <input type="number" class="form-control" name="promedio_cemento" id="promedio_cemento"
+            placeholder="Ingrese el precio total de la entrega del terreno" value="{{ old('promedio_cemento') }}"
+            wire:model="promedioCemento" wire:keyup.debounce.500ms="calcularPlan">
+        <b class="mt-4">
+            {{ $promedioCementoDelMes?->fecha_formateado }}: Promedio
+            ${{ $promedioCementoDelMes?->precio_promedio }}
+        </b>
+    </div>
+
+
+    <div class="form-group">
+        <label for="forma_pago">Formas de Pago: </label>
+        <select class="form-control" name="forma_pago" id="forma_pago" wire:model="formaPago"
+            wire:keyup.debounce.500ms="calcularPlan">
+            <option value="" disabled>Seleccione una forma de pago</option>
+            @foreach ($formasDePagos as $key => $value)
+                <option value="{{ $key }}" @if ($formaPago === $key) selected @endif>
+                    {{ $value }}</option>
+            @endforeach
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="conceptoDe">Concepto De: </label>
+        <select class="form-control" name="conceptoDe" id="conceptoDe" wire:model="conceptoDe"
+            wire:keyup.debounce.500ms="calcularPlan">
+            <option value="" selected disabled>Seleccione un concepto</option>
+            @foreach ($conceptosDe as $key => $value)
+                <option value="{{ $value }}">{{ $value }}</option>
+            @endforeach
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="importeEntrega">Importe Entrega</label>
+        <input type="number" class="form-control" name="importeEntrega" id="importeEntrega" wire:model="importeEntrega"
+            wire:keyup.debounce.500ms="calcularPlan">
+    </div>
+
+
+    <div class="form-group">
+        <h3 class="text-center" style="opacity: 0.7;">Campos Automaticos</h3>
+    </div>
+
+
+
     <div class="form-group">
         <label for="precio_total_terreno">Precio Terreno</label>
         <input type="text" class="form-control" name="precio_total_terreno" id="precio_total_terreno"
@@ -56,16 +105,6 @@
     </div> --}}
 
 
-    <div class="form-group">
-        <label for="promedio_cemento">Promedio Cemento</label>
-        <input type="number" class="form-control" name="promedio_cemento" id="promedio_cemento"
-            placeholder="Ingrese el precio total de la entrega del terreno" value="{{ old('promedio_cemento') }}"
-            wire:model="promedioCemento" wire:keyup.debounce.500ms="calcularPlan">
-        <b class="mt-4">
-            {{ $promedioCementoDelMes?->fecha_formateado }}: Promedio
-            ${{ $promedioCementoDelMes?->precio_promedio }}
-        </b>
-    </div>
 
     <div class="form-group">
         <label for="fecha_desde">Fecha Desde (Detalle Plan)</label>
@@ -90,22 +129,7 @@
             wire:model="valorCuotaMensual">
     </div>
 
-    <div class="form-group">
-        <label for="total_abonado">Formas de Pago: </label>
-        <select class="form-control" name="forma_pago" id="forma_pago" wire:model="formaPago">
-            <option value="" disabled>Seleccione una forma de pago</option>
-            @foreach ($formasDePagos as $key => $value)
-                <option value="{{ $key }}" @if ($formaPago === $key) selected @endif>
-                    {{ $value }}</option>
-            @endforeach
-        </select>
-    </div>
 
-    <div class="form-group">
-        <label for="importeEntrega">Importe Entrega</label>
-        <input type="number" class="form-control" name="importeEntrega" id="importeEntrega"
-            wire:model="importeEntrega">
-    </div>
 
 
     <div wire:loading>

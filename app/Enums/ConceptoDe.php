@@ -17,3 +17,16 @@ enum ConceptoDe:string {
     }
 
 }
+enum ConceptoDeVenta:string {
+    case CUOTA = 'CUOTA';
+    case SENIA = 'SEÑA';
+
+    public static function toArray(): array
+    {
+        return [
+            self::CUOTA->name => self::CUOTA->value,
+            self::SENIA->name => self::SENIA->value,
+        ];
+    }
+
+}

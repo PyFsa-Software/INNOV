@@ -232,19 +232,19 @@
                 {{-- {{ $cuota?->forma_pago ?? '-' }} --}}
             </div>
             <div class="importe-total">
-                <small>Importe Total: </small><b>
-                    @if ($venta->importe_total)
-                        $ {{ number_format($cuota?->total_pago, 2, ',', '.') }}
+                <small>Importe Entrega: </small><b>
+                    @if ($venta->importe_entrega != null)
+                        $ {{ number_format($venta?->importe_entrega, 2, ',', '.') }}
                     @else
                         $ 0.00
                     @endif
                 </b>
 
             </div>
-            {{-- <br> --}}
-            {{-- <div class="importe-total"> --}}
-            {{-- <small>Concepto de: <b>{{ $cuota?->concepto_de ?? '..............................' }}.</b> --}}
-            {{-- </div> --}}
+            <br>
+            <div class="importe-total">
+                <small>Concepto de: <b>{{ $venta?->concepto_de ?? '..............................' }}.</b>
+            </div>
             <br>
             <div class="firma">
                 <small>Firma: ..............................</b>

@@ -19,7 +19,8 @@
                     </div>
                 </div>
 
-                <livewire:venta-parcela :clientes="$clientes" :parcelas="$parcelas" :promedioCementoDelMes="$promedioCemento" :formasDePagos="$formasDePagos" />
+                <livewire:venta-parcela :clientes="$clientes" :parcelas="$parcelas" :promedioCementoDelMes="$promedioCemento" :formasDePagos="$formasDePagos"
+                    :conceptosDe="$conceptosDe" />
 
             </div>
         </div>

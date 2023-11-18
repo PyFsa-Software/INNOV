@@ -63,7 +63,7 @@ class VentasDataTable extends DataTable
      */
     public function query(Venta $model): QueryBuilder
     {
-        return $model::with('cliente', 'parcela.lote');
+        return $model::with('cliente', 'parcela.lote')->orderBy('fecha_venta', 'desc');
     }
 
     /**

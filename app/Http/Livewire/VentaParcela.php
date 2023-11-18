@@ -19,6 +19,8 @@ class VentaParcela extends Component
     public $promedioCementoDelMes;
     public $formasDePagos;
     public $formaPago = "";
+    public $conceptosDe;
+    public $conceptoDe = "";
     // seleccionar usuario
     public $clienteCombo = "";
     public $parcelaCombo = "";
@@ -46,6 +48,8 @@ class VentaParcela extends Component
         // 'precioTotalEntrega' => 'required|numeric|min:1',
         'promedioCemento' => 'required|numeric|integer|min:1',
         'importeEntrega' => 'required|numeric|min:1',
+        'formaPago' => 'required|string|max:255',
+        'conceptoDe' => 'required|string|max:255',
     ];
 
     public function updated($propertyName)
@@ -89,6 +93,8 @@ class VentaParcela extends Component
         try {
             DB::beginTransaction();
 
+            // dd($this->formaPago, $this->importeEntrega);
+
             $ventaGuardada = Venta::create([
                 'cuotas' => $this->cantidadCuotas,
                 'precio_total_terreno' => $this->precioTotalTerreno,
@@ -98,6 +104,7 @@ class VentaParcela extends Component
                 // 'precio_final' => $this->valorTotalFinanciar,
                 'importe_entrega' => $this->importeEntrega,
                 'forma_pago' => $this->formaPago,
+                'concepto_de' => $this->conceptoDe,
                 'id_parcela' => $this->parcelaCombo,
                 'id_cliente' => $this->clienteCombo,
             ]);
@@ -147,13 +154,8 @@ class VentaParcela extends Component
 
             DB::commit();
 
-            return redirect()->route('ventas.crear')->with('success', "Venta realizada correctamente, puede visualizarla desde el modulo de detalle de clientes.");
+            return redirect()->route('ventas.listado')->with('success', "Venta realizada correctamente.");
         } catch (\Throwable$e) {
-
-
-            
-
-            // dd($e->getMessage());
             DB::rollback();
             return redirect()->route('ventas.crear')->with('error', "Error al intentar guardar la venta, contacte con el administrador.");
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\VentasDataTable;
+use App\Enums\ConceptoDeVenta;
 use App\Enums\FormasPago;
 use App\Models\Parcela;
 use App\Models\Persona;
@@ -51,7 +52,9 @@ class VentasController extends Controller
 
         $formasDePagos = FormasPago::toArray();
 
-        return view('ventas.crear', compact('clientes', 'parcelas', 'promedioCemento', 'formasDePagos'));
+        $conceptosDe = ConceptoDeVenta::toArray();
+
+        return view('ventas.crear', compact('clientes', 'parcelas', 'promedioCemento', 'formasDePagos', 'conceptosDe'));
     }
 
       /**
