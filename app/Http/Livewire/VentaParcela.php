@@ -49,7 +49,7 @@ class VentaParcela extends Component
         'promedioCemento' => 'required|numeric|integer|min:1',
         'importeEntrega' => 'required|numeric|min:1',
         'formaPago' => 'required|string|max:255',
-        'conceptoDe' => 'required|string|max:255',
+        'conceptoDe' => 'string|max:255',
     ];
 
     public function updated($propertyName)
@@ -94,6 +94,8 @@ class VentaParcela extends Component
             DB::beginTransaction();
 
             // dd($this->formaPago, $this->importeEntrega);
+
+            $this->conceptoDe = $this->conceptoDe == '' ? null : $this->conceptoDe;
 
             $ventaGuardada = Venta::create([
                 'cuotas' => $this->cantidadCuotas,

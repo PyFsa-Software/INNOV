@@ -70,7 +70,7 @@
         <label for="conceptoDe">Concepto De: </label>
         <select class="form-control" name="conceptoDe" id="conceptoDe" wire:model="conceptoDe"
             wire:keyup.debounce.500ms="calcularPlan">
-            <option value="" selected disabled>Seleccione un concepto</option>
+            <option value="" selected>Seleccione un concepto</option>
             @foreach ($conceptosDe as $key => $value)
                 <option value="{{ $value }}">{{ $value }}</option>
             @endforeach
