@@ -49,7 +49,7 @@ class VentaParcela extends Component
         'promedioCemento' => 'required|numeric|integer|min:1',
         'importeEntrega' => 'required|numeric|min:1',
         'formaPago' => 'required|string|max:255',
-        'conceptoDe' => 'string|max:255',
+        'conceptoDe' => 'string|max:255|required',
     ];
 
     public function updated($propertyName)

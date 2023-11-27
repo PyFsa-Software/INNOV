@@ -68,13 +68,16 @@
 
     <div class="form-group">
         <label for="conceptoDe">Concepto De: </label>
-        <select class="form-control" name="conceptoDe" id="conceptoDe" wire:model="conceptoDe"
+        <textarea class="form-control" name="conceptoDe" id="conceptoDe" cols="30" rows="3" wire:model="conceptoDe"
+            wire:keyup.debounce.500ms="calcularPlan"></textarea>
+
+        {{-- <select class="form-control" name="conceptoDe" id="conceptoDe" wire:model="conceptoDe"
             wire:keyup.debounce.500ms="calcularPlan">
             <option value="" selected>Seleccione un concepto</option>
             @foreach ($conceptosDe as $key => $value)
                 <option value="{{ $value }}">{{ $value }}</option>
             @endforeach
-        </select>
+        </select> --}}
     </div>
 
     <div class="form-group">
