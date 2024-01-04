@@ -51,7 +51,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary mr-2 mb-2 form-control">Guardar</button>
-                <a href="{{route('clientes.index')}}" class="btn btn-danger form-control">Cancelar</a>
+                <a href="{{route('clientes.estadoCuotas', $parcela->id_parcela)}}" class="btn btn-danger form-control">Cancelar</a>
             </form>
 
             <x-alertas />
