@@ -47,7 +47,7 @@ class VentaParcela extends Component
         'cantidadCuotas' => 'required|numeric|integer|min:1|int',
         // 'precioTotalEntrega' => 'required|numeric|min:1',
         'promedioCemento' => 'required|numeric|integer|min:1',
-        'importeEntrega' => 'required|numeric|min:1',
+        'importeEntrega' => 'required|numeric|min:0',
         'formaPago' => 'required|string|max:255',
         'conceptoDe' => 'string|max:255|required',
     ];
@@ -68,7 +68,7 @@ class VentaParcela extends Component
         ])->first();
 
         // CALCULAR TOTAL BOLSAS DE CEMENTO POR EL PROMEDIO DEL CEMENTO
-        $this->precioTotalTerreno = $this->parcelaById->cantidad_bolsas * $this->promedioCemento;
+        $this->precioTotalTerreno = ($this->parcelaById->cantidad_bolsas * $this->promedioCemento)-$this->importeEntrega;
 
         // OBTENER TOTAL BOLSAS DE CEMENTO PARA EL LOTE
         $cantidadBolsasCementoTerreno = $this->precioTotalTerreno / $this->promedioCemento;
@@ -113,13 +113,9 @@ class VentaParcela extends Component
 
             $totalCuotas = DetalleVenta::where('id_venta','=',$ventaGuardada->id_venta)->count('id_detalle_venta');
 
-            
-            
             $planCuota = $ventaGuardada->cuotas; 
-            
+
             $restoCuotas = $planCuota - $totalCuotas;
-            
-            // dd($restoCuotas);
 
             if ($restoCuotas < 6) {
                 for ($i = 1; $i <= $restoCuotas; $i++) {
@@ -132,9 +128,8 @@ class VentaParcela extends Component
                 ]);
             }
             }else{
-                
                 for ($i = 1; $i <= 6; $i++) {
-    
+
                     DetalleVenta::create([
                         'numero_cuota' => $i,
                         'fecha_maxima_a_pagar' => Carbon::now()->addMonth($i)->format('Y-m') . '-21',
@@ -143,14 +138,6 @@ class VentaParcela extends Component
                     ]);
                 }
             }
-
-
-            // DetallePlan::create([
-            //     'fecha_desde' => $this->fechaDesdeDetallePlan,
-            //     'fecha_hasta' => $this->fechaHastaDetallePlan,
-            //     'valor_cuota' => $this->valorCuotaMensual,
-            //     'id_venta' => $ventaGuardada->id_venta,
-            // ]);
 
             $this->parcelaById->update(['disponible' => 0]);
 
