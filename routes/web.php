@@ -186,6 +186,11 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('clientes/pagos-multiples/{parcela}', 'volantesPagosMultiples')->name('clientes.pagosMultiples');
 
+        // ACTUALIZAR MONTO CUOTAS VENCIDAS
+
+        Route::get('clientes/actualizar-precios-cuotas/{parcela}', 'actualizarPreciosCuotasVencidas')->name('clientes.actualizarPreciosCuotasVencidas');
+        Route::post('clientes/actualizar-precios-cuotas/{parcela}', 'guardarPreciosCuotasVencidas')->name('clientes.guardarPreciosCuotasVencidas');
+
     });
 
     // ROUTES VENTAS

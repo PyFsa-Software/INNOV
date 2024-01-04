@@ -13,7 +13,9 @@ use App\Models\Persona;
 use App\Models\Venta;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class ClientesController extends Controller
 {
@@ -308,5 +310,45 @@ class ClientesController extends Controller
 
 
         return view('clientes.generarCuotas', compact('venta', 'parcela', 'ultimaCuota'));
+    }
+
+
+    public function actualizarPreciosCuotasVencidas(Parcela $parcela){
+
+        $ventas = Venta::where('id_parcela',$parcela->id_parcela)->first();
+        $cuotasPrecioVencido = DetalleVenta::where('id_venta', $ventas->id_venta)
+                                ->get()
+                                ->filter(function ($detalleVenta) {
+                                    return $detalleVenta->getActualizarCuotasAttribute();
+                                });
+        return view('clientes.actualizarCuotasVencidas.actualizarCuotasVencidas',compact('cuotasPrecioVencido','parcela'));
+    }
+
+    public function guardarPreciosCuotasVencidas(Request $request, Parcela $parcela){
+
+        $rules = [
+            'preciosCuotasVencidas' => 'required|numeric|min:0',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $ventas = Venta::where('id_parcela',$parcela->id_parcela)->first();
+        $cuotasPrecioVencido = DetalleVenta::where('id_venta', $ventas->id_venta)
+                                ->get()
+                                ->filter(function ($detalleVenta) {
+                                    return $detalleVenta->getActualizarCuotasAttribute();
+                                });
+        foreach ($cuotasPrecioVencido as $cuota) {
+            $cuota->update([
+                'total_estimado_a_pagar' => $request->input('preciosCuotasVencidas'),
+                'fecha_actualizacion' => Carbon::now()->format('Y-m'),
+            ]);
+        }
+
+        return redirect()->route('clientes.estadoCuotas',[$parcela->id_parcela])->with('success', 'Precios actualizados correctamente!');
     }
 }
