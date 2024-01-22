@@ -19,7 +19,7 @@
                     </div>
                 </div>
 
-                <livewire:reserva-parcela />
+                <livewire:reserva-parcela :clientes="$clientes" :parcelas="$parcelas" :formasDePagos="$formasDePagos" />
 
             </div>
         </div>

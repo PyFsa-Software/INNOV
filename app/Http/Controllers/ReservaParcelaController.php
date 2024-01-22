@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\FormasPago;
+use App\Models\Parcela;
+use App\Models\Persona;
 use App\Models\ReservaParcela;
 use Illuminate\Http\Request;
 
@@ -19,7 +22,20 @@ class ReservaParcelaController extends Controller
 
     public function create()
     {
-        return view('reservas_realizadas.crear');
+
+        $clientes = Persona::where([
+            ['cliente', '=', '1'],
+            ['activo', '=', '1'],
+        ])->get();
+
+        $parcelas = Parcela::where([
+            ['disponible', '=', '1'],
+        ])->get();
+
+        $formasDePagos = FormasPago::toArray();
+
+
+        return view('reservas_realizadas.crear', compact('clientes', 'parcelas', 'formasDePagos'));
     }
 
     // public function store(Request $request)
