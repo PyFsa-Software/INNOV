@@ -54,7 +54,7 @@
     </div>
 
 
-    <div class="form-group">
+    {{-- <div class="form-group">
         <label for="forma_pago">Formas de Pago: </label>
         <select class="form-control" name="forma_pago" id="forma_pago" wire:model="formaPago"
             wire:keyup.debounce.500ms="calcularPlan">
@@ -69,25 +69,25 @@
     <div class="form-group">
         <label for="conceptoDe">Concepto De: </label>
         <textarea class="form-control" name="conceptoDe" id="conceptoDe" cols="30" rows="3" wire:model="conceptoDe"
-            wire:keyup.debounce.500ms="calcularPlan"></textarea>
+            wire:keyup.debounce.500ms="calcularPlan"></textarea> --}}
 
-        {{-- <select class="form-control" name="conceptoDe" id="conceptoDe" wire:model="conceptoDe"
+    {{-- <select class="form-control" name="conceptoDe" id="conceptoDe" wire:model="conceptoDe"
             wire:keyup.debounce.500ms="calcularPlan">
             <option value="" selected>Seleccione un concepto</option>
             @foreach ($conceptosDe as $key => $value)
                 <option value="{{ $value }}">{{ $value }}</option>
             @endforeach
         </select> --}}
-    </div>
+    {{-- </div>
 
     <div class="form-group">
         <label for="importeEntrega">Importe Entrega</label>
         <input type="number" class="form-control" name="importeEntrega" id="importeEntrega" wire:model="importeEntrega"
             wire:keyup.debounce.500ms="calcularPlan">
-    </div>
+    </div> --}}
 
 
-    <div class="form-group">
+    <div class="form-group mt-5">
         <h3 class="text-center" style="opacity: 0.7;">Campos Automaticos</h3>
     </div>
 

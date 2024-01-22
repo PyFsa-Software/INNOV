@@ -6,6 +6,7 @@ use App\Http\Controllers\LotesController;
 use App\Http\Controllers\ParcelasController;
 use App\Http\Controllers\PreciosController;
 use App\Http\Controllers\ReportesController;
+use App\Http\Controllers\ReservaParcelaController;
 use App\Http\Controllers\VentasCanceladasController;
 use App\Http\Controllers\VentasController;
 use App\Http\Middleware\VerificarActualizacionCuotas;
@@ -190,6 +191,22 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('clientes/actualizar-precios-cuotas/{parcela}', 'actualizarPreciosCuotasVencidas')->name('clientes.actualizarPreciosCuotasVencidas');
         Route::post('clientes/actualizar-precios-cuotas/{parcela}', 'guardarPreciosCuotasVencidas')->name('clientes.guardarPreciosCuotasVencidas');
+
+    });
+
+    // ROUTES RESERVA PARCELAS
+    Route::controller(ReservaParcelaController::class)->group(function () {
+
+        Route::get('reserva-parcela', 'index')->name('reservaParcela.index');
+
+        Route::get('reserva-parcela/crear', 'create')->name('reservaParcela.crear');
+        Route::post('reserva-parcela/crear', 'store')->name('reservaParcela.guardar');
+
+        Route::get('reserva-parcela/editar/{reservaParcela}', 'edit')->name('reservaParcela.editar');
+        Route::put('reserva-parcela/editar/{reservaParcela}', 'update')->name('reservaParcela.modificar');
+
+        Route::get('reserva-parcela/borrar/{reservaParcela}', 'showQuestionDestroy')->name('reservaParcela.borrar');
+        Route::delete('reserva-parcela/borrar/{reservaParcela}', 'destroy')->name('reservaParcela.eliminar');
 
     });
 

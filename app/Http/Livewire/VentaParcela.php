@@ -17,10 +17,6 @@ class VentaParcela extends Component
     public $clientes;
     public $parcelas;
     public $promedioCementoDelMes;
-    public $formasDePagos;
-    public $formaPago = "";
-    public $conceptosDe;
-    public $conceptoDe = "";
     // seleccionar usuario
     public $clienteCombo = "";
     public $parcelaCombo = "";
@@ -35,7 +31,7 @@ class VentaParcela extends Component
     public $fechaHastaDetallePlan;
     public $bolsasCementoMensual;
     public $valorCuotaMensual;
-    public $importeEntrega;
+
     // public $valorTotalFinanciar;
     public $precioTotalTerreno;
 
@@ -47,9 +43,6 @@ class VentaParcela extends Component
         'cantidadCuotas' => 'required|numeric|integer|min:1|int',
         // 'precioTotalEntrega' => 'required|numeric|min:1',
         'promedioCemento' => 'required|numeric|integer|min:1',
-        'importeEntrega' => 'required|numeric|min:0',
-        'formaPago' => 'required|string|max:255',
-        'conceptoDe' => 'string|max:255|required',
     ];
 
     public function updated($propertyName)
@@ -68,7 +61,7 @@ class VentaParcela extends Component
         ])->first();
 
         // CALCULAR TOTAL BOLSAS DE CEMENTO POR EL PROMEDIO DEL CEMENTO
-        $this->precioTotalTerreno = ($this->parcelaById->cantidad_bolsas * $this->promedioCemento)-$this->importeEntrega;
+        $this->precioTotalTerreno = ($this->parcelaById->cantidad_bolsas * $this->promedioCemento);
 
         // OBTENER TOTAL BOLSAS DE CEMENTO PARA EL LOTE
         $cantidadBolsasCementoTerreno = $this->precioTotalTerreno / $this->promedioCemento;
@@ -95,7 +88,7 @@ class VentaParcela extends Component
 
             // dd($this->formaPago, $this->importeEntrega);
 
-            $this->conceptoDe = $this->conceptoDe == '' ? null : $this->conceptoDe;
+            // $this->conceptoDe = $this->conceptoDe == '' ? null : $this->conceptoDe;
 
             $ventaGuardada = Venta::create([
                 'cuotas' => $this->cantidadCuotas,
@@ -104,9 +97,9 @@ class VentaParcela extends Component
                 'fecha_actualizacion_precio'=> Carbon::now()->addMonth(6)->format('Y-m') . '-01' ,
                 // 'precio_total_entrega' => $this->precioTotalEntrega,
                 // 'precio_final' => $this->valorTotalFinanciar,
-                'importe_entrega' => $this->importeEntrega,
-                'forma_pago' => $this->formaPago,
-                'concepto_de' => $this->conceptoDe,
+                // 'importe_entrega' => $this->importeEntrega,
+                // 'forma_pago' => $this->formaPago,
+                // 'concepto_de' => $this->conceptoDe,
                 'id_parcela' => $this->parcelaCombo,
                 'id_cliente' => $this->clienteCombo,
             ]);
