@@ -68,7 +68,7 @@ class VentaParcela extends Component
         ])->first();
 
         // CALCULAR TOTAL BOLSAS DE CEMENTO POR EL PROMEDIO DEL CEMENTO
-        $this->precioTotalTerreno = ($this->parcelaById->cantidad_bolsas * $this->promedioCemento)-$this->importeEntrega;
+        $this->precioTotalTerreno = ($this->parcelaById->cantidad_bolsas * $this->promedioCemento);
 
         // OBTENER TOTAL BOLSAS DE CEMENTO PARA EL LOTE
         $cantidadBolsasCementoTerreno = $this->precioTotalTerreno / $this->promedioCemento;
