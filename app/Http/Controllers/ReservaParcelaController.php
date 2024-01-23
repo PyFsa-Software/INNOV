@@ -2,22 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\DetalleReservaParcelaDataTable;
+use App\DataTables\ReservaParcelaDataTable;
 use App\Enums\FormasPago;
+use App\Models\DetalleReservaParcela;
 use App\Models\Parcela;
 use App\Models\Persona;
 use App\Models\ReservaParcela;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ReservaParcelaController extends Controller
 {
     
 
-    public function index()
+    public function index(ReservaParcelaDataTable $dataTable)
     {
 
         $reservas = ReservaParcela::all();
 
-        return view('reservas_realizadas.index', compact('reservas'));
+        return $dataTable->render('reservas_realizadas.index', compact('reservas'));
     }
 
     public function create()
@@ -38,71 +45,60 @@ class ReservaParcelaController extends Controller
         return view('reservas_realizadas.crear', compact('clientes', 'parcelas', 'formasDePagos'));
     }
 
-    // public function store(Request $request)
-    // {
-    //     $request->validate([
-    //         'nombre' => 'required',
-    //         'apellido' => 'required',
-    //         'dni' => 'required',
-    //         'telefono' => 'required',
-    //         'email' => 'required',
-    //         'parcela' => 'required',
-    //         'fecha' => 'required',
-    //         'hora' => 'required',
-    //         'monto' => 'required',
-    //         'forma_pago' => 'required',
-    //         'concepto' => 'required',
-    //     ]);
-
-    //     $reserva = new ReservaParcela([
-    //         'nombre' => $request->get('nombre'),
-    //         'apellido' => $request->get('apellido'),
-    //         'dni' => $request->get('dni'),
-    //         'telefono' => $request->get('telefono'),
-    //         'email' => $request->get('email'),
-    //         'parcela' => $request->get('parcela'),
-    //         'fecha' => $request->get('fecha'),
-    //         'hora' => $request->get('hora'),
-    //         'monto' => $request->get('monto'),
-    //         'forma_pago' => $request->get('forma_pago'),
-    //         'concepto' => $request->get('concepto'),
-    //     ]);
-    //     $reserva->save();
-    //     return redirect('/reserva_parcela')->with('success', 'Reserva guardada!');
-    // }
-
-    public function show($id)
+    public function payments(DetalleReservaParcelaDataTable $dataTable, $idReserva)
     {
-        // $reserva = ReservaParcela::find($id);
-        return view('reserva_parcela.ver', compact('reserva'));
+        $reservas = DetalleReservaParcela::where('id_reserva_parcela', $idReserva)->get();
+        return $dataTable->render('reservas_realizadas.listado_pagos', compact('reservas'));
     }
 
-    public function edit($id)
+    public function pay($id)
     {
-        // $reserva = ReservaParcela::find($id);
-        return view('reserva_parcela.editar', compact('reserva'));
+        $formasDePagos = FormasPago::toArray();
+        $reserva = ReservaParcela::findOrFail($id);
+        $detalleReserva = DetalleReservaParcela::where('id_reserva_parcela', $id)->get();
+        return view('reservas_realizadas.realizar_pago', compact('reserva', 'detalleReserva', 'formasDePagos'));
     }
 
-    public function update(Request $request, $id)
+    public function generarVolantePago($id)
     {
-        $request->validate([
-            'nombre' => 'required',
-            'apellido' => 'required',
-            'dni' => 'required',
-            'telefono' => 'required',
-            'email' => 'required',
-            'parcela' => 'required',
-            'fecha' => 'required',
-            'hora' => 'required',
-            'monto' => 'required',
-            'forma_pago' => 'required',
-            'concepto' => 'required',
-        ]);
+        try {
 
-        // $reserva = ReservaParcela::find($id);
+            // Obtener la venta por su ID
+            $detalleReservaParcela = DetalleReservaParcela::findOrFail($id)->with('reservaParcela')->first();
 
+            $reservaParcela = ReservaParcela::findOrFail($detalleReservaParcela->reservaParcela->id_reserva_parcela);
+
+            $idCliente = $detalleReservaParcela->reservaParcela->id_cliente;
+
+            // Obtener la persona asociada
+            $cliente = Persona::where('id_persona', $idCliente)->first();
+
+
+
+            $idParcela = $detalleReservaParcela->reservaParcela->id_parcela;
+
+            $parcela = Parcela::where('id_parcela', $idParcela)->with('lote')->first();
+
+            $pathLogo = Storage::path('public/img/logoInnova.jpg');
+            $logo = file_get_contents($pathLogo);
+            $html = '<img src="data:image/svg+xml;base64,' . base64_encode($logo) . '"  width="100" height="100" />';
+
+            $fecha_pago = Carbon::parse($detalleReservaParcela->fecha_pago);
+            $fecha_pago->format('d/m/Y');
+
+            // Generar el volante de pago en formato PDF
+            $pdf = Pdf::loadView('reservas_realizadas.volante_pago', compact('reservaParcela','detalleReservaParcela', 'cliente', 'html', 'fecha_pago', 'parcela'))->setPaper('cart', 'vertical');
+
+            return $pdf->stream(date('d-m-Y') . ".pdf", array('Attachment' => 0));
+            // Descargar el PDF
+            // return $pdf->download('volante_pago.pdf');
+        } catch (Exception $e) {
+            dd($e);
+            return response()->json([
+                'mensaje' => "Se produjo un error al generar el volante de pago. Por favor, contacte al administrador.",
+            ], 400);
+        }
     }
-    
 
 
 }

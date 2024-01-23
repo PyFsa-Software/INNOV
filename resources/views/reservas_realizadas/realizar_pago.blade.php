@@ -14,12 +14,12 @@
                 <div class="app-title mb-5">
 
                     <div>
-                        <h1 class="text-center"><i class="fa fa-desktop fa-lg"></i> Agregar Pre-Venta
+                        <h1 class="text-center"><i class="fa fa-desktop fa-lg"></i> Realizar Pago
                         </h1>
                     </div>
                 </div>
 
-                <livewire:reserva-parcela :clientes="$clientes" :parcelas="$parcelas" :formasDePagos="$formasDePagos" />
+                <livewire:realizar-pago-reserva :formasDePagos="$formasDePagos" :reserva="$reserva" :detalleReserva="$detalleReserva" />
 
             </div>
         </div>

@@ -197,16 +197,15 @@ Route::middleware(['auth'])->group(function () {
     // ROUTES RESERVA PARCELAS
     Route::controller(ReservaParcelaController::class)->group(function () {
 
-        Route::get('reserva-parcela', 'index')->name('reservaParcela.index');
+        Route::get('pre-venta', 'index')->name('reservaParcela.index');
 
-        Route::get('reserva-parcela/crear', 'create')->name('reservaParcela.crear');
-        Route::post('reserva-parcela/crear', 'store')->name('reservaParcela.guardar');
+        Route::get('pre-venta/pagos/{idReserva}', 'payments')->name('reservaParcela.payments');
+        Route::get('pre-venta/pagar/{idReserva}', 'pay')->name('reservaParcela.pay');
 
-        Route::get('reserva-parcela/editar/{reservaParcela}', 'edit')->name('reservaParcela.editar');
-        Route::put('reserva-parcela/editar/{reservaParcela}', 'update')->name('reservaParcela.modificar');
+        Route::get('pre-venta/crear', 'create')->name('reservaParcela.crear');
 
-        Route::get('reserva-parcela/borrar/{reservaParcela}', 'showQuestionDestroy')->name('reservaParcela.borrar');
-        Route::delete('reserva-parcela/borrar/{reservaParcela}', 'destroy')->name('reservaParcela.eliminar');
+        Route::get('pre-venta/volante-pago/{idDetalleReserva}', 'generarVolantePago')->name('reservaParcela.volantePago');
+
 
     });
 

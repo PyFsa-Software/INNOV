@@ -125,7 +125,7 @@
                         <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
                             <a class="dropdown-item" href="{{ route('reservaParcela.crear') }}">
                                 <i class="icon-plus text-primary"></i>
-                                Reservar Parcela
+                                Realizar Pre-Venta
                             </a>
                             <a class="dropdown-item" href="{{ route('ventas.crear') }}">
                                 <i class="icon-plus text-primary"></i>
@@ -133,12 +133,12 @@
                             </a>
                             <a class="dropdown-item" href="{{ route('reservaParcela.index') }}">
                                 <i class="icon-check text-primary"></i>
-                                Reservas Realizadas
+                                Pre-Ventas Realizadas
                             </a>
-                            <a class="dropdown-item" href="{{ route('ventas.listado') }}">
+                            {{-- <a class="dropdown-item" href="{{ route('ventas.listado') }}">
                                 <i class="icon-check text-primary"></i>
                                 Ventas Realizadas
-                            </a>
+                            </a> --}}
                             <a class="dropdown-item" href="{{ route('ventasCanceladas.index') }}">
                                 <i class="icon-ban text-primary"></i>
                                 Ventas Liquidadas

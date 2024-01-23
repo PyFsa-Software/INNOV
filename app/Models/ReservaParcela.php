@@ -16,6 +16,7 @@ class ReservaParcela extends Model
         'id_parcela',
         'fecha_reserva',
         'monto_total',
+        'estado_reserva',
     ];
 
     public function cliente()
@@ -27,4 +28,6 @@ class ReservaParcela extends Model
     {
         return $this->belongsTo(Parcela::class, 'id_parcela', 'id_parcela');
     }
+
+    
 }
