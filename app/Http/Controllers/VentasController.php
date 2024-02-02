@@ -43,9 +43,7 @@ class VentasController extends Controller
             ['activo', '=', '1'],
         ])->get();
 
-        $parcelas = Parcela::where([
-            ['disponible', '=', '1'],
-        ])->get();
+        $parcelas = [];
 
         $promedioCemento = Precio::orderBy('fecha', 'desc')->first();
 

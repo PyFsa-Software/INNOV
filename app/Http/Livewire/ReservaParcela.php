@@ -92,10 +92,6 @@ class ReservaParcela extends Component
                 'importe_pago' => $this->importeEntrega,
             ]);
 
-
-            $this->parcelaById->update(['disponible' => 0]);
-
-
             DB::commit();
 
             return redirect()->route('reservaParcela.index')->with('success', "Pre-Venta realizada correctamente.");

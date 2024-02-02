@@ -48,7 +48,12 @@ class ReservaParcelaController extends Controller
     public function payments(DetalleReservaParcelaDataTable $dataTable, $idReserva)
     {
         $reservas = DetalleReservaParcela::where('id_reserva_parcela', $idReserva)->get();
-        return $dataTable->render('reservas_realizadas.listado_pagos', compact('reservas'));
+        
+
+        $cancelado = DetalleReservaParcela::where('id_reserva_parcela', $idReserva)->where('cancelado', 1)->count();
+
+
+        return $dataTable->render('reservas_realizadas.listado_pagos', compact('reservas', 'cancelado'));
     }
 
     public function pay($id)
@@ -63,8 +68,9 @@ class ReservaParcelaController extends Controller
     {
         try {
 
+
             // Obtener la venta por su ID
-            $detalleReservaParcela = DetalleReservaParcela::findOrFail($id)->with('reservaParcela')->first();
+            $detalleReservaParcela = DetalleReservaParcela::where('id_detalle_reserva_parcela', $id)->with('reservaParcela')->first();
 
             $reservaParcela = ReservaParcela::findOrFail($detalleReservaParcela->reservaParcela->id_reserva_parcela);
 
@@ -85,6 +91,7 @@ class ReservaParcelaController extends Controller
 
             $fecha_pago = Carbon::parse($detalleReservaParcela->fecha_pago);
             $fecha_pago->format('d/m/Y');
+
 
             // Generar el volante de pago en formato PDF
             $pdf = Pdf::loadView('reservas_realizadas.volante_pago', compact('reservaParcela','detalleReservaParcela', 'cliente', 'html', 'fecha_pago', 'parcela'))->setPaper('cart', 'vertical');

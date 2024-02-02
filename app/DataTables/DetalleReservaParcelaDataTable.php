@@ -50,8 +50,9 @@ class DetalleReservaParcelaDataTable extends DataTable
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function query(DetalleReservaParcela $model): QueryBuilder
-    {
-        return $model->newQuery();
+    {   
+        $idReserva = request()->route('idReserva');
+        return $model->newQuery()->where('id_reserva_parcela', $idReserva)->orderBy('fecha_pago', 'desc');
     }
 
     /**

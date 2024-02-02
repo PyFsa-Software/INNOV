@@ -17,6 +17,7 @@ class DetalleReservaParcela extends Model
         'forma_pago',
         'concepto_de',
         'importe_pago',
+        'cancelado',
     ];
 
     public function reservaParcela()

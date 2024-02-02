@@ -243,7 +243,7 @@
                 <small>Importe Entrega: </small><b>
                     @if ($detalleReservaParcela->importe_pago != null)
                         $ {{ number_format($detalleReservaParcela?->importe_pago, 2, ',', '.') }}
-                        @if ($detalleReservaParcela->importe_pago == $reservaParcela->monto_total)
+                        @if ($detalleReservaParcela->cancelado == 1)
                             <strong style="margin-left:40px; font-size: 30px;">CANCELADO</strong>
                         @endif
                     @else

@@ -15,7 +15,8 @@
 
     <div class="form-group">
         <label for="forma_pago">Formas de Pago: </label>
-        <select class="form-control" name="forma_pago" id="forma_pago" wire:model="formaPago">
+        <select class="form-control" name="forma_pago" id="forma_pago" wire:model="formaPago"
+            wire:keyup.debounce.500ms="validarImporteEntrega">
             <option value="" disabled>Seleccione una forma de pago</option>
             @foreach ($formasDePagos as $key => $value)
                 <option value="{{ $key }}" @if ($formaPago === $key) selected @endif>
@@ -26,7 +27,8 @@
 
     <div class="form-group">
         <label for="conceptoDe">Concepto De: </label>
-        <textarea class="form-control" name="conceptoDe" id="conceptoDe" cols="30" rows="3" wire:model="conceptoDe"></textarea>
+        <textarea class="form-control" name="conceptoDe" id="conceptoDe" cols="30" rows="3" wire:model="conceptoDe"
+            wire:keyup.debounce.500ms="validarImporteEntrega"></textarea>
     </div>
 
     <div class="form-group">

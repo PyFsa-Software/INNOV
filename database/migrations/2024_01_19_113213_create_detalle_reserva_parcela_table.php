@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('forma_pago')->enum('EFECTIVO', 'TRANSFERENCIA', 'DEBITO');
             $table->string('concepto_de');
             $table->string('importe_pago');
+            $table->boolean('cancelado')->default(false);
             $table->timestamps();
         });
     }
