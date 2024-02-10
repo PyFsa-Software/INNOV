@@ -35,9 +35,12 @@ class ReservaParcelaController extends Controller
             ['activo', '=', '1'],
         ])->get();
 
-        $parcelas = Parcela::where([
-            ['disponible', '=', '1'],
-        ])->get();
+        $parcelas = Parcela::where('disponible', 1)
+        ->whereNotIn('id_parcela', function($query) {
+            $query->select('id_parcela')
+                ->from('reserva_parcela');
+        })
+        ->get();
 
         $formasDePagos = FormasPago::toArray();
 
