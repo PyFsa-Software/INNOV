@@ -6,6 +6,7 @@ use App\Http\Controllers\LotesController;
 use App\Http\Controllers\ParcelasController;
 use App\Http\Controllers\PreciosController;
 use App\Http\Controllers\ReportesController;
+use App\Http\Controllers\ReservaParcelaController;
 use App\Http\Controllers\VentasCanceladasController;
 use App\Http\Controllers\VentasController;
 use App\Http\Middleware\VerificarActualizacionCuotas;
@@ -190,6 +191,21 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('clientes/actualizar-precios-cuotas/{parcela}', 'actualizarPreciosCuotasVencidas')->name('clientes.actualizarPreciosCuotasVencidas');
         Route::post('clientes/actualizar-precios-cuotas/{parcela}', 'guardarPreciosCuotasVencidas')->name('clientes.guardarPreciosCuotasVencidas');
+
+    });
+
+    // ROUTES RESERVA PARCELAS
+    Route::controller(ReservaParcelaController::class)->group(function () {
+
+        Route::get('pre-venta', 'index')->name('reservaParcela.index');
+
+        Route::get('pre-venta/pagos/{idReserva}', 'payments')->name('reservaParcela.payments');
+        Route::get('pre-venta/pagar/{idReserva}', 'pay')->name('reservaParcela.pay');
+
+        Route::get('pre-venta/crear', 'create')->name('reservaParcela.crear');
+
+        Route::get('pre-venta/volante-pago/{idDetalleReserva}', 'generarVolantePago')->name('reservaParcela.volantePago');
+
 
     });
 

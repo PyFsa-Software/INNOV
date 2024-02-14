@@ -17,10 +17,6 @@ class VentaParcela extends Component
     public $clientes;
     public $parcelas;
     public $promedioCementoDelMes;
-    public $formasDePagos;
-    public $formaPago = "";
-    public $conceptosDe;
-    public $conceptoDe = "";
     // seleccionar usuario
     public $clienteCombo = "";
     public $parcelaCombo = "";
@@ -35,7 +31,7 @@ class VentaParcela extends Component
     public $fechaHastaDetallePlan;
     public $bolsasCementoMensual;
     public $valorCuotaMensual;
-    public $importeEntrega;
+
     // public $valorTotalFinanciar;
     public $precioTotalTerreno;
 
@@ -47,9 +43,6 @@ class VentaParcela extends Component
         'cantidadCuotas' => 'required|numeric|integer|min:1|int',
         // 'precioTotalEntrega' => 'required|numeric|min:1',
         'promedioCemento' => 'required|numeric|integer|min:1',
-        'importeEntrega' => 'required|numeric|min:0',
-        'formaPago' => 'required|string|max:255',
-        'conceptoDe' => 'string|max:255|required',
     ];
 
     public function updated($propertyName)
@@ -59,6 +52,28 @@ class VentaParcela extends Component
         $this->isDisabled = false;
     }
 
+
+    public function obtenerParcelasCliente()
+    {
+        // Obtener las parcelas asociadas al cliente seleccionado
+        $parcelas = Parcela::join('reserva_parcela', 'parcelas.id_parcela', '=', 'reserva_parcela.id_parcela')
+            ->where('reserva_parcela.id_cliente', '=', $this->clienteCombo)
+            ->where('parcelas.disponible', '=', 1)
+            ->select('parcelas.id_parcela', 'parcelas.descripcion_parcela', 'parcelas.id_lote', 'parcelas.cantidad_bolsas', 'parcelas.manzana')
+            ->get();
+
+        $this->parcelas = $parcelas;
+    }
+
+    public function updatedClienteCombo($value)
+    {
+        $this->obtenerParcelasCliente();
+        $this->calcularPlan();
+    }
+
+
+
+
     public function calcularPlan()
     {
         $this->validate();
@@ -67,8 +82,16 @@ class VentaParcela extends Component
             ['id_parcela', '=', $this->parcelaCombo],
         ])->first();
 
+        if ($this->parcelaById->cantidad_bolsas == "") {
+            $this->addError('parcelaCombo', 'La parcela seleccionada no tiene cantidad de bolsas de cemento.');
+            $this->isDisabled = true;
+            return;
+        }
+        $this->isDisabled = false;
+
+        
         // CALCULAR TOTAL BOLSAS DE CEMENTO POR EL PROMEDIO DEL CEMENTO
-        $this->precioTotalTerreno = ($this->parcelaById->cantidad_bolsas * $this->promedioCemento);
+        $this->precioTotalTerreno = (int)$this->parcelaById->cantidad_bolsas * (int)$this->promedioCemento;
 
         // OBTENER TOTAL BOLSAS DE CEMENTO PARA EL LOTE
         $cantidadBolsasCementoTerreno = $this->precioTotalTerreno / $this->promedioCemento;
@@ -83,7 +106,6 @@ class VentaParcela extends Component
         // OBTENER FECHA DESDE Y HASTA DEL PLAN DE PAGO
         $this->fechaDesdeDetallePlan = Carbon::now()->addMonth(1)->format('Y-m') . '-21';
         $this->fechaHastaDetallePlan = Carbon::now()->addMonth(6)->format('Y-m') . '-21';
-
     }
 
     public function submit()
@@ -95,39 +117,39 @@ class VentaParcela extends Component
 
             // dd($this->formaPago, $this->importeEntrega);
 
-            $this->conceptoDe = $this->conceptoDe == '' ? null : $this->conceptoDe;
+            // $this->conceptoDe = $this->conceptoDe == '' ? null : $this->conceptoDe;
 
             $ventaGuardada = Venta::create([
                 'cuotas' => $this->cantidadCuotas,
                 'precio_total_terreno' => $this->precioTotalTerreno,
                 'cuota_mensual_bolsas_cemento' => $this->bolsasCementoMensual,
-                'fecha_actualizacion_precio'=> Carbon::now()->addMonth(6)->format('Y-m') . '-01' ,
+                'fecha_actualizacion_precio' => Carbon::now()->addMonth(6)->format('Y-m') . '-01',
                 // 'precio_total_entrega' => $this->precioTotalEntrega,
                 // 'precio_final' => $this->valorTotalFinanciar,
-                'importe_entrega' => $this->importeEntrega,
-                'forma_pago' => $this->formaPago,
-                'concepto_de' => $this->conceptoDe,
+                // 'importe_entrega' => $this->importeEntrega,
+                // 'forma_pago' => $this->formaPago,
+                // 'concepto_de' => $this->conceptoDe,
                 'id_parcela' => $this->parcelaCombo,
                 'id_cliente' => $this->clienteCombo,
             ]);
 
-            $totalCuotas = DetalleVenta::where('id_venta','=',$ventaGuardada->id_venta)->count('id_detalle_venta');
+            $totalCuotas = DetalleVenta::where('id_venta', '=', $ventaGuardada->id_venta)->count('id_detalle_venta');
 
-            $planCuota = $ventaGuardada->cuotas; 
+            $planCuota = $ventaGuardada->cuotas;
 
             $restoCuotas = $planCuota - $totalCuotas;
 
             if ($restoCuotas < 6) {
                 for ($i = 1; $i <= $restoCuotas; $i++) {
 
-                DetalleVenta::create([
-                    'numero_cuota' => $i,
-                    'fecha_maxima_a_pagar' => Carbon::now()->addMonth($i)->format('Y-m') . '-21',
-                    'total_estimado_a_pagar' => $this->valorCuotaMensual,
-                    'id_venta' => $ventaGuardada->id_venta,
-                ]);
-            }
-            }else{
+                    DetalleVenta::create([
+                        'numero_cuota' => $i,
+                        'fecha_maxima_a_pagar' => Carbon::now()->addMonth($i)->format('Y-m') . '-21',
+                        'total_estimado_a_pagar' => $this->valorCuotaMensual,
+                        'id_venta' => $ventaGuardada->id_venta,
+                    ]);
+                }
+            } else {
                 for ($i = 1; $i <= 6; $i++) {
 
                     DetalleVenta::create([
@@ -143,13 +165,11 @@ class VentaParcela extends Component
 
             DB::commit();
 
-            return redirect()->route('ventas.listado')->with('success', "Venta realizada correctamente.");
-        } catch (\Throwable$e) {
+            return redirect()->route('ventas.crear')->with('success', "Venta realizada correctamente.");
+        } catch (\Throwable $e) {
             DB::rollback();
             return redirect()->route('ventas.crear')->with('error', "Error al intentar guardar la venta, contacte con el administrador.");
-
         }
-
     }
 
     public function render()
