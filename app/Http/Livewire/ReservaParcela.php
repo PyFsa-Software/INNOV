@@ -74,7 +74,6 @@ class ReservaParcela extends Component
     {
         $this->validate();
         $this->isDisabled = false;
-
         try {
             DB::beginTransaction();
 
@@ -97,6 +96,7 @@ class ReservaParcela extends Component
                 'forma_pago' => $this->formaPago,
                 'concepto_de' => $this->conceptoDe,
                 'importe_pago' => $this->importeEntrega,
+                'cancelado' => $this->importeEntrega == $this->montoTotal ? 1 : 0,
                 'moneda_pago' => $this->monedaPago,
             ]);
 
