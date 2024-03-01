@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Enums\ConceptoDe;
+use App\Enums\MonedaPago;
 use App\Models\DetalleVenta;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -22,6 +23,8 @@ class FormCobrarCuotas extends Component
     public $conceptoDe = "";
     public $isDisabled = true;
     public $conceptoDeOpcionesSelect = [];
+    public $monedaPago = "";
+    public $monedasDePagos = [];
     // public $pagado = false;
 
     // protected $rules = [
@@ -40,6 +43,7 @@ class FormCobrarCuotas extends Component
 
     public function mount()
     {
+        $this->monedasDePagos = MonedaPago::toArray();
         $this->totalEstimadoAbonar = (int) $this->cuota->total_estimado_a_pagar;
 
         $result = Carbon::createFromFormat('Y-m-d', $this->cuota->fecha_maxima_a_pagar)->isPast();
@@ -87,6 +91,7 @@ class FormCobrarCuotas extends Component
                 $this->cuota->numero_recibo = $numeroRecibo === null ? 1500 : $numeroRecibo + 1;
                 $this->cuota->forma_pago = $this->formaPago;
                 $this->cuota->concepto_de = $this->conceptoDe;
+                $this->cuota->moneda_pago = $this->monedaPago;
 
 
                 $this->cuota->save();
@@ -105,6 +110,7 @@ class FormCobrarCuotas extends Component
                 $this->cuota->numero_recibo = $numeroRecibo === null ? 1500 : $numeroRecibo + 1;
                 $this->cuota->forma_pago = $this->formaPago;
                 $this->cuota->concepto_de = $this->conceptoDe;
+                $this->cuota->moneda_pago = $this->monedaPago;
 
 
                 $cuotaPagada = $this->cuota->save();

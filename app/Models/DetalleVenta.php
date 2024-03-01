@@ -28,6 +28,7 @@ class DetalleVenta extends Model
         'fecha_actualizacion',
         'forma_pago',
         'concepto_de',
+        'moneda_pago',
     ];
 
     public function venta()

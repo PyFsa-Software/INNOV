@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Enums\MonedaPago;
 use App\Models\DetalleReservaParcela;
 use App\Models\Parcela;
 use App\Models\ReservaParcela as ModelsReservaParcela;
@@ -28,7 +29,8 @@ class ReservaParcela extends Component
 
     public $isDisabled = true;
 
-    
+    public $monedaPago = "";
+    public $monedasDePagos = [];
 
     protected $rules = [
         'clienteCombo' => 'required|numeric|integer',
@@ -38,6 +40,11 @@ class ReservaParcela extends Component
         'importeEntrega' => 'required|numeric|min:1',
         'montoTotal' => 'required|numeric|min:1',
     ];
+
+    public function mount()
+    {
+        $this->monedasDePagos = MonedaPago::toArray();
+    }
 
     public function updated($propertyName)
     {
@@ -90,6 +97,7 @@ class ReservaParcela extends Component
                 'forma_pago' => $this->formaPago,
                 'concepto_de' => $this->conceptoDe,
                 'importe_pago' => $this->importeEntrega,
+                'moneda_pago' => $this->monedaPago,
             ]);
 
             DB::commit();

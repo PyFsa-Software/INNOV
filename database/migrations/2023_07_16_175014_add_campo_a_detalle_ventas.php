@@ -14,15 +14,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('detalle_ventas', function (Blueprint $table) {
-            // add column forma_pago with enum FormasPago
-            $table->enum('forma_pago', [
-                FormasPago::EFECTIVO->value,
-                FormasPago::TRANSFERENCIA->value,
-                FormasPago::DEBITO->value
-            ])->nullable();
+        if (!Schema::hasColumn('detalle_ventas', 'forma_pago')) {
+            Schema::table('detalle_ventas', function (Blueprint $table) {
+                // add column forma_pago with enum FormasPago
+                $table->enum('forma_pago', [
+                    FormasPago::EFECTIVO->value,
+                    FormasPago::TRANSFERENCIA->value,
+                    FormasPago::DEBITO->value
+                ])->nullable();
 
-        });
+            });
+        }
     }
 
     /**

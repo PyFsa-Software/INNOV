@@ -188,7 +188,7 @@
                 <div class="pago">
                     <small>Recibí(mos) la suma de: </small><b>
                         @if ($detalleReservaParcela->importe_pago)
-                            <b>PESOS {{ convertDigitsToWord($detalleReservaParcela->importe_pago) }}.</b>
+                            <b>{{$detalleReservaParcela?->moneda_pago ?? 'PESOS'}}, {{ convertDigitsToWord($detalleReservaParcela->importe_pago) }}.</b>
                         @else
                             <b>$ 0.00</b>
                         @endif

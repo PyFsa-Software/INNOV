@@ -13,18 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('reserva_parcela', function (Blueprint $table) {
-            $table->id('id_reserva_parcela');
-            $table->string('id_cliente');
-            $table->foreign('id_cliente')->references('id_persona')->on('personas');
-            $table->string('id_parcela');
-            $table->foreign('id_parcela')->references('id_parcela')->on('parcelas');
-            $table->date('fecha_reserva');
-            $table->string('monto_total');
-            $table->boolean('estado_reserva')->default(false)->nullable();
-            
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('reserva_parcela')) {
+            Schema::create('reserva_parcela', function (Blueprint $table) {
+                $table->id('id_reserva_parcela');
+                $table->string('id_cliente');
+                $table->foreign('id_cliente')->references('id_persona')->on('personas');
+                $table->string('id_parcela');
+                $table->foreign('id_parcela')->references('id_parcela')->on('parcelas');
+                $table->date('fecha_reserva');
+                $table->string('monto_total');
+                $table->boolean('estado_reserva')->default(false)->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**

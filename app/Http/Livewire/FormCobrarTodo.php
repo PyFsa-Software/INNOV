@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Enums\ConceptoDe;
+use App\Enums\MonedaPago;
 use Livewire\Component;
 use App\Models\DetalleVenta;
 use App\Models\Venta;
@@ -28,6 +29,8 @@ class FormCobrarTodo extends Component
     public $precioActual;
     public $isDisabled = true;
     public $parcela;
+    public $monedaPago = "";
+    public $monedasDePagos = [];
 
     protected $rules = [
         'cantidadCuotasPagar' => 'required|integer|min:0',
@@ -37,6 +40,7 @@ class FormCobrarTodo extends Component
 
     public function mount()
     {
+        $this->monedasDePagos = MonedaPago::toArray();
         $this->parcela = Venta::where('id_venta', '=', $this->venta->id_venta)->with('parcela')->first();
         $this->conceptoDeOpcionesSelect = ConceptoDe::toArray();
     }
@@ -103,6 +107,7 @@ class FormCobrarTodo extends Component
                                 'total_pago' => $this->precioActual,
                                 'fecha_pago' => Carbon::now()->format('Y-m-d'),
                                 'concepto_de' => $this->conceptoDe,
+                                'moneda_pago' => $this->monedaPago,
                             ]);
                         });
             
@@ -120,6 +125,7 @@ class FormCobrarTodo extends Component
                         'total_pago' => $this->precioActual,
                         'fecha_pago' => Carbon::now()->format('Y-m-d'),
                         'concepto_de' => $this->conceptoDe,
+                        'moneda_pago' => $this->monedaPago,
                     ]);
                 });
 
@@ -140,6 +146,7 @@ class FormCobrarTodo extends Component
                         'id_venta' => $this->venta->id_venta,
                         'forma_pago' => $this->formaPago,
                         'concepto_de' => $this->conceptoDe,
+                        'moneda_pago' => $this->monedaPago,
                     ]);
                 }
             }

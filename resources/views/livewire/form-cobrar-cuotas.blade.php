@@ -42,6 +42,18 @@
         </select>
     </div>
 
+    {{-- add select moneda_pago --}}
+    <div class="form-group">
+        <label for="moneda_pago">Moneda de Pago: </label>
+        <select class="form-control" name="moneda_pago" id="moneda_pago" wire:model="monedaPago">
+            <option value="" disabled>Seleccione una moneda</option>
+            @foreach ($monedasDePagos as $key => $value)
+                <option value="{{ $key }}" @if ($monedaPago === $key) selected @endif>
+                    {{ $value }}</option>
+            @endforeach
+        </select>
+    </div>
+
 
 
     <div class="form-group">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Enums\MonedaPago;
 use App\Models\DetalleReservaParcela;
 use Livewire\Component;
 
@@ -24,6 +25,8 @@ class RealizarPagoReserva extends Component
 
     public $isDisabled = true;
 
+    public $monedaPago = "";
+    public $monedasDePagos = [];
 
     // protected $rules = [
     //     'formaPago' => 'required',
@@ -33,6 +36,7 @@ class RealizarPagoReserva extends Component
 
     public function mount($reserva, $detalleReserva, $formasDePagos)
     {
+        $this->monedasDePagos = MonedaPago::toArray();
         $this->reserva = $reserva;
         $this->detalleReserva = $detalleReserva;
         $this->formasDePagos = $formasDePagos;
@@ -89,6 +93,7 @@ class RealizarPagoReserva extends Component
             'forma_pago' => $this->formaPago,
             'importe_pago' => $this->importeEntrega,
             'concepto_de' => $this->conceptoDe,
+            'moneda_pago' => $this->monedaPago,
         ]);
 
 

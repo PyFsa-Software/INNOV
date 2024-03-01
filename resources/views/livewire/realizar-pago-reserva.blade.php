@@ -26,6 +26,18 @@
     </div>
 
     <div class="form-group">
+        <label for="moneda_pago">Moneda de Pago: </label>
+        <select class="form-control" name="moneda_pago" id="moneda_pago" wire:model="monedaPago"
+            wire:keyup.debounce.500ms="validarImporteEntrega">
+            <option value="" disabled>Seleccione una moneda</option>
+            @foreach ($monedasDePagos as $key => $value)
+                <option value="{{ $key }}" @if ($monedaPago === $key) selected @endif>
+                    {{ $value }}</option>
+            @endforeach
+        </select>
+    </div>
+
+    <div class="form-group">
         <label for="conceptoDe">Concepto De: </label>
         <textarea class="form-control" name="conceptoDe" id="conceptoDe" cols="30" rows="3" wire:model="conceptoDe"
             wire:keyup.debounce.500ms="validarImporteEntrega"></textarea>
