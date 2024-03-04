@@ -11,6 +11,6 @@ CREATE TABLE detalle_reserva_parcela ( id_detalle_reserva_parcela INT PRIMARY KE
 ## Monedas de Pagos
 
 ```sql
-ALTER TABLE detalle_ventas ADD COLUMN moneda_pago ENUM('DOLARES', 'PESO') NULL;
-ALTER TABLE detalle_reserva_parcela ADD COLUMN moneda_pago ENUM('DOLARES', 'PESO') NULL;
+ALTER TABLE detalle_ventas MODIFY COLUMN moneda_pago VARCHAR(255);
+ALTER TABLE detalle_reserva_parcela MODIFY COLUMN moneda_pago VARCHAR(255);
 ```
