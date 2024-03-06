@@ -188,7 +188,7 @@
                 <div class="pago">
                     <small>Recibí(mos) la suma de: </small><b>
                         @if ($venta->importe_entrega)
-                            <b>PESOS {{ convertDigitsToWord($venta->importe_entrega) }}.</b>
+                            <b>PESOS, {{ convertDigitsToWord($venta->importe_entrega) }}.</b>
                         @else
                             <b>$ 0.00</b>
                         @endif
