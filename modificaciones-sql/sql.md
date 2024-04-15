@@ -14,3 +14,26 @@ CREATE TABLE detalle_reserva_parcela ( id_detalle_reserva_parcela INT PRIMARY KE
 ALTER TABLE detalle_ventas MODIFY COLUMN moneda_pago VARCHAR(255);
 ALTER TABLE detalle_reserva_parcela MODIFY COLUMN moneda_pago VARCHAR(255);
 ```
+
+## Tabla comprobantes
+
+```sql
+CREATE TABLE `comprobantes` (
+  `id_comprobante` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `descripcion_comprobante` varchar(255) NOT NULL,
+  `numero_recibo` varchar(255) NOT NULL,
+  `fecha_comprobante` date NOT NULL,
+  `forma_pago` varchar(255) NOT NULL,
+  `importe_total` varchar(255) NOT NULL,
+  `concepto_de` varchar(255) NOT NULL,
+  `id_cliente` bigint unsigned DEFAULT NULL,
+  `id_venta` bigint unsigned DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id_comprobante`),
+  KEY `comprobantes_id_cliente_foreign` (`id_cliente`),
+  CONSTRAINT `comprobantes_id_cliente_foreign` FOREIGN KEY (`id_cliente`) REFERENCES `personas` (`id_persona`),
+  KEY `comprobantes_id_venta_foreign` (`id_venta`),
+  CONSTRAINT `comprobantes_id_venta_foreign` FOREIGN KEY (`id_venta`) REFERENCES `ventas` (`id_venta`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
