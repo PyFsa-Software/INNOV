@@ -223,6 +223,17 @@
                             </ul>
                         </div>
                     </li>
+                    {{-- add option for comprobantes --}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('comprobantes.index') }}" aria-expanded="false"
+                            aria-controls="auth">
+                            <i class="ti-receipt menu-icon"></i>
+                            <span class="menu-title
+                            ">COMPROBANTES</span>
+                            <i class="menu-arrow
+                            "></i>
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href={{ route('inicioSesion.desloguearse') }} aria-expanded="false"
                             aria-controls="auth">

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientesController;
+use App\Http\Controllers\ComprobanteController;
 use App\Http\Controllers\LotesController;
 use App\Http\Controllers\ParcelasController;
 use App\Http\Controllers\PreciosController;
@@ -231,5 +232,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('ventas-canceladas/volante/{numeroRecibo}', 'imprimirVolanteCancelacion')->name('ventasCanceladas.imprimirVolanteCancelacion');
     });
 
+    // ROUTE FOR COMPROBANTES
 
+    Route::controller(ComprobanteController::class)->group(function () {
+        Route::get('comprobantes', 'index')->name('comprobantes.index');
+        Route::get('comprobantes/crear', 'create')->name('comprobantes.crear');
+        // pdf
+        Route::get('comprobantes/pdf/{comprobante}', 'pdf')->name('comprobantes.pdf');
+    });
 });

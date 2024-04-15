@@ -89,8 +89,7 @@ class FormCobrarTodo extends Component
             $ultimaCuota = DetalleVenta::where('id_venta', '=', $this->venta->id_venta)
                 ->orderByRaw('CAST(numero_cuota AS SIGNED) DESC')->value('numero_cuota');
 
-            $numeroRecibo = DetalleVenta::where('numero_recibo', '!=', null)->orderBy('numero_recibo', 'desc')->value('numero_recibo');
-            $numeroRecibo = intval($numeroRecibo) + 1;
+            $numeroRecibo = DetalleVenta::getSiguienteNumeroRecibo();
 
             $cuotasNoPagadas = DetalleVenta::where('id_venta', '=', $this->venta->id_venta)
                 ->where('pagado', '=', 'no')->get();

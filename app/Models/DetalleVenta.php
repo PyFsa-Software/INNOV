@@ -68,4 +68,20 @@ class DetalleVenta extends Model
         return $this->pagado === 'si';
 
     }
+
+
+    public static function getSiguienteNumeroRecibo()
+    {
+        // get numero_recibo from DetalleVenta
+        $ultimoNumeroRecibo = (int) DetalleVenta::where('numero_recibo', '!=', null)->orderBy('numero_recibo', 'desc')->value('numero_recibo');
+
+        // get numero_recibo from Comprobante
+        $ultimoNumeroReciboComprobante = (int) Comprobante::where('numero_recibo', '!=', null)->orderBy('numero_recibo', 'desc')->value('numero_recibo');
+
+        if ($ultimoNumeroRecibo > $ultimoNumeroReciboComprobante) {
+            return $ultimoNumeroRecibo + 1;
+        } else {
+            return $ultimoNumeroReciboComprobante + 1;
+        }
+    }
 }

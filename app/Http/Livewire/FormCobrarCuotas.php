@@ -77,8 +77,7 @@ class FormCobrarCuotas extends Component
     {
         $this->validate();
         try {
-            $numeroRecibo = DetalleVenta::where('numero_recibo', '!=', null)->orderBy('numero_recibo', 'desc')->value('numero_recibo');
-
+            $numeroRecibo = DetalleVenta::getSiguienteNumeroRecibo();
             DB::beginTransaction();
 
             $fechaMaximaPagar = Carbon::create($this->cuota->fecha_maxima_a_pagar)->format('Y-m');
@@ -88,7 +87,7 @@ class FormCobrarCuotas extends Component
                 $this->cuota->total_pago = $this->totalAbonar;
                 $this->cuota->fecha_pago = date('Y-m-d');
                 $this->cuota->pagado = 'si';
-                $this->cuota->numero_recibo = $numeroRecibo === null ? 1500 : $numeroRecibo + 1;
+                $this->cuota->numero_recibo = $numeroRecibo === null ? 1500 : $numeroRecibo;
                 $this->cuota->forma_pago = $this->formaPago;
                 $this->cuota->concepto_de = $this->conceptoDe;
                 $this->cuota->moneda_pago = $this->monedaPago;
@@ -107,7 +106,7 @@ class FormCobrarCuotas extends Component
                 $this->cuota->total_pago = $this->totalAbonar;
                 $this->cuota->fecha_pago = date('Y-m-d');
                 $this->cuota->pagado = 'si';
-                $this->cuota->numero_recibo = $numeroRecibo === null ? 1500 : $numeroRecibo + 1;
+                $this->cuota->numero_recibo = $numeroRecibo === null ? 1500 : $numeroRecibo;
                 $this->cuota->forma_pago = $this->formaPago;
                 $this->cuota->concepto_de = $this->conceptoDe;
                 $this->cuota->moneda_pago = $this->monedaPago;
