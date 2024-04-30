@@ -41,8 +41,13 @@
     </div>
     <div class="form-group">
         <label for="forma_pago">Forma de Pago: <span class="text-danger">*</span></label>
-        <input type="text" class="form-control" name="forma_pago" id="forma_pago" value="{{ $formaPago }}"
-            wire:model="formaPago" placeholder="Ingrese la forma de pago">
+        <select class="form-control" name="forma_pago" id="forma_pago" wire:model="formaPago">
+            <option value="" disabled>Seleccione una forma de pago</option>
+            @foreach ($formasDePagos as $key => $value)
+                <option value="{{ $key }}" @if ($formaPago === $key) selected @endif>
+                    {{ $value }}</option>
+            @endforeach
+        </select>
     </div>
     <div class="form-group">
         <label for="importeTotal">Importe Total: <span class="text-danger">*</span></label>

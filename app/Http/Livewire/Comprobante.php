@@ -2,9 +2,11 @@
 
 namespace App\Http\Livewire;
 
+use App\Enums\FormasPago;
 use App\Enums\MonedaPago;
 use App\Models\Comprobante as ComprobanteModel;
 use App\Models\DetalleVenta;
+use App\Models\Persona;
 use App\Models\Venta;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -14,6 +16,7 @@ class Comprobante extends Component
     // props
     public $clientes;
     public $ventasCliente;
+    public $formasDePagos;
 
     public $descripcionComprobante = "";
     public $clienteCombo = "";
@@ -23,6 +26,16 @@ class Comprobante extends Component
     public $conceptoDe = "";
 
     public $isDisabled = true;
+
+    public function mount()
+    {
+        $this->clientes = Persona::where([
+            ['cliente', '=', '1'],
+            ['activo', '=', '1'],
+        ])->get();
+        $this->formasDePagos = FormasPago::toArray();
+    }
+
 
     protected $rules = [
         'descripcionComprobante' => 'required|string|unique:comprobantes,descripcion_comprobante',

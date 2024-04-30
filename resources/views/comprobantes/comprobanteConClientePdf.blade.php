@@ -197,10 +197,10 @@
                 {{-- <div class="info-parcela">
                     <small>Ubicación: </small><b>{{ $venta->parcela->lote->ubicacion }}.</b>
                 </div> --}}
-                <br>
+                {{-- <br>
                 <div class="info-parcela">
                     <small>Plan: </small><b>{{ $venta->cuotas }} Cuota/s.</b>
-                </div>
+                </div> --}}
             </div>
             <div class="info-parcela">
                 <small>Forma de Pago: </small><b>{{ $comprobante?->forma_pago ?? '-' }}.</b>
