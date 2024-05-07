@@ -26,14 +26,14 @@ CREATE TABLE `comprobantes` (
   `forma_pago` varchar(255) NOT NULL,
   `importe_total` varchar(255) NOT NULL,
   `concepto_de` varchar(255) NOT NULL,
+  `sr_sra` varchar(255) DEFAULT NULL,
+  `dni` varchar(255) DEFAULT NULL,
+  `domicilio` varchar(255) DEFAULT NULL,
+  `domicilio_alquiler` varchar(255) DEFAULT NULL,
   `id_cliente` bigint unsigned DEFAULT NULL,
   `id_venta` bigint unsigned DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_comprobante`),
-  KEY `comprobantes_id_cliente_foreign` (`id_cliente`),
-  CONSTRAINT `comprobantes_id_cliente_foreign` FOREIGN KEY (`id_cliente`) REFERENCES `personas` (`id_persona`),
-  KEY `comprobantes_id_venta_foreign` (`id_venta`),
-  CONSTRAINT `comprobantes_id_venta_foreign` FOREIGN KEY (`id_venta`) REFERENCES `ventas` (`id_venta`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  FOREIGN KEY (`id_cliente`) REFERENCES `personas`(`id_persona`),
+  FOREIGN KEY (`id_venta`) REFERENCES `ventas`(`id_venta`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```

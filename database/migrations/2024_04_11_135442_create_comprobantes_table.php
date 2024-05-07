@@ -21,6 +21,10 @@ return new class extends Migration
             $table->string('forma_pago');
             $table->string('importe_total');
             $table->string('concepto_de');
+            $table->string('sr_sra')->nullable();
+            $table->string('dni')->nullable();
+            $table->string('domicilio')->nullable();
+            $table->string('domicilio_alquiler')->nullable();
             $table->unsignedBigInteger('id_cliente')->nullable();
             $table->foreign('id_cliente')->references('id_persona')->on('personas');
             $table->unsignedBigInteger('id_venta')->nullable();

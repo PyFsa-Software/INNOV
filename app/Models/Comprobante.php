@@ -19,6 +19,10 @@ class Comprobante extends Model
         'forma_pago',
         'importe_total',
         'concepto_de',
+        'sr_sra',
+        'dni',
+        'domicilio',
+        'domicilio_alquiler',
         'id_cliente',
         'id_venta',
     ];

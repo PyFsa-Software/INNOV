@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Enums\DomicilioAlquiler;
 use App\Enums\FormasPago;
 use App\Enums\MonedaPago;
 use App\Models\Comprobante as ComprobanteModel;
@@ -17,6 +18,7 @@ class Comprobante extends Component
     public $clientes;
     public $ventasCliente;
     public $formasDePagos;
+    public $domiciliosAlquiler;
 
     public $descripcionComprobante = "";
     public $clienteCombo = "";
@@ -24,6 +26,11 @@ class Comprobante extends Component
     public $formaPago = "";
     public $importeTotal = "";
     public $conceptoDe = "";
+
+    public $srSra = "";
+    public $dni = "";
+    public $domicilio = "";
+    public $domicilioAlquiler = "";
 
     public $isDisabled = true;
 
@@ -34,6 +41,7 @@ class Comprobante extends Component
             ['activo', '=', '1'],
         ])->get();
         $this->formasDePagos = FormasPago::toArray();
+        $this->domiciliosAlquiler = DomicilioAlquiler::toArray();
     }
 
 
@@ -51,6 +59,18 @@ class Comprobante extends Component
         $this->isDisabled = true;
         try {
             $this->loadClienteCombo($this->clienteCombo);
+
+            if(!$this->clienteCombo){
+                $this->rules['srSra'] = 'required|string';
+                $this->rules['dni'] = 'required|regex:/^[0-9]{7,8}$/';
+                $this->rules['domicilio'] = 'required|string';
+                $this->rules['domicilioAlquiler'] = 'nullable|string';
+            }else{
+                unset($this->rules['srSra']);
+                unset($this->rules['dni']);
+                unset($this->rules['domicilio']);
+                unset($this->rules['domicilioAlquiler']);
+            }
            // Agregar regla de validación condicional para $ventasClienteCombo
             if ($this->clienteCombo) {
                 $this->rules['ventasClienteCombo'] = 'required|numeric|integer';
@@ -91,6 +111,10 @@ class Comprobante extends Component
             }else{
                 $comprobante->id_cliente = null;
                 $comprobante->id_venta = null;
+                $comprobante->sr_sra = $this->srSra;
+                $comprobante->dni = $this->dni;
+                $comprobante->domicilio = $this->domicilio;
+                $comprobante->domicilio_alquiler = $this->domicilioAlquiler;
             }
             $comprobante->fecha_comprobante = date('Y-m-d');
             $comprobante->forma_pago = $this->formaPago;
