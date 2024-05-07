@@ -32,6 +32,8 @@ CREATE TABLE `comprobantes` (
   `domicilio_alquiler` varchar(255) DEFAULT NULL,
   `id_cliente` bigint unsigned DEFAULT NULL,
   `id_venta` bigint unsigned DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_comprobante`),
   FOREIGN KEY (`id_cliente`) REFERENCES `personas`(`id_persona`),
   FOREIGN KEY (`id_venta`) REFERENCES `ventas`(`id_venta`)
