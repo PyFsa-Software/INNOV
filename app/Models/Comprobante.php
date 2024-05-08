@@ -23,6 +23,7 @@ class Comprobante extends Model
         'dni',
         'domicilio',
         'domicilio_alquiler',
+        'moneda_pago',
         'id_cliente',
         'id_venta',
     ];

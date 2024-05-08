@@ -82,6 +82,17 @@
             @endforeach
         </select>
     </div>
+    {{-- add combo moneda_pago --}}
+    <div class="form-group">
+        <label for="moneda_pago">Moneda de Pago: <span class="text-danger">*</span></label>
+        <select class="form-control" name="moneda_pago" id="moneda_pago" wire:model="monedaPago">
+            <option value="" disabled>Seleccione una moneda de pago</option>
+            @foreach ($monedasPagos as $key => $value)
+                <option value="{{ $key }}" @if ($monedaPago === $key) selected @endif>
+                    {{ $value }}</option>
+            @endforeach
+        </select>
+    </div>
     <div class="form-group">
         <label for="importeTotal">Importe Total: <span class="text-danger">*</span></label>
         <input type="number" class="form-control" name="importeTotal" id="importeTotal"

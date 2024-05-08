@@ -28,6 +28,9 @@ class ComprobantesDataTable extends DataTable
             ->addColumn('forma_pago', function ($data) {
                 return $data->forma_pago;
             })
+            ->addColumn('moneda_pago', function ($data) {
+                return $data->moneda_pago;
+            })
             ->addColumn('importe_total', function ($data) {
                 return $data->importe_total;
             })
@@ -75,6 +78,9 @@ class ComprobantesDataTable extends DataTable
             ->filterColumn('importe_total', function ($query, $keyword) {
                 $query->whereRaw("importe_total like ?", ["%{$keyword}%"]);
             })
+            ->filterColumn('moneda_pago', function ($query, $keyword) {
+                $query->whereRaw("moneda_pago like ?", ["%{$keyword}%"]);
+            })
             ->filterColumn('concepto_de', function ($query, $keyword) {
                 $query->whereRaw("concepto_de like ?", ["%{$keyword}%"]);
             })
@@ -106,7 +112,7 @@ class ComprobantesDataTable extends DataTable
                     $q->whereRaw("nombre_lote like ?", ["%{$keyword}%"]);
                 });
             })
-            ->rawColumns(['descripcion_comprobante', 'fecha_comprobante', 'forma_pago', 'importe_total', 'concepto_de', 'cliente','parcela', 'manzana', 'lote', 'comprobante'])
+            ->rawColumns(['descripcion_comprobante', 'fecha_comprobante', 'forma_pago', 'moneda_pago', 'importe_total', 'concepto_de', 'cliente','parcela', 'manzana', 'lote', 'comprobante'])
             ->setRowId('id_comprobante');
     }
 
@@ -152,6 +158,7 @@ class ComprobantesDataTable extends DataTable
             'descripcion_comprobante' => ['title' => 'Descripcion'],
             'fecha_comprobante' => ['title' => 'Fecha'],
             'forma_pago' => ['title' => 'Forma Pago'],
+            'moneda_pago' => ['title' => 'Moneda Pago'],
             'importe_total' => ['title' => 'Importe Total'],
             'concepto_de' => ['title' => 'Concepto De'],
             'cliente' => ['title' => 'Cliente'],

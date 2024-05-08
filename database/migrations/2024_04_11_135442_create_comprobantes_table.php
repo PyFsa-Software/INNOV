@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('dni')->nullable();
             $table->string('domicilio')->nullable();
             $table->string('domicilio_alquiler')->nullable();
+            $table->string('moneda_pago');
             $table->unsignedBigInteger('id_cliente')->nullable();
             $table->foreign('id_cliente')->references('id_persona')->on('personas');
             $table->unsignedBigInteger('id_venta')->nullable();

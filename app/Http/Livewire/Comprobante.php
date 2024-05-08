@@ -19,6 +19,7 @@ class Comprobante extends Component
     public $ventasCliente;
     public $formasDePagos;
     public $domiciliosAlquiler;
+    public $monedasPagos;
 
     public $descripcionComprobante = "";
     public $clienteCombo = "";
@@ -31,6 +32,7 @@ class Comprobante extends Component
     public $dni = "";
     public $domicilio = "";
     public $domicilioAlquiler = "";
+    public $monedaPago = "";
 
     public $isDisabled = true;
 
@@ -42,6 +44,7 @@ class Comprobante extends Component
         ])->get();
         $this->formasDePagos = FormasPago::toArray();
         $this->domiciliosAlquiler = DomicilioAlquiler::toArray();
+        $this->monedasPagos = MonedaPago::toArray();
     }
 
 
@@ -50,6 +53,7 @@ class Comprobante extends Component
         'clienteCombo' => 'nullable|numeric|integer',
         'ventasClienteCombo' => 'nullable|numeric|integer',
         'formaPago' => 'required|string',
+        'monedaPago' => 'required|string',
         'importeTotal' => 'required|numeric|min:1',
         'conceptoDe' => 'required|string',
     ];
@@ -118,6 +122,7 @@ class Comprobante extends Component
             }
             $comprobante->fecha_comprobante = date('Y-m-d');
             $comprobante->forma_pago = $this->formaPago;
+            $comprobante->moneda_pago = $this->monedaPago;
             $comprobante->importe_total = $this->importeTotal;
             $comprobante->concepto_de = $this->conceptoDe;
             $comprobante->save();

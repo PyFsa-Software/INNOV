@@ -25,6 +25,7 @@ CREATE TABLE `comprobantes` (
   `fecha_comprobante` date NOT NULL,
   `forma_pago` varchar(255) NOT NULL,
   `importe_total` varchar(255) NOT NULL,
+  `moneda_pago` varchar(255) NOT NULL,
   `concepto_de` varchar(255) NOT NULL,
   `sr_sra` varchar(255) DEFAULT NULL,
   `dni` varchar(255) DEFAULT NULL,

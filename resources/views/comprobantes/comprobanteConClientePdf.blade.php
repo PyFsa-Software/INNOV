@@ -206,7 +206,10 @@
                 <small>Forma de Pago: </small><b>{{ $comprobante?->forma_pago ?? '-' }}.</b>
             </div>
             <br>
-
+            <div class="info-parcela">
+                <small>Moneda de Pago: </small><b>{{ $comprobante?->moneda_pago ?? '-' }}.</b>
+            </div>
+            <br>
             <div class="importe-total">
                 <small>Importe Total: </small><b>$ {{ number_format($comprobante->importe_total, 2, ',', '.') }}.</b>
             </div>
