@@ -136,7 +136,7 @@ class FormCobrarTodo extends Component
                     $ultimaCuota++;
                     DetalleVenta::create([
                         'numero_cuota' => $ultimaCuota,
-                        'fecha_maxima_a_pagar' => Carbon::now()->addMonth($i)->format('Y-m') . '-21',
+                        'fecha_maxima_a_pagar' => Carbon::now()->addMonth($i)->format('Y-m') . '-15',
                         'fecha_pago' => Carbon::now()->format('Y-m-d'),
                         'total_estimado_a_pagar' => $this->precioActual,
                         'total_pago' => $this->precioActual,

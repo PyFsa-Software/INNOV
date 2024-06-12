@@ -104,8 +104,8 @@ class VentaParcela extends Component
         $this->valorCuotaMensual = round($this->bolsasCementoMensual * $this->promedioCemento, 2);
 
         // OBTENER FECHA DESDE Y HASTA DEL PLAN DE PAGO
-        $this->fechaDesdeDetallePlan = Carbon::now()->addMonth(1)->format('Y-m') . '-21';
-        $this->fechaHastaDetallePlan = Carbon::now()->addMonth(6)->format('Y-m') . '-21';
+        $this->fechaDesdeDetallePlan = Carbon::now()->addMonth(1)->format('Y-m') . '-15';
+        $this->fechaHastaDetallePlan = Carbon::now()->addMonth(6)->format('Y-m') . '-15';
     }
 
     public function submit()
@@ -144,7 +144,7 @@ class VentaParcela extends Component
 
                     DetalleVenta::create([
                         'numero_cuota' => $i,
-                        'fecha_maxima_a_pagar' => Carbon::now()->addMonth($i)->format('Y-m') . '-21',
+                        'fecha_maxima_a_pagar' => Carbon::now()->addMonth($i)->format('Y-m') . '-15',
                         'total_estimado_a_pagar' => $this->valorCuotaMensual,
                         'id_venta' => $ventaGuardada->id_venta,
                     ]);
@@ -154,7 +154,7 @@ class VentaParcela extends Component
 
                     DetalleVenta::create([
                         'numero_cuota' => $i,
-                        'fecha_maxima_a_pagar' => Carbon::now()->addMonth($i)->format('Y-m') . '-21',
+                        'fecha_maxima_a_pagar' => Carbon::now()->addMonth($i)->format('Y-m') . '-15',
                         'total_estimado_a_pagar' => $this->valorCuotaMensual,
                         'id_venta' => $ventaGuardada->id_venta,
                     ]);

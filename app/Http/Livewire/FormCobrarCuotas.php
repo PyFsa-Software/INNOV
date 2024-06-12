@@ -101,7 +101,7 @@ class FormCobrarCuotas extends Component
 
                 // dd($diferenciaDeMeses);
 
-                $this->cuota->fecha_maxima_a_pagar = Carbon::create($this->cuota->fecha_maxima_a_pagar)->subMonth($diferenciaDeMeses)->format('Y-m') . '-21';
+                $this->cuota->fecha_maxima_a_pagar = Carbon::create($this->cuota->fecha_maxima_a_pagar)->subMonth($diferenciaDeMeses)->format('Y-m') . '-15';
                 $this->cuota->total_intereses = $this->totalIntereses;
                 $this->cuota->total_pago = $this->totalAbonar;
                 $this->cuota->fecha_pago = date('Y-m-d');
@@ -121,7 +121,7 @@ class FormCobrarCuotas extends Component
 
                 $cuotasPosterioresPagar->reduce(function ($fecha, $cuotasSinPagar) {
 
-                    $proximaFecha = Carbon::create($fecha)->addMonth(1)->format('Y-m') . '-21';
+                    $proximaFecha = Carbon::create($fecha)->addMonth(1)->format('Y-m') . '-15';
 
                     $cuotasSinPagar->fecha_maxima_a_pagar = $proximaFecha;
 
