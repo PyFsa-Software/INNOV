@@ -79,7 +79,7 @@ class FormActualizarPrecios extends Component
                     $numeroCuota++;
                     DetalleVenta::create([
                         'numero_cuota' => $numeroCuota,
-                        'fecha_maxima_a_pagar' => Carbon::create($this->ultimaCuota->fecha_maxima_a_pagar)->addMonth($i)->format('Y-m') . '-21',
+                        'fecha_maxima_a_pagar' => Carbon::create($this->ultimaCuota->fecha_maxima_a_pagar)->addMonth($i)->format('Y-m') . '-15',
                         'total_estimado_a_pagar' => $this->totalAbonarProximosMeses,
                         'id_venta' => $this->venta->id_venta,
                     ]);
@@ -91,7 +91,7 @@ class FormActualizarPrecios extends Component
                     $numeroCuota++;
                     DetalleVenta::create([
                         'numero_cuota' => $numeroCuota,
-                        'fecha_maxima_a_pagar' => Carbon::create($this->ultimaCuota->fecha_maxima_a_pagar)->addMonth($i)->format('Y-m') . '-21',
+                        'fecha_maxima_a_pagar' => Carbon::create($this->ultimaCuota->fecha_maxima_a_pagar)->addMonth($i)->format('Y-m') . '-15',
                         'total_estimado_a_pagar' => $this->totalAbonarProximosMeses,
                         'id_venta' => $this->venta->id_venta,
                     ]);
