@@ -8,6 +8,7 @@ use App\Http\Controllers\ParcelasController;
 use App\Http\Controllers\PreciosController;
 use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\ReservaParcelaController;
+use App\Http\Controllers\ResumenDiarioController;
 use App\Http\Controllers\VentasCanceladasController;
 use App\Http\Controllers\VentasController;
 use App\Http\Middleware\VerificarActualizacionCuotas;
@@ -240,4 +241,14 @@ Route::middleware(['auth'])->group(function () {
         // pdf
         Route::get('comprobantes/pdf/{comprobante}', 'pdf')->name('comprobantes.pdf');
     });
+
+    //ROUTE FOR RESUMEN DIARIO
+
+    Route::controller(ResumenDiarioController::class)->group(function (){
+        Route::get('resumen-diario', 'index')->name('resumenDiario.index');
+        Route::get('resumen-cuotas', 'resumenCuotas')->name('resumenCuotas.resumenCuotas');
+        Route::get('resumen-ventas', 'resumenVentas')->name('resumenVentas.resumenVentas');
+        Route::get('resumen-preVentas', 'resumenPreVentas')->name('resumenPreVentas.resumenPreVentas');
+    });
+
 });

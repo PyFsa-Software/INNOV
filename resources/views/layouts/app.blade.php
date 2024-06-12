@@ -235,6 +235,16 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('resumenDiario.index') }}" aria-expanded="false"
+                            aria-controls="auth">
+                            <i class="ti-book menu-icon"></i>
+                            <span class="menu-title
+                            ">RESUMEN DIARIO</span>
+                            <i class="menu-arrow
+                            "></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href={{ route('inicioSesion.desloguearse') }} aria-expanded="false"
                             aria-controls="auth">
                             <i class="ti-power-off menu-icon"></i>
