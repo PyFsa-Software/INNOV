@@ -185,7 +185,8 @@
                 </div>
                 <br>
                 <div class="pago">
-                    <small>Recibí(mos) la suma de: </small><b>{{$detalleVentas[0]?->moneda_pago ?? 'PESOS'}}, {{ convertDigitsToWord($totalPago) }}.</b>
+                    <small>Recibí(mos) la suma de: </small><b>{{ $detalleVentas[0]?->moneda_pago ?? 'PESOS' }}
+                        {{ convertDigitsToWord($totalPago) }}.</b>
                 </div>
                 <br>
                 <div class="info-loteo">

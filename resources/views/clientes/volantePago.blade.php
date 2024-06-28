@@ -126,7 +126,7 @@
             margin-left: 20px;
         }
 
-        .info-loteo > b {
+        .info-loteo>b {
             padding-right: 10px;
         }
 
@@ -187,7 +187,8 @@
                 </div>
                 <br>
                 <div class="pago">
-                    <small>Recibí(mos) la suma de: </small><b>{{$cuota?->moneda_pago ?? 'PESOS'}}, {{ convertDigitsToWord($cuota?->total_pago) }}.</b>
+                    <small>Recibí(mos) la suma de: </small><b>{{ $cuota?->moneda_pago ?? 'PESOS' }}
+                        {{ convertDigitsToWord($cuota?->total_pago) }}.</b>
                 </div>
                 <br>
                 <div class="info-loteo">
@@ -223,7 +224,7 @@
             </div>
             <br>
             <div class="importe-total">
-                <small>Concepto de: <b>{{ $cuota?->concepto_de ?? ".............................." }}.</b>
+                <small>Concepto de: <b>{{ $cuota?->concepto_de ?? '..............................' }}.</b>
             </div>
             <br>
             <div class="firma">
