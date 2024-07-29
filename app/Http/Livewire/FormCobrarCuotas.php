@@ -54,6 +54,8 @@ class FormCobrarCuotas extends Component
             $now = Carbon::now();
             $this->diferenciasDias = $date->diffInDays($now);
         }
+        $this->totalIntereses = $this->diferenciasDias * 1;
+        $this->calcularAbono();
     }
 
     public function updated($propertyName)
@@ -68,9 +70,8 @@ class FormCobrarCuotas extends Component
 
     public function calcularAbono()
     {
-        // $this->incrementoInteres = $this->totalEstimadoAbonar * ($this->totalIntereses / 100);
-        $this->totalAbonar = $this->totalIntereses + $this->totalEstimadoAbonar;
-        $this->validate();
+        $this->incrementoInteres = round($this->totalEstimadoAbonar * ($this->totalIntereses / 100), 2);
+        $this->totalAbonar =  $this->totalEstimadoAbonar + $this->incrementoInteres;
     }
 
     public function submit()

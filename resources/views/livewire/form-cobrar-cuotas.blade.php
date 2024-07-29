@@ -57,17 +57,16 @@
 
 
     <div class="form-group">
-        <label for="total_intereses">Interes: </label>
+        <label for="total_intereses">Interes en %: </label>
         <input type="number" class="form-control" name="total_intereses" id="total_intereses"
-            value="{{ old('total_intereses', $totalIntereses) }}" wire:model.debounce.500ms="totalIntereses"
-            wire:keyup='calcularAbono'>
+            value="{{ old('total_intereses', $totalIntereses) }}" wire:model.debounce.500ms="totalIntereses" disabled>
     </div>
 
-    {{-- <div class="form-group">
+    <div class="form-group">
         <label for="incrementoInteres">Incremento: </label>
         <input type="number" class="form-control" name="incrementoInteres" id="incrementoInteres"
             value="{{old('incrementoInteres', $incrementoInteres)}}" wire:model="incrementoInteres" disabled>
-    </div> --}}
+    </div>
 
     <div class="form-group">
         <label for="total_pago">Total a Abonar: </label>
