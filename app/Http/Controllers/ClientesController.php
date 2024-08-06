@@ -6,6 +6,7 @@ use App\DataTables\ClientesDataTable;
 use App\DataTables\CuotasVentasDataTable;
 use App\DataTables\PagosMultiplesDataTable;
 use App\Enums\FormasPago;
+use App\Enums\Intereses;
 use App\Http\Requests\StoreClientesRequest;
 use App\Models\DetalleVenta;
 use App\Models\Parcela;
@@ -174,8 +175,9 @@ class ClientesController extends Controller
 
         $idVenta = venta::all()->where('id_venta', '=', $cuota->id_venta);
         $formasDePagos = FormasPago::toArray();
+        $intereses = Intereses::toArray();
 
-        return view('clientes.cobrarCuotas', compact('cuota', 'formasDePagos'));
+        return view('clientes.cobrarCuotas', compact('cuota', 'formasDePagos','intereses'));
     }
 
     public function editarPrecioCuota(DetalleVenta $cuota)

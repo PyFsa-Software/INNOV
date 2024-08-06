@@ -249,6 +249,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('resumen-cuotas', 'resumenCuotas')->name('resumenCuotas.resumenCuotas');
         Route::get('resumen-ventas', 'resumenVentas')->name('resumenVentas.resumenVentas');
         Route::get('resumen-preVentas', 'resumenPreVentas')->name('resumenPreVentas.resumenPreVentas');
+        Route::get('exportar-resumen', 'exportarExcel')->name('resumen.exportarExcel');
     });
 
 });
