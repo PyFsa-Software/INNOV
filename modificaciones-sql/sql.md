@@ -46,3 +46,9 @@ CREATE TABLE `comprobantes` (
 ```sql
 UPDATE detalle_ventas d1 INNER JOIN ventas v1 ON d1.id_venta = v1.id_venta INNER JOIN parcelas p1 ON p1.id_parcela = v1.id_parcela INNER JOIN lotes l1 ON p1.id_lote = l1.id_lote INNER JOIN personas pe1 ON pe1.id_persona = v1.id_cliente SET d1.fecha_maxima_a_pagar = DATE_FORMAT(d1.fecha_maxima_a_pagar, '%Y-%m-15') WHERE l1.nombre_lote = 'TIERRA VERDE' AND d1.pagado = 'no';
 ```
+
+## Se aplico la siguiente query UPDATE para actualizar todas las fechas maximas a pagar al dia 15 a todas las cuotas.
+
+```sql
+UPDATE detalle_ventas d1 INNER JOIN ventas v1 ON d1.id_venta = v1.id_venta INNER JOIN parcelas p1 ON p1.id_parcela = v1.id_parcela INNER JOIN lotes l1 ON p1.id_lote = l1.id_lote INNER JOIN personas pe1 ON pe1.id_persona = v1.id_cliente SET d1.fecha_maxima_a_pagar = DATE_FORMAT(d1.fecha_maxima_a_pagar, '%Y-%m-15') WHERE d1.pagado = 'no';
+```
