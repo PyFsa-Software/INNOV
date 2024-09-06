@@ -41,33 +41,36 @@
             @endforeach
         </select>
     </div>
-
-    {{-- add select moneda_pago --}}
     <div class="form-group">
         <label for="moneda_pago">Moneda de Pago: </label>
         <select class="form-control" name="moneda_pago" id="moneda_pago" wire:model="monedaPago">
             <option value="" disabled>Seleccione una moneda</option>
             @foreach ($monedasDePagos as $key => $value)
                 <option value="{{ $key }}" @if ($monedaPago === $key) selected @endif>
-                    {{ $value }}</option>
+                    {{ $value }}
+                </option>
             @endforeach
         </select>
     </div>
 
-
-
     <div class="form-group">
-        <label for="total_intereses">Interes: </label>
-        <input type="number" class="form-control" name="total_intereses" id="total_intereses"
-            value="{{ old('total_intereses', $totalIntereses) }}" wire:model.debounce.500ms="totalIntereses"
-            wire:keyup='calcularAbono'>
+        <label for="total_intereses">Interés en %: </label>
+        <select class="form-control" name="total_intereses" id="total_intereses" wire:model="interes"
+            @if ($diferenciasDias == 0) disabled @endif>
+            <option value="" disabled>Seleccione un interés</option>
+            @foreach ($intereses as $key => $value)
+                <option value="{{ $value }}" @if ($interes == $value) selected @endif>
+                    {{ $value }}
+                </option>
+            @endforeach
+        </select>
     </div>
 
-    {{-- <div class="form-group">
+    <div class="form-group">
         <label for="incrementoInteres">Incremento: </label>
         <input type="number" class="form-control" name="incrementoInteres" id="incrementoInteres"
-            value="{{old('incrementoInteres', $incrementoInteres)}}" wire:model="incrementoInteres" disabled>
-    </div> --}}
+            value="{{ old('incrementoInteres', $incrementoInteres) }}" wire:model="incrementoInteres" disabled>
+    </div>
 
     <div class="form-group">
         <label for="total_pago">Total a Abonar: </label>
@@ -122,15 +125,15 @@
     </div>
     <script>
         // Obtener el botón "Continuar"
-    const continuarBtn = document.querySelector('#cobroCuota button[type="submit"]');
-    
-    // Escuchar el evento "click" en el botón "Continuar"
-    continuarBtn.addEventListener('click', () => {
-        // Obtener el modal
-        const modal = document.querySelector('#cobroCuota');
-    
-        // Cerrar el modal
-        $(modal).modal('hide');
-    });
+        const continuarBtn = document.querySelector('#cobroCuota button[type="submit"]');
+
+        // Escuchar el evento "click" en el botón "Continuar"
+        continuarBtn.addEventListener('click', () => {
+            // Obtener el modal
+            const modal = document.querySelector('#cobroCuota');
+
+            // Cerrar el modal
+            $(modal).modal('hide');
+        });
     </script>
 </form>

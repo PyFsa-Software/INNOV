@@ -9,6 +9,25 @@
                 <h1 class="text-center mb-5"><i class="fa fa-desktop fa-lg"></i> Resumen de Pagos</h1>
                 <x-alertas />
 
+                <div class="mb-5">
+                    <h3>Seleccionar Rango de Fechas</h3>
+                    <form id="fechaForm" class="form-inline">
+                        <div class="form-group mb-2">
+                            <label for="fecha_desde" class="sr-only">Fecha Desde:</label>
+                            <input type="date" id="fecha_desde" name="fecha_desde"
+                                class="form-control form-control-sm mr-2" placeholder="Fecha Desde">
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="fecha_hasta" class="sr-only">Fecha Hasta:</label>
+                            <input type="date" id="fecha_hasta" name="fecha_hasta"
+                                class="form-control form-control-sm mr-2" placeholder="Fecha Hasta">
+                        </div>
+                        <button type="button" id="buscar" class="btn btn-primary form-control-sm  mb-2">Buscar</button>
+                        <button type="button" id="exportar" class="btn btn-success form-control-sm mb-2 ml-2">Exportar a
+                            Excel</button>
+                    </form>
+                </div>
+
                 <div class="table-responsive mb-5">
                     <h3>Pagos de Cuotas</h3>
                     <table id="cuotasTable" class="table table-striped table-bordered" style="width:100%">
@@ -49,73 +68,87 @@
 @push('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#cuotasTable').DataTable({
-                "processing": true,
-                "serverSide": true,
-                "ajax": "/resumen-cuotas",
-                "pageLength": 5, // Limitar la cantidad de registros mostrados inicialmente a 5
-                "columns": [{
-                        "data": "cliente"
-                    },
-                    {
-                        "data": "parcela"
-                    },
-                    {
-                        "data": "lote"
-                    },
-                    {
-                        "data": "fecha_pago"
-                    },
-                    {
-                        "data": "metodo_pago"
-                    },
-                    {
-                        "data": "monto_pago"
-                    }
-                ]
+
+            $('#exportar').on('click', function() {
+                var fechaDesde = $('#fecha_desde').val();
+                var fechaHasta = $('#fecha_hasta').val();
+                window.location.href =
+                    `/exportar-resumen?fecha_desde=${fechaDesde}&fecha_hasta=${fechaHasta}`;
             });
 
-            $('#preVentaTable').DataTable({
-                "processing": true,
-                "serverSide": true,
-                "ajax": "/resumen-preVentas",
-                "pageLength": 5, // Limitar la cantidad de registros mostrados inicialmente a 5
-                "columns": [{
-                        "data": "cliente"
+
+            function cargarTablas(fechaDesde, fechaHasta) {
+                $('#cuotasTable').DataTable({
+                    "processing": true,
+                    "serverSide": true,
+                    "destroy": true, // Esto es necesario para destruir la tabla anterior y crear una nueva
+                    "ajax": {
+                        "url": "/resumen-cuotas",
+                        "data": {
+                            "fecha_desde": fechaDesde,
+                            "fecha_hasta": fechaHasta
+                        }
                     },
-                    {
-                        "data": "parcela"
+                    "pageLength": 5,
+                    "columns": [{
+                            "data": "cliente"
+                        },
+                        {
+                            "data": "parcela"
+                        },
+                        {
+                            "data": "lote"
+                        },
+                        {
+                            "data": "fecha_pago"
+                        },
+                        {
+                            "data": "metodo_pago"
+                        },
+                        {
+                            "data": "monto_pago"
+                        }
+                    ]
+                });
+
+                $('#preVentaTable').DataTable({
+                    "processing": true,
+                    "serverSide": true,
+                    "destroy": true, // Esto es necesario para destruir la tabla anterior y crear una nueva
+                    "ajax": {
+                        "url": "/resumen-preVentas",
+                        "data": {
+                            "fecha_desde": fechaDesde,
+                            "fecha_hasta": fechaHasta
+                        }
                     },
-                    {
-                        "data": "fecha_pago"
-                    },
-                    {
-                        "data": "forma_pago"
-                    },
-                    {
-                        "data": "importe_pago"
-                    }
-                ]
+                    "pageLength": 5,
+                    "columns": [{
+                            "data": "cliente"
+                        },
+                        {
+                            "data": "parcela"
+                        },
+                        {
+                            "data": "fecha_pago"
+                        },
+                        {
+                            "data": "forma_pago"
+                        },
+                        {
+                            "data": "importe_pago"
+                        }
+                    ]
+                });
+            }
+
+            $('#buscar').on('click', function() {
+                var fechaDesde = $('#fecha_desde').val();
+                var fechaHasta = $('#fecha_hasta').val();
+                cargarTablas(fechaDesde, fechaHasta);
             });
 
-            // $('#ventasTable').DataTable({
-            //     "processing": true,
-            //     "serverSide": true,
-            //     "ajax": "{{ route('resumenPreVentas.resumenPreVentas') }}",
-            //     "columns": [{
-            //             "data": "id"
-            //         },
-            //         {
-            //             "data": "name"
-            //         },
-            //         {
-            //             "data": "created_at"
-            //         },
-            //         {
-            //             "data": "updated_at"
-            //         }
-            //     ]
-            // });
+            // Inicialmente no cargar las tablas hasta que se haga una búsqueda
         });
     </script>
 @endpush
