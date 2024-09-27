@@ -228,7 +228,7 @@
                     <b>
                         {{ $conceptoDe ? $conceptoDe : '..............................' }}
                         @if ($detalleVentas[0]->leyenda)
-                            ({{ $detalleVentas[0]->leyenda }})
+                            <span style="margin-left: 30px;">({{ $detalleVentas[0]->leyenda }})</span>
                         @endif
                     </b>
                 </small>

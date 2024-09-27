@@ -248,7 +248,7 @@
                     <b>
                         {{ $venta?->concepto_de ?? '..............................' }}
                         @if ($venta?->leyenda)
-                            ({{ $venta->leyenda }})
+                            <span style="margin-left: 30px;">({{ $venta->leyenda }})</span>
                         @endif
                     </b>
                 </small>

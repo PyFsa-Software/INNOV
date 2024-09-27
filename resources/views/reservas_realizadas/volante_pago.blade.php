@@ -260,11 +260,12 @@
                     <b>
                         {{ $detalleReservaParcela?->concepto_de ?? '..............................' }}
                         @if ($detalleReservaParcela?->leyenda)
-                            ({{ $detalleReservaParcela->leyenda }})
+                            <span style="margin-left: 30px;">({{ $detalleReservaParcela->leyenda }})</span>
                         @endif
                     </b>
                 </small>
             </div>
+
             <br>
             <div class="firma">
                 <small>Firma: ..............................</b>

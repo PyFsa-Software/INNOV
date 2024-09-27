@@ -229,7 +229,7 @@
                     <b>
                         {{ $cuota?->concepto_de ?? '..............................' }}
                         @if ($cuota?->leyenda)
-                            ({{ $cuota->leyenda }})
+                            <span style="margin-left: 30px;">({{ $cuota->leyenda }})</span>
                         @endif
                     </b>
                 </small>
