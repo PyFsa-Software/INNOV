@@ -23,6 +23,7 @@ class FormCobrarCuotas extends Component
     public $formaPago = "";
     public $interes = "";
     public $conceptoDe = "";
+    public $leyenda = "";
     public $isDisabled = true;
     public $conceptoDeOpcionesSelect = [];
     public $monedaPago = "";
@@ -34,7 +35,9 @@ class FormCobrarCuotas extends Component
             'totalIntereses' => 'required|numeric|min:0',
             'formaPago' => 'required',
             'conceptoDe' => 'required',
+            'leyenda' => 'string',
         ];
+
 
         if ($this->diferenciasDias > 0) {
             $rules['interes'] = 'required';
@@ -106,6 +109,7 @@ class FormCobrarCuotas extends Component
                 $this->cuota->forma_pago = $this->formaPago;
                 $this->cuota->concepto_de = $this->conceptoDe;
                 $this->cuota->moneda_pago = $this->monedaPago;
+                $this->cuota->leyenda = $this->leyenda;
 
                 $this->cuota->save();
 
@@ -122,6 +126,8 @@ class FormCobrarCuotas extends Component
                 $this->cuota->forma_pago = $this->formaPago;
                 $this->cuota->concepto_de = $this->conceptoDe;
                 $this->cuota->moneda_pago = $this->monedaPago;
+                $this->cuota->leyenda = $this->leyenda;
+
 
                 $this->cuota->save();
 

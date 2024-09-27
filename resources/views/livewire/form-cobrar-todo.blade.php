@@ -63,6 +63,14 @@
         </select>
     </div>
 
+    <div class="form-group">
+        <div class="form-group">
+            <label for="leyenda ">Leyenda: </label>
+            <input type="text" class="form-control" name="leyenda" id="leyenda" wire:model="leyenda"
+                value="{{ old('leyenda', $leyenda) }}">
+        </div>
+    </div>
+
     <div wire:loading>
         Calculando...
     </div>
@@ -80,7 +88,8 @@
         Realizar Cobro
     </button>
 
-    <a href="{{ route('clientes.estadoCuotas', $parcela->parcela->id_parcela) }}" class="btn btn-danger form-control">Cancelar</a>
+    <a href="{{ route('clientes.estadoCuotas', $parcela->parcela->id_parcela) }}"
+        class="btn btn-danger form-control">Cancelar</a>
     <x-alertas />
 
     <!-- Modal -->

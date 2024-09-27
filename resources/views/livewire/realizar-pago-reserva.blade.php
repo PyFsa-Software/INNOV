@@ -44,6 +44,14 @@
     </div>
 
     <div class="form-group">
+        <div class="form-group">
+            <label for="leyenda ">Leyenda: </label>
+            <input type="text" class="form-control" name="leyenda" id="leyenda" wire:model="leyenda"
+                value="{{ old('leyenda', $leyenda) }}">
+        </div>
+    </div>
+
+    <div class="form-group">
         <label for="importeEntrega">Importe Entrega</label>
         <input type="number" class="form-control" name="importeEntrega" id="importeEntrega" wire:model="importeEntrega"
             wire:keyup.debounce.500ms="validarImporteEntrega">

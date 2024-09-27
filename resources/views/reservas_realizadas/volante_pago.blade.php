@@ -255,8 +255,15 @@
             </div>
             <br>
             <div class="importe-total">
-                <small>Concepto de:
-                    <b>{{ $detalleReservaParcela?->concepto_de ?? '........................................' }}.</b>
+                <small>
+                    Concepto de:
+                    <b>
+                        {{ $detalleReservaParcela?->concepto_de ?? '..............................' }}
+                        @if ($detalleReservaParcela?->leyenda)
+                            ({{ $detalleReservaParcela->leyenda }})
+                        @endif
+                    </b>
+                </small>
             </div>
             <br>
             <div class="firma">

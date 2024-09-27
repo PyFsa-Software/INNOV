@@ -19,6 +19,7 @@ class DetalleReservaParcela extends Model
         'importe_pago',
         'cancelado',
         'moneda_pago',
+        'leyenda'
     ];
 
     public function reservaParcela()

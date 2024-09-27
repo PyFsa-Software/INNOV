@@ -29,6 +29,7 @@ class DetalleVenta extends Model
         'forma_pago',
         'concepto_de',
         'moneda_pago',
+        'leyenda'
     ];
 
     public function venta()

@@ -243,7 +243,15 @@
             </div>
             <br>
             <div class="importe-total">
-                <small>Concepto de: <b>{{ $venta?->concepto_de ?? '........................................' }}.</b>
+                <small>
+                    Concepto de:
+                    <b>
+                        {{ $venta?->concepto_de ?? '..............................' }}
+                        @if ($venta?->leyenda)
+                            ({{ $venta->leyenda }})
+                        @endif
+                    </b>
+                </small>
             </div>
             <br>
             <div class="firma">

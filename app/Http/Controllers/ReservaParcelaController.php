@@ -103,7 +103,6 @@ class ReservaParcelaController extends Controller
             // Descargar el PDF
             // return $pdf->download('volante_pago.pdf');
         } catch (Exception $e) {
-            dd($e);
             return response()->json([
                 'mensaje' => "Se produjo un error al generar el volante de pago. Por favor, contacte al administrador.",
             ], 400);

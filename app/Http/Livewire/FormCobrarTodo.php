@@ -9,7 +9,6 @@ use App\Models\DetalleVenta;
 use App\Models\Venta;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Livewire\WithValidation;
 
 class FormCobrarTodo extends Component
 {
@@ -26,17 +25,24 @@ class FormCobrarTodo extends Component
     public $message = "";
     public $conceptoDeOpcionesSelect = [];
     public $conceptoDe = "";
+    public $leyenda = "";
     public $precioActual;
     public $isDisabled = true;
     public $parcela;
     public $monedaPago = "";
     public $monedasDePagos = [];
 
-    protected $rules = [
-        'cantidadCuotasPagar' => 'required|integer|min:0',
-        'formaPago' => 'required',
-        'conceptoDe' => 'required',
-    ];
+    public function rules()
+    {
+        $rules = [
+            'cantidadCuotasPagar' => 'required|integer|min:0',
+            'formaPago' => 'required',
+            'conceptoDe' => 'required',
+            'leyenda' => 'string'
+        ];
+
+        return $rules;
+    }
 
     public function mount()
     {
@@ -95,6 +101,7 @@ class FormCobrarTodo extends Component
                 ->where('pagado', '=', 'no')->get();
 
             if (count($cuotasNoPagadas) >=  $this->cantidadCuotasPagar) {
+
                 // Si hay suficientes cuotas no pagadas, pagar solo la cantidad requerida
                 $this->cantidadCuotasPagar = intval($this->cantidadCuotasPagar);
                         $cuotasNoPagadas->take($this->cantidadCuotasPagar)->each(function ($cuota) use (&$numeroRecibo) {
@@ -107,15 +114,18 @@ class FormCobrarTodo extends Component
                                 'fecha_pago' => Carbon::now()->format('Y-m-d'),
                                 'concepto_de' => $this->conceptoDe,
                                 'moneda_pago' => $this->monedaPago,
+                                'leyenda' => $this->leyenda
                             ]);
                         });
             
          
             } else {
+
                 // Si no hay suficientes cuotas no pagadas, pagar todas y generar y pagar las que faltan
                 
 
                 $cuotasNoPagadas->each(function ($cuota) use (&$numeroRecibo) {
+
                     $cuota->update([
                         'pagado' => 'si',
                         'numero_recibo' => $numeroRecibo,
@@ -125,6 +135,7 @@ class FormCobrarTodo extends Component
                         'fecha_pago' => Carbon::now()->format('Y-m-d'),
                         'concepto_de' => $this->conceptoDe,
                         'moneda_pago' => $this->monedaPago,
+                        'leyenda' => $this->leyenda
                     ]);
                 });
 
@@ -146,6 +157,7 @@ class FormCobrarTodo extends Component
                         'forma_pago' => $this->formaPago,
                         'concepto_de' => $this->conceptoDe,
                         'moneda_pago' => $this->monedaPago,
+                        'leyenda' => $this->leyenda
                     ]);
                 }
             }

@@ -22,6 +22,7 @@ class RealizarPagoReserva extends Component
     public $montoTotalAbonadoCalcular;
 
     public $formaPago = "";
+    public $leyenda = "";
 
     public $isDisabled = true;
 
@@ -94,6 +95,7 @@ class RealizarPagoReserva extends Component
             'importe_pago' => $this->importeEntrega,
             'concepto_de' => $this->conceptoDe,
             'moneda_pago' => $this->monedaPago,
+            'leyenda' => $this->leyenda,
         ]);
 
 
