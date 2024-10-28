@@ -35,12 +35,18 @@ class ReservaParcelaController extends Controller
             ['activo', '=', '1'],
         ])->get();
 
-        $parcelas = Parcela::where('disponible', 1)
-        ->whereNotIn('id_parcela', function($query) {
-            $query->select('id_parcela')
-                ->from('reserva_parcela');
-        })
-        ->get();
+        // Paso 1: Obtén todas las parcelas disponibles
+        $parcelasDisponibles = Parcela::where('disponible', 1)->get();
+
+        // Paso 2: Filtra las parcelas que no tienen relación en reserva_parcela
+        $parcelasSinReserva = $parcelasDisponibles->filter(function ($parcela) {
+            // Verifica si el id_parcela no está en la tabla reserva_parcela
+            return ReservaParcela::where('id_parcela', $parcela->id_parcela)->exists();
+        });
+
+        // Convierte el resultado a una colección de Laravel o array, según prefieras
+        $parcelas = $parcelasSinReserva->values(); // Limpia las claves
+
 
         $formasDePagos = FormasPago::toArray();
 
