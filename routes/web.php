@@ -194,6 +194,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('clientes/actualizar-precios-cuotas/{parcela}', 'actualizarPreciosCuotasVencidas')->name('clientes.actualizarPreciosCuotasVencidas');
         Route::post('clientes/actualizar-precios-cuotas/{parcela}', 'guardarPreciosCuotasVencidas')->name('clientes.guardarPreciosCuotasVencidas');
 
+        Route ::get('clientes/calcularDeuda/{parcela}', 'calcularDeuda')->name('clientes.calcularDeuda');
+        Route ::post('clientes/calcularDeudaResultado/{parcela}', 'calcularDeudaResultado')->name('clientes.calcularDeudaResultado');
+
     });
 
     // ROUTES RESERVA PARCELAS
