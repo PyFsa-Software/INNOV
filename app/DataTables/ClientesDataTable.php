@@ -40,7 +40,7 @@ class ClientesDataTable extends DataTable
                 } else {
                     return "<a href='" . route('clientes.eliminar', $data->id_persona) . "' class='btn btn-danger btn-sm'>Eliminar</a>";
                 }
-            })
+            }) 
             ->rawColumns(['nombre_apellido', 'editar', 'eliminar/activar', 'estado'])
             ->setRowId('id_persona');
     }

@@ -30,6 +30,7 @@ class StoreClientesRequest extends FormRequest
             'domicilio' => 'required|max:150|unique:personas,domicilio,' . $this->persona?->id_persona . ',id_persona',
             'celular' => 'required|numeric|digits:10|unique:personas,celular,' . $this->persona?->id_persona . ',id_persona',
             'correo' => 'required|email|unique:personas,correo,' . $this->persona?->id_persona . ',id_persona',
+            'precio'=>'required|numeric',
         ];
     }
 }

@@ -29,7 +29,8 @@
                                 {{-- </div> --}}
                                 <h5 class="card-title {{ $parcela->cantidadDeudas > 0 ? 'text-danger' : 'text-success' }}">
                                     Estado:
-                                    {{ $parcela->cantidadDeudas > 0 ? 'Hay cuotas pendientes' : 'Cliente al día' }}</h5>
+                                    {{ $parcela->cantidadDeudas > 0 ? 'Hay cuotas vencidas' : 'Cliente al día' }}</h5>
+                                    <h5 class="card-title {{$parcela->verificarCuotasEditar ? 'text-danger': ''}}"> {{$parcela->verificarCuotasEditar ? 'Hay Precios Desactualizados': ''}}</h5>
                                 <a href="{{ route('clientes.estadoCuotas', $parcela->id_parcela) }}"
                                     class="btn btn-primary">Ver
                                     Detalle</a>
@@ -43,7 +44,7 @@
                                         Precios</a>
                                 @endif
                                 @if ($parcela->generarNuevasCuotas)
-                                    <a href="{{ route('clientes.actualizarPrecios', $parcela->id_parcela) }}"
+                                    <a href="{{ route('clientes.generarCuotas', $parcela->id_parcela) }}"
                                         class="btn btn-warning">Generar Nuevas Cuotas</a>
                                 @endif
 

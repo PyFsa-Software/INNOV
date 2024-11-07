@@ -128,15 +128,15 @@ class DatabaseSeeder extends Seeder
             'id_lote' => '2',
         ]);
 
-        Venta::create([
-            'cuotas' => '120',
-            // 'cuotas' => '120',
-            'precio_total_terreno' => '2200000',
-            'cuota_mensual_bolsas_cemento' => '9,7',
-            'fecha_actualizacion_precio'=> Carbon::now()->addMonth()->format('Y-m-d'), 
-            'id_parcela' => '1',
-            'id_cliente' => '2',
-        ]);
+        // Venta::create([
+        //     'cuotas' => '120',
+        //     // 'cuotas' => '120',
+        //     'precio_total_terreno' => '2200000',
+        //     'cuota_mensual_bolsas_cemento' => '9,7',
+        //     'fecha_actualizacion_precio'=> Carbon::now()->addMonth()->format('Y-m-d'), 
+        //     'id_parcela' => '1',
+        //     'id_cliente' => '2',
+        // ]);
 
         // DetallePlan::create([
         //     'fecha_desde' => Carbon::now()->format('Y-m-d'),
@@ -145,15 +145,15 @@ class DatabaseSeeder extends Seeder
         //     'id_venta' => '1',
         // ]);
 
-        DetalleVenta::create([
-            'numero_cuota' => '1',
-            'fecha_maxima_a_pagar' => '2023-03-21',
-            'total_estimado_a_pagar' => '17.460',
-            'total_intereses' => '',
-            'fecha_pago' => '',
-            'total_pago' => '',
-            'numero_recibo'=>'1500',
-            'id_venta' => '1',
-        ]);
+        // DetalleVenta::create([
+        //     'numero_cuota' => '1',
+        //     'fecha_maxima_a_pagar' => '2023-03-21',
+        //     'total_estimado_a_pagar' => '17.460',
+        //     'total_intereses' => '',
+        //     'fecha_pago' => '',
+        //     'total_pago' => '',
+        //     'numero_recibo'=>'1500',
+        //     'id_venta' => '1',
+        // ]);
     }
 }

@@ -3,13 +3,12 @@
 namespace App\Http\Livewire;
 
 use App\Models\DetalleVenta;
-use App\Models\Venta;
 use App\Models\Precio;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
-class FormActualizarPrecios extends Component
+class FormGenerarCuotas extends Component
 {
 
     public $venta;
@@ -46,7 +45,10 @@ class FormActualizarPrecios extends Component
     public function calcularActualizacion()
     {
         $this->validate();
-        $this->totalAbonarProximosMeses =  ($this->venta->cuota_mensual_bolsas_cemento) *  ($this->promedioCementoNuevo);
+      
+        $this->totalAbonarProximosMeses = $this->venta->cuota_mensual_bolsas_cemento *  $this->promedioCementoNuevo;
+
+        
     }
 
     public function submit()
@@ -57,9 +59,9 @@ class FormActualizarPrecios extends Component
         try {
             DB::beginTransaction();
 
-            $this->venta->fecha_actualizacion_precio = Carbon::create($this->venta->fecha_actualizacion_precio)->addMonth(6)->format('Y-m') . '-01';
+            // $this->venta->fecha_actualizacion_precio = Carbon::create($this->venta->fecha_actualizacion_precio)->addMonth(6)->format('Y-m') . '-01';
 
-            $this->venta->save();
+            // $this->venta->save();
 
             $numeroCuota = $this->ultimaCuota->numero_cuota;
 
@@ -72,6 +74,7 @@ class FormActualizarPrecios extends Component
             $planCuota =  $this->venta->cuotas; 
             
             $restoCuotas = $planCuota - $totalCuotas;
+
 
             if ($restoCuotas < 6) {
 
@@ -115,6 +118,6 @@ class FormActualizarPrecios extends Component
 
     public function render()
     {
-        return view('livewire.form-actualizar-precios');
+        return view('livewire.form-generar-cuotas');
     }
 }

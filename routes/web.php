@@ -10,6 +10,7 @@ use App\Http\Controllers\VentasController;
 use App\Http\Middleware\VerificarActualizacionCuotas;
 use App\Http\Middleware\VerificarCuotaNoPagada;
 use App\Http\Middleware\VerificarCuotaVolantePago;
+use App\Http\Middleware\VerificarCuotaAnteriorPagada;
 use App\Models\Parcela;
 use App\Models\Persona;
 use Illuminate\Support\Facades\Route;
@@ -110,11 +111,17 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('clientes/cuotas/{parcela}', 'estadoCuotas')->name('clientes.estadoCuotas');
 
-        Route::get('clientes/cobrar/{cuota}', 'cobrarCuotas')->name('clientes.cobrarCuota')->middleware(VerificarCuotaNoPagada::class);
+        Route::get('clientes/cobrar/{cuota}', 'cobrarCuotas')->name('clientes.cobrarCuota')->middleware([VerificarCuotaNoPagada::class]);
+
+
+        Route::get('clientes/editar-precio/{cuota}', 'editarPrecioCuota')->name('clientes.editarPrecioCuota');
+        Route::put('clientes/editar-precio/{cuota}', 'updatePrecioCuota')->name('clientes.modificarPrecioCuota');
 
         Route::get('clientes/volante-pago/{cuota}', 'generarVolantePago')->name('clientes.volantePago')->middleware(VerificarCuotaVolantePago::class);
 
         Route::get('clientes/actualizar-precios/{parcela}', 'actualizarPrecios')->name('clientes.actualizarPrecios')->middleware(VerificarActualizacionCuotas::class);
+
+        Route::get('clientes/generar-cuotas/{parcela}', 'generarCuotas')->name('clientes.generarCuotas')->middleware(VerificarActualizacionCuotas::class);
 
     });
 

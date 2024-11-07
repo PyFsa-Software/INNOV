@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('total_pago')->nullable(true);
             $table->string('pagado')->default('no');
             $table->string('numero_recibo')->nullable(true);
+            $table->string('fecha_actualizacion')->nullable(true);
 
         });
     }

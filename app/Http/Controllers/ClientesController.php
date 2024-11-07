@@ -141,9 +141,12 @@ class ClientesController extends Controller
         // obtener los is de parcelas compradas por una persona
         $idsParcelas = Venta::all()->where('id_cliente', '=', $persona->id_persona)->pluck('id_parcela');
 
+        // dd($idsParcelas);
+
         // obtener las parcelas
         $parcelas = Parcela::whereIn('id_parcela', $idsParcelas)->get();
         
+
 
         // dd($parcelas[1]->actualizarPrecioCuota);
         return view('clientes.estado', compact('persona', 'parcelas'));
@@ -167,6 +170,29 @@ class ClientesController extends Controller
         return view('clientes.cobrarCuotas', compact('cuota'));
     }
 
+    public function editarPrecioCuota(DetalleVenta $cuota)
+    {
+
+        // dd($cuota);
+        return view('clientes.editarPrecioCuota', compact('cuota'));
+    }
+
+    public function updatePrecioCuota(StoreClientesRequest $request, DetalleVenta $cuota)
+    {
+
+        try {
+
+            dd($request);
+
+            $cuota->update($request->all());
+            return back()->with('success', 'Precio Actualizado correctamente!');
+        } catch (\Throwable$th) {
+            return back()->with('error', 'Error al actualizar el Precio de la cuota!');
+
+        }
+
+    }
+
     public function generarVolantePago(DetalleVenta $cuota)
     {
 
@@ -187,6 +213,13 @@ class ClientesController extends Controller
         $ultimaCuota = $request->ultimaCuota;
 
         return view('clientes.actualizarPrecios', compact('venta', 'parcela', 'ultimaCuota'));
+    }
+    public function generarCuotas(Request $request, Parcela $parcela)
+    {
+        $venta = $request->venta;
+        $ultimaCuota = $request->ultimaCuota;
+
+        return view('clientes.generarCuotas', compact('venta', 'parcela', 'ultimaCuota'));
     }
 
 }

@@ -14,6 +14,7 @@
             </h1>
             <a href="{{route('clientes.estado', $idCliente)}}" class="btn btn-warning mb-2">Volver Atrás</a>
             <x-alertas />
+            <p class="text-center">🟥 Debe Actualizar el Precio de la Cuota</p>
             <div class="table-responsive">
                 {{ $dataTable->table(['width' => '100%', 'class' => 'table table-striped table-bordered']) }}
             </div>
