@@ -8,7 +8,8 @@
     <title>@yield('titulo')</title>
 
     <link rel="shortcut icon" href="{{ url('/img/favicon.png') }}" />
-
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url('/assets/datatables/css/responsive.bootstrap4.min.css') }}">
     <livewire:styles />
 
@@ -258,6 +259,8 @@
             @yield('contenido')
         </div>
     </div>
+    <!-- Bootstrap JS (con dependencias) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ url('/assets/vendor-bundle-base/vendor.bundle.base.js') }}"></script>
     <script src="{{ url('/assets/datatables/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ url('/assets/datatables/js/dataTables.bootstrap4.min.js') }}"></script>

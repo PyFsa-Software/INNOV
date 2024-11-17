@@ -150,19 +150,21 @@ class ClientesController extends Controller
 
     public function estadoCliente(Persona $persona)
     {
-        // obtener los is de parcelas compradas por una persona
-        $idsParcelas = Venta::all()->where('id_cliente', '=', $persona->id_persona)->pluck('id_parcela');
-
-        // dd($idsParcelas);
-
-        // obtener las parcelas
-        $parcelas = Parcela::whereIn('id_parcela', $idsParcelas)->get();
-
-
-
-        // dd($parcelas[1]->actualizarPrecioCuota);
+        // Obtener las ventas de la persona con los campos id_parcela e id_venta
+        $ventas = Venta::where('id_cliente', '=', $persona->id_persona)->get(['id_parcela', 'id_venta']);
+    
+        // Obtener las parcelas relacionadas a las ventas
+        $parcelas = Parcela::whereIn('id_parcela', $ventas->pluck('id_parcela'))->get();
+    
+        // Asociar el id_venta a cada parcela
+        $parcelass = $parcelas->map(function ($parcela) use ($ventas) {
+            $parcela->id_venta = $ventas->firstWhere('id_parcela', $parcela->id_parcela)->id_venta;
+            return $parcela;
+        });
+        // Pasar los datos a la vista
         return view('clientes.estado', compact('persona', 'parcelas'));
     }
+    
     public function estadoCuotas(CuotasVentasDataTable $dataTable, $idParcela)
     {
         $venta = Venta::select('id_venta', 'id_cliente')->where('id_parcela', '=', $idParcela)->first();
@@ -366,46 +368,45 @@ class ClientesController extends Controller
     }
 
     public function calcularDeudaResultado(Request $request, Parcela $parcela)
-{
-    // Obtener el interés como porcentaje del request
-    $interesDiario = (float) $request->input('interes');
+    {
+        // Obtener el interés como porcentaje del request
+        $interesDiario = (float) $request->input('interes');
 
-    // Obtener el id de venta relacionado con la parcela
-    $idVenta = Venta::where('id_parcela', $parcela->id_parcela)->value('id_venta');
+        // Obtener el id de venta relacionado con la parcela
+        $idVenta = Venta::where('id_parcela', $parcela->id_parcela)->value('id_venta');
 
-    // Obtener las cuotas vencidas para calcular el total con interés
-    $cuotasVencidas = DetalleVenta::where('id_venta', $idVenta)
-        ->where('fecha_maxima_a_pagar', '<', date('Y-m-d'))
-        ->where('pagado', '!=', 'si')
-        ->get();
+        // Obtener las cuotas vencidas para calcular el total con interés
+        $cuotasVencidas = DetalleVenta::where('id_venta', $idVenta)
+            ->where('fecha_maxima_a_pagar', '<', date('Y-m-d'))
+            ->where('pagado', '!=', 'si')
+            ->get();
 
-    // Calcular el monto total con interés
-    $totalConInteres = 0;
-    $cuotasCalculadas = [];
+        // Calcular el monto total con interés
+        $totalConInteres = 0;
+        $cuotasCalculadas = [];
 
-    foreach ($cuotasVencidas as $cuota) {
-        $diasVencidos = Carbon::parse($cuota->fecha_maxima_a_pagar)->diffInDays(Carbon::today());
+        foreach ($cuotasVencidas as $cuota) {
+            $diasVencidos = Carbon::parse($cuota->fecha_maxima_a_pagar)->diffInDays(Carbon::today());
 
-        // Calcula el incremento de interés como porcentaje aplicado al monto original
-        $totalInteres = $diasVencidos * ($interesDiario / 100); // Divide entre 100 para obtener el porcentaje real
-        $incrementoInteres = round($cuota->total_estimado_a_pagar * $totalInteres, 2);
-        $montoConInteres = $cuota->total_estimado_a_pagar + $incrementoInteres;
+            // Calcula el incremento de interés como porcentaje aplicado al monto original
+            $totalInteres = $diasVencidos * ($interesDiario / 100); // Divide entre 100 para obtener el porcentaje real
+            $incrementoInteres = round($cuota->total_estimado_a_pagar * $totalInteres, 2);
+            $montoConInteres = $cuota->total_estimado_a_pagar + $incrementoInteres;
 
-        $totalConInteres += $montoConInteres;
+            $totalConInteres += $montoConInteres;
 
-        // Agregar detalle de cada cuota vencida al arreglo
-        $cuotasCalculadas[] = [
-            'monto_original' => $cuota->total_estimado_a_pagar,
-            'dias_vencidos' => $diasVencidos,
-            'monto_con_interes' => $montoConInteres,
-            'cuota' => $cuota->numero_cuota,
-        ];
+            // Agregar detalle de cada cuota vencida al arreglo
+            $cuotasCalculadas[] = [
+                'monto_original' => $cuota->total_estimado_a_pagar,
+                'dias_vencidos' => $diasVencidos,
+                'monto_con_interes' => $montoConInteres,
+                'cuota' => $cuota->numero_cuota,
+            ];
+        }
+
+        return response()->json([
+            'cuotasCalculadas' => $cuotasCalculadas,
+            'totalConInteres' => $totalConInteres,
+        ]);
     }
-
-    return response()->json([
-        'cuotasCalculadas' => $cuotasCalculadas,
-        'totalConInteres' => $totalConInteres,
-    ]);
-}
-
 }

@@ -219,6 +219,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('ventas/crear', 'create')->name('ventas.crear');
         Route::get('ventas/listado', 'index')->name('ventas.listado');
         Route::get('ventas/volante-pago/{venta}', 'generarVolantePago')->name('ventas.volantePago');
+        Route::get('ventas/eliminar/{venta}', 'eliminarVenta')->name('ventas.eliminarVenta');
     });
 
 

@@ -5,13 +5,16 @@ namespace App\Http\Controllers;
 use App\DataTables\VentasDataTable;
 use App\Enums\ConceptoDeVenta;
 use App\Enums\FormasPago;
+use App\Models\DetalleReservaParcela;
 use App\Models\Parcela;
 use App\Models\Persona;
 use App\Models\Precio;
+use App\Models\ReservaParcela;
 use App\Models\Venta;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class VentasController extends Controller
@@ -93,136 +96,41 @@ class VentasController extends Controller
     }
 
 
+    public function eliminarVenta(Venta $venta)
+    {
+        DB::beginTransaction(); // Inicia la transacción para asegurar consistencia
+    
+        try {
+            // 1. Eliminar los registros relacionados en detalleVentas
+            $venta->detalleVenta()->delete();
+    
+            // 2. Obtener el id_parcela de la venta
+            $idParcela = $venta->id_parcela;
+    
+            // 3. Buscar en la tabla ReservaParcela si existe un registro relacionado
+            $reservaParcela = ReservaParcela::where('id_parcela', $idParcela)->first();
+    
+            if ($reservaParcela) {
+                // 4. Buscar en la tabla DetalleReservaParcela los registros relacionados
+                DetalleReservaParcela::where('id_reserva_parcela', $reservaParcela->id_reserva_parcela)->delete();
+                // 6. Eliminar la reserva parcela
+                $reservaParcela->delete();
+            }
+            // 5. Actualizar el campo disponible de la parcela a 1
+            Parcela::where('id_parcela', $idParcela)->update(['disponible' => 1]);
+            
+            // 7. Finalmente, eliminar la venta
+            $venta->delete();
+    
+            DB::commit(); // Confirma los cambios en la base de datos
+            return redirect()->back()->with('success', 'Venta eliminada correctamente.');
+        } catch (\Exception $e) {
+            dd($e);
+            DB::rollBack(); // Revierte los cambios en caso de error
+            return redirect()->back()->withErrors('Ocurrió un error al eliminar la venta: ' . $e->getMessage());
+        }
+    }
+    
 
-    // public function calcularPlan(Request $request)
-    // {
 
-    //     try {
-    //         // $idCliente = $request->idCliente;
-    //         $parcelaById = Parcela::where([
-    //             ['id_parcela', '=', $request->idParcela],
-    //         ])->get()[0];
-
-    //         $cantidadCuotas = $request->cantidadCuotas;
-    //         $promedioCemento = $request->promedioCemento;
-    //         $precioTotalEntrega = $request->precioTotalEntrega;
-
-    //         // CALCULAR TOTAL BOLSAS DE CEMENTO POR EL PROMEDIO DEL CEMENTO
-    //         $precioTotalTerreno = $parcelaById->cantidad_bolsas * $promedioCemento;
-    //         // RESTAR PRECIO TOTAL DEL TERRENO MENOS LA ENTREGA
-
-    //         $valorTotalFinanciar = $precioTotalTerreno - $precioTotalEntrega;
-
-    //         // OBTENER TOTAL BOLSAS DE CEMENTO PARA EL LOTE
-    //         $cantidadBolsasCementoTerreno = $valorTotalFinanciar / $promedioCemento;
-    //         // $cantidadBolsasCementoTerreno = number_format(($valorTotalFinanciar / $promedioCemento), 0, ',');
-
-    //         // OBTENER BOLSAS DE CEMENTO A PAGAR MENSUAL
-    //         $bolsasCementoMensual = round($cantidadBolsasCementoTerreno / $cantidadCuotas, 2);
-    //         // $bolsasCementoMensual = number_format(($cantidadBolsasCementoTerreno / $cantidadCuotas), 2, ',');
-
-    //         // CONVERTIR BOLSAS CEMENTO MENSUAL A PESOS
-    //         $valorCuotaMensual = round($bolsasCementoMensual * $promedioCemento, 2);
-
-    //         $fechaDesdeDestallePlan = Carbon::now()->addMonth(1)->format('Y-m') . '-21';
-    //         $fechaHastaDestallePlan = Carbon::now()->addMonth(6)->format('Y-m') . '-21';
-
-    //         return response()->json([
-    //             'fechaDesde' => $fechaDesdeDestallePlan,
-    //             'fechaHasta' => $fechaHastaDestallePlan,
-    //             'cuotaMensualBolsasCemento' => $bolsasCementoMensual,
-    //             'valorCuota' => $valorCuotaMensual,
-    //             'valorTotalFinanciar' => $valorTotalFinanciar,
-    //             'precioTotalTerreno' => $precioTotalTerreno,
-    //         ]);
-
-    //     } catch (Exception $e) {
-    //         return response()->json([
-    //             'mensaje' => "Se produjo un error por favor contacte con el adminstrador",
-    //         ], 400);
-    //     }
-
-    // }
-
-    // /**
-    //  * Store a newly created resource in storage.
-    //  *
-    //  * @param  \Illuminate\Http\Request  $request
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function store(StoreVentasRequest $request)
-    // {
-    //     // dd($request->all());
-    //     DB::beginTransaction();
-
-    //     try {
-    //         $idCliente = $request->id_cliente;
-    //         $idParcela = $request->id_parcela;
-    //         $parcelaById = Parcela::find($idParcela);
-
-    //         $cantidadCuotas = $request->cuotas;
-    //         $promedioCemento = $request->promedio_cemento;
-    //         $precioTotalEntrega = $request->precio_total_entrega;
-
-    //         // CALCULAR TOTAL BOLSAS DE CEMENTO POR EL PROMEDIO DEL CEMENTO
-    //         $precioTotalTerreno = $parcelaById->cantidad_bolsas * $promedioCemento;
-    //         // RESTAR PRECIO TOTAL DEL TERRENO MENOS LA ENTREGA
-
-    //         $valorTotalFinanciar = $precioTotalTerreno - $precioTotalEntrega;
-
-    //         // OBTENER TOTAL BOLSAS DE CEMENTO PARA EL LOTE
-    //         $cantidadBolsasCementoTerreno = $valorTotalFinanciar / $promedioCemento;
-    //         // $cantidadBolsasCementoTerreno = number_format(($valorTotalFinanciar / $promedioCemento), 0, ',');
-
-    //         // OBTENER BOLSAS DE CEMENTO A PAGAR MENSUAL
-    //         $bolsasCementoMensual = round($cantidadBolsasCementoTerreno / $cantidadCuotas, 2);
-    //         // $bolsasCementoMensual = number_format(($cantidadBolsasCementoTerreno / $cantidadCuotas), 2, ',');
-
-    //         // CONVERTIR BOLSAS CEMENTO MENSUAL A PESOS
-    //         $valorCuotaMensual = round($bolsasCementoMensual * $promedioCemento, 2);
-
-    //         $fechaDesdeDestallePlan = Carbon::now()->addMonth(1)->format('Y-m') . '-21';
-    //         $fechaHastaDestallePlan = Carbon::now()->addMonth(6)->format('Y-m') . '-21';
-
-    //         // GUARDAR VENTA
-
-    //         $ventaGuardada = Venta::create([
-    //             'cuotas' => $cantidadCuotas,
-    //             'precio_total_terreno' => $precioTotalTerreno,
-    //             'cuota_mensual_bolsas_cemento' => $bolsasCementoMensual,
-    //             'precio_total_entrega' => $precioTotalEntrega,
-    //             'precio_final' => $valorTotalFinanciar,
-    //             'id_parcela' => $idParcela,
-    //             'id_cliente' => $idCliente,
-    //         ]);
-
-    //         for ($i = 1; $i <= 6; $i++) {
-    //             DetalleVenta::create([
-    //                 'numero_cuota' => $i,
-    //                 'fecha_maxima_a_pagar' => Carbon::now()->addMonth($i)->format('Y-m') . '-21',
-    //                 'total_estimado_a_pagar' => $valorCuotaMensual,
-    //                 'id_venta' => $ventaGuardada->id_venta,
-    //             ]);
-    //         }
-
-    //         DetallePlan::create([
-    //             'fecha_desde' => $fechaDesdeDestallePlan,
-    //             'fecha_hasta' => $fechaHastaDestallePlan,
-    //             'valor_cuota' => $valorCuotaMensual,
-    //             'id_venta' => $ventaGuardada->id_venta,
-    //         ]);
-
-    //         $parcelaById->update(['disponible' => 0]);
-
-    //         DB::commit();
-
-    //         return redirect()->route('ventas.crear')->with('success', 'Venta realizado correctamente!');
-    //     } catch (Exception $e) {
-    //         DB::rollback();
-
-    //         return redirect()->route('ventas.crear')->with('error', 'Error al realizar la venta!');
-
-    //     }
-
-    // }
 }
