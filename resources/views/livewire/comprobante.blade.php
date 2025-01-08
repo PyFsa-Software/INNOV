@@ -7,51 +7,52 @@
     </div>
 
     <div class="form-group">
-        <label for="id_cliente">Cliente <span class="text-danger">(Si no selecciona un cliente, se generará un comprobante sin cliente.)</span></label>
+        <label for="id_cliente">Cliente <span class="text-danger">(Si no selecciona un cliente, se generará un
+                comprobante sin cliente.)</span></label>
         <br>
-        <select name="id_cliente" id="id_cliente" class="form-control" autofocus wire:model="clienteCombo">
-            <option value="" selected>Ninguno</option>
+        <select id="clienteCombo" class="form-control select2" wire:model="clienteCombo">
+            <option value="">Seleccione un cliente</option>
             @foreach ($clientes as $cliente)
-            <option value="{{ $cliente->id_persona }}" @selected(old('id_cliente')==$cliente->id_persona)>
-                {{ $cliente->nombre }} {{ $cliente->apellido }}
-                ({{ $cliente->dni }})
-            </option>
+                <option value="{{ $cliente->id_persona }}">
+                    {{ $cliente->nombre }} {{ $cliente->apellido }}
+                </option>
             @endforeach
-
         </select>
+
+
     </div>
 
     {{-- if  $clienteCombo == '' show next div --}}
 
     @if ($clienteCombo == '')
-    <div class="form-group">
-        <label for="sr_sra">Sr/Sra: <span class="text-danger">*</span></label>
-        <input type="text" class="form-control" name="sr_sra" id="sr_sra" placeholder="Ingrese el Sr/Sra"
-            value="{{ old('sr_sra') }}" wire:model="srSra">
-    </div>
-    <div class="form-group">
-        <label for="dni">Dni: <span class="text-danger">*</span></label>
-        <input type="number" class="form-control" name="dni" id="dni" placeholder="Ingrese el DNI" value="{{ old('dni') }}"
-            wire:model="dni">
-    </div>
-    <div class="form-group">
-        <label for="domicilio">Domicilio del Alquiler: <span class="text-danger">*</span></label>
-        <input type="text" class="form-control" name="domicilio" id="domicilio" placeholder="Ingrese el domicilio"
-            value="{{ old('domicilio') }}" wire:model="domicilio">
-    </div>
+        <div class="form-group">
+            <label for="sr_sra">Sr/Sra: <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" name="sr_sra" id="sr_sra" placeholder="Ingrese el Sr/Sra"
+                value="{{ old('sr_sra') }}" wire:model="srSra">
+        </div>
+        <div class="form-group">
+            <label for="dni">Dni: <span class="text-danger">*</span></label>
+            <input type="number" class="form-control" name="dni" id="dni" placeholder="Ingrese el DNI"
+                value="{{ old('dni') }}" wire:model="dni">
+        </div>
+        <div class="form-group">
+            <label for="domicilio">Domicilio del Alquiler: <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" name="domicilio" id="domicilio"
+                placeholder="Ingrese el domicilio" value="{{ old('domicilio') }}" wire:model="domicilio">
+        </div>
 
-    <div class="form-group">
-        <label for="domicilioAlquiler">Alquiler: </label>
-        {{-- combo de FAMILIAR o COMERCIAL --}}
-        <select class="form-control" name="domicilioAlquiler" id="domicilioAlquiler" wire:model="domicilioAlquiler">
-            <option value="" disabled>Seleccione una opción</option>
-            {{-- domiciliosAlquiler --}}
-            @foreach ($domiciliosAlquiler as $key => $value)
-                <option value="{{ $key }}" @if ($domicilioAlquiler === $key) selected @endif>
-                    {{ $value }}</option>
-            @endforeach
-        </select>
-    </div>
+        <div class="form-group">
+            <label for="domicilioAlquiler">Alquiler: </label>
+            {{-- combo de FAMILIAR o COMERCIAL --}}
+            <select class="form-control" name="domicilioAlquiler" id="domicilioAlquiler" wire:model="domicilioAlquiler">
+                <option value="" disabled>Seleccione una opción</option>
+                {{-- domiciliosAlquiler --}}
+                @foreach ($domiciliosAlquiler as $key => $value)
+                    <option value="{{ $key }}" @if ($domicilioAlquiler === $key) selected @endif>
+                        {{ $value }}</option>
+                @endforeach
+            </select>
+        </div>
     @endif
 
     {{-- add combo ventas with name ventasClienteCombo --}}
@@ -62,12 +63,12 @@
             <option value="" selected>Ninguno</option>
             @if ($ventasCliente)
 
-            @foreach ($ventasCliente as $venta)
-            <option value="{{ $venta->id_venta }}" @selected(old('id_venta')==$venta->id_venta)>
-                Parcela ({{ $venta->parcela->descripcion_parcela }}) Manzana: ({{ $venta->parcela->manzana }})
-                Lote: ({{ $venta->parcela->lote->nombre_lote }})
-            </option>
-            @endforeach
+                @foreach ($ventasCliente as $venta)
+                    <option value="{{ $venta->id_venta }}" @selected(old('id_venta') == $venta->id_venta)>
+                        Parcela ({{ $venta->parcela->descripcion_parcela }}) Manzana: ({{ $venta->parcela->manzana }})
+                        Lote: ({{ $venta->parcela->lote->nombre_lote }})
+                    </option>
+                @endforeach
 
             @endif
         </select>

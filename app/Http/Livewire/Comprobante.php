@@ -48,6 +48,7 @@ class Comprobante extends Component
     }
 
 
+
     protected $rules = [
         'descripcionComprobante' => 'required|string|unique:comprobantes,descripcion_comprobante',
         'clienteCombo' => 'nullable|numeric|integer',
@@ -58,24 +59,35 @@ class Comprobante extends Component
         'conceptoDe' => 'required|string',
     ];
 
+    protected $listeners = ['updateClienteCombo'];
+
+    public function updateClienteCombo($value)
+    {
+        $this->clienteCombo = $value;
+        $this->loadClienteCombo($value);
+    }
+    
+
+    
+    
     public function updated()
     {
         $this->isDisabled = true;
         try {
             $this->loadClienteCombo($this->clienteCombo);
 
-            if(!$this->clienteCombo){
+            if (!$this->clienteCombo) {
                 $this->rules['srSra'] = 'required|string';
                 $this->rules['dni'] = 'required|regex:/^[0-9]{7,8}$/';
                 $this->rules['domicilio'] = 'required|string';
                 $this->rules['domicilioAlquiler'] = 'nullable|string';
-            }else{
+            } else {
                 unset($this->rules['srSra']);
                 unset($this->rules['dni']);
                 unset($this->rules['domicilio']);
                 unset($this->rules['domicilioAlquiler']);
             }
-           // Agregar regla de validación condicional para $ventasClienteCombo
+            // Agregar regla de validación condicional para $ventasClienteCombo
             if ($this->clienteCombo) {
                 $this->rules['ventasClienteCombo'] = 'required|numeric|integer';
             } else {
@@ -94,12 +106,29 @@ class Comprobante extends Component
     // if change property $clienteCombo search in model VentasCliente
     public function loadClienteCombo($value)
     {
-        if ($value == null) {
+        if (is_null($value)) {
             $this->ventasCliente = null;
+            logger('ClienteCombo es null');
             return;
         }
-        $this->ventasCliente = Venta::where('id_cliente', $value)->with('parcela.lote')->get();
+    
+        // Verificar si existe el cliente en la base de datos
+        $cliente = Persona::find($value);
+        if (!$cliente) {
+            logger("Cliente con id $value no encontrado");
+            return;
+        }
+    
+        logger("Cliente encontrado: ", $cliente->toArray());
+    
+        // Consulta las ventas relacionadas
+        $this->ventasCliente = Venta::where('id_cliente', $value)
+            ->with('parcela.lote')
+            ->get();
+    
+        logger('Ventas cliente cargadas:', $this->ventasCliente->toArray());
     }
+    
 
     public function submit()
     {
@@ -109,10 +138,10 @@ class Comprobante extends Component
             $comprobante = new ComprobanteModel();
             $comprobante->descripcion_comprobante = $this->descripcionComprobante;
             $comprobante->numero_recibo = DetalleVenta::getSiguienteNumeroRecibo();
-            if ($this->clienteCombo){
+            if ($this->clienteCombo) {
                 $comprobante->id_cliente = $this->clienteCombo;
                 $comprobante->id_venta = $this->ventasClienteCombo;
-            }else{
+            } else {
                 $comprobante->id_cliente = null;
                 $comprobante->id_venta = null;
                 $comprobante->sr_sra = $this->srSra;
@@ -127,7 +156,9 @@ class Comprobante extends Component
             $comprobante->concepto_de = $this->conceptoDe;
             $comprobante->save();
             DB::commit();
-            return redirect()->route('comprobantes.crear')->with('success', "Comprobante creado exitosamente <a href=" . route('comprobantes.pdf', $comprobante->id_comprobante) . " target='_blank'>Haga click aqui </a>para descargar el comprobante."
+            return redirect()->route('comprobantes.crear')->with(
+                'success',
+                "Comprobante creado exitosamente <a href=" . route('comprobantes.pdf', $comprobante->id_comprobante) . " target='_blank'>Haga click aqui </a>para descargar el comprobante."
             );
         } catch (\Throwable $th) {
             DB::rollBack();

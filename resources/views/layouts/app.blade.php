@@ -11,6 +11,10 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url('/assets/datatables/css/responsive.bootstrap4.min.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
+
     <livewire:styles />
 
 </head>
@@ -47,11 +51,6 @@
                             </a>
                         </div>
                     </li>
-                    {{-- <li class="nav-item nav-settings d-none d-lg-flex">
-                        <a class="nav-link" href="#">
-                            <i class="icon-ellipsis"></i>
-                        </a>
-                    </li> --}}
                 </ul>
                 <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
                     data-toggle="offcanvas">
@@ -62,30 +61,6 @@
         {{-- SIDEBAR SKINS --}}
 
         <div class="container-fluid page-body-wrapper">
-            {{-- <div class="theme-setting-wrapper">
-                <div id="settings-trigger"><i class="ti-settings"></i></div>
-                <div id="theme-settings" class="settings-panel">
-                    <i class="settings-close ti-close"></i>
-                    <p class="settings-heading">SIDEBAR SKINS</p>
-                    <div class="sidebar-bg-options selected" id="sidebar-light-theme">
-                        <div class="img-ss rounded-circle bg-light border mr-3"></div>Light
-                    </div>
-                    <div class="sidebar-bg-options" id="sidebar-dark-theme">
-                        <div class="img-ss rounded-circle bg-dark border mr-3"></div>Dark
-                    </div>
-                    <p class="settings-heading mt-2">HEADER SKINS</p>
-                    <div class="color-tiles mx-0 px-4">
-                        <div class="tiles success"></div>
-                        <div class="tiles warning"></div>
-                        <div class="tiles danger"></div>
-                        <div class="tiles info"></div>
-                        <div class="tiles dark"></div>
-                        <div class="tiles default"></div>
-                    </div>
-                </div>
-            </div> --}}
-
-
             {{-- SIDEBAR --}}
 
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
@@ -110,12 +85,6 @@
                                 Pagos Multiples
                             </a>
                         </div>
-                        {{-- <div class="collapse" id="tables">
-                            <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">Basic
-                                        table</a></li>
-                            </ul>
-                        </div> --}}
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#" data-toggle="dropdown">
@@ -266,8 +235,30 @@
     <script src="{{ url('/assets/datatables/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ url('/assets/datatables/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ url('/assets/datatables/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"
+        integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     @vite(['resources/js/importFilesSistema.js'])
     @stack('scripts')
+    <script>
+        document.addEventListener('livewire:load', function() {
+            $('#clienteCombo').select2({
+                placeholder: 'Seleccione un cliente',
+                allowClear: true,
+            });
+
+            // Sincronizar con Livewire
+            $('#clienteCombo').on('change', function(e) {
+                let value = $(this).val();
+                Livewire.emit('updateClienteCombo', value); // Usar un evento emitido
+            });
+
+            // Reinicializar Select2 después de un renderizado Livewire
+            Livewire.hook('message.processed', (message, component) => {
+                $('#clienteCombo').select2();
+            });
+        });
+    </script>
     <livewire:scripts />
 
 
