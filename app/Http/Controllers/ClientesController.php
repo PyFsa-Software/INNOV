@@ -151,7 +151,8 @@ class ClientesController extends Controller
     public function estadoCliente(Persona $persona)
     {
         // Obtener las ventas de la persona con los campos id_parcela e id_venta
-        $ventas = Venta::where('id_cliente', '=', $persona->id_persona)->get(['id_parcela', 'id_venta']);
+        $ventas = Venta::where('id_cliente', '=', $persona->id_persona)->get(['id_parcela', 'id_venta','update_period']);
+
     
         // Obtener las parcelas relacionadas a las ventas
         $parcelas = Parcela::whereIn('id_parcela', $ventas->pluck('id_parcela'))->get();
@@ -162,7 +163,7 @@ class ClientesController extends Controller
             return $parcela;
         });
         // Pasar los datos a la vista
-        return view('clientes.estado', compact('persona', 'parcelas'));
+        return view('clientes.estado', compact('persona', 'parcelas','ventas'));
     }
     
     public function estadoCuotas(CuotasVentasDataTable $dataTable, $idParcela)

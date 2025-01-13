@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\DataTables\VentasDataTable;
 use App\Enums\ConceptoDeVenta;
 use App\Enums\FormasPago;
+use App\Enums\PeriodosActualizacion;
 use App\Models\DetalleReservaParcela;
 use App\Models\Parcela;
 use App\Models\Persona;
@@ -38,9 +39,6 @@ class VentasController extends Controller
      */
     public function create()
     {
-
-        // $results = DB::table('users')->get();
-
         $clientes = Persona::where([
             ['cliente', '=', '1'],
             ['activo', '=', '1'],
@@ -54,7 +52,9 @@ class VentasController extends Controller
 
         $conceptosDe = ConceptoDeVenta::toArray();
 
-        return view('ventas.crear', compact('clientes', 'parcelas', 'promedioCemento', 'formasDePagos', 'conceptosDe'));
+        $periodosActualizacion = PeriodosActualizacion::toArray();
+
+        return view('ventas.crear', compact('clientes', 'parcelas', 'promedioCemento', 'formasDePagos', 'conceptosDe','periodosActualizacion'));
     }
 
     /**

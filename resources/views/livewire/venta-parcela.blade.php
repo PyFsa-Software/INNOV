@@ -35,12 +35,23 @@
     </div>
 
     <div class="form-group">
+        <label for="forma_pago">Periodos de Actualizacion: </label>
+        <select class="form-control" name="periodo_actualizacion" id="periodo_actualizacion"
+            wire:model="periodoActualizacion">
+            <option value="" disabled>Seleccione un Periodo</option>
+            @foreach ($periodosActualizacion as $key => $value)
+                <option value="{{ $key }}" @if ($periodoActualizacion === $key) selected @endif>
+                    {{ $value }}</option>
+            @endforeach
+        </select>
+    </div>
+
+    <div class="form-group">
         <label for="cuotas">Plan de cuotas</label>
         <input type="number" class="form-control" name="cuotas" id="cuotas"
             placeholder="Ingrese la cantidad de cuotas para la venta" value="{{ old('cuotas') }}"
             wire:model="cantidadCuotas" wire:keyup.debounce.500ms="calcularPlan">
     </div>
-
 
     <div class="form-group">
         <label for="promedio_cemento">Promedio Cemento</label>
@@ -52,6 +63,8 @@
             ${{ $promedioCementoDelMes?->precio_promedio }}
         </b>
     </div>
+
+
 
 
     {{-- <div class="form-group">

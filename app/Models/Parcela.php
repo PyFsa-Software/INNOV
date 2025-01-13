@@ -49,147 +49,112 @@ class Parcela extends Model
     public function getActualizarPrecioCuotaFechaLimiteAttribute()
     {
         //Devuelve la venta a la cual corresponde.
-        $idVenta = Venta::select('id_venta','fecha_actualizacion_precio','cuotas')->where('id_parcela', '=', $this->id_parcela)->get();
+        $idVenta = Venta::select('id_venta', 'fecha_actualizacion_precio', 'cuotas')->where('id_parcela', '=', $this->id_parcela)->get();
 
         //Devuelve el Total de cuotas pagadas.
         $cuotasPagadas = DetalleVenta::where('id_venta', $idVenta[0]->id_venta)
-            ->where('pagado','=','si')->count('id_detalle_venta');
+            ->where('pagado', '=', 'si')->count('id_detalle_venta');
         //Devuelve el total de cuotas no pagadas.
         $cuotasPorPagar = DetalleVenta::where('id_venta', $idVenta[0]->id_venta)
-            ->where('pagado','=','no')->count('id_detalle_venta');
+            ->where('pagado', '=', 'no')->count('id_detalle_venta');
 
-        
+
         //Devuelve el total de los precios que hay que actualizar.
-        $preciosPorActualizar = DetalleVenta::whereHas('venta', function($query) {
+        $preciosPorActualizar = DetalleVenta::whereHas('venta', function ($query) {
             $query->where('pagado', '=', 'no')
-                  ->whereColumn('id_parcela', '=', 'ventas.id_parcela')
-                  ->where('fecha_actualizacion_precio', '<', getFechaActualizacion())
-                  ->where('id_parcela', '=', $this->id_parcela)
-                  ->where('fecha_actualizacion','=',null);
+                ->whereColumn('id_parcela', '=', 'ventas.id_parcela')
+                ->where('fecha_actualizacion_precio', '<', getFechaActualizacion())
+                ->where('id_parcela', '=', $this->id_parcela)
+                ->where('fecha_actualizacion', '=', null);
         })->get();
 
-        // dd(getFechaActualizacion());
-        // dd($preciosPorActualizar);
-        
-        //Devuelve el total de los precios ya actualizados.   
-
-        // $cantidadPreciosActualizados = DetalleVenta::whereHas('venta', function($query) {
-        //     $query->where('fecha_actualizacion', '!=', '')
-        //           ->whereColumn('id_parcela', '=', 'ventas.id_parcela');
-                 
-        // })->get();
-        
-        // dd(count($cantidadPreciosActualizados));
-     
-            // var_dump(count($preciosPorActualizar));
-            // var_dump(count($cantidadPreciosActualizados));
-        //Equivale al total de cuotas.
         $totalCuotas = $cuotasPagadas + $cuotasPorPagar;
 
         //Fecha de actualizacion de los precios de las cuotas.
         $fechaActualizacionPrecio = Carbon::parse($idVenta[0]?->fecha_actualizacion_precio)->format('Y-m');
 
-        // dd($fechaActualizacionPrecio, getFechaActual());
 
-            // dd(((getFechaActual() > $fechaActualizacionPrecio) && ($totalCuotas != $idVenta[0]->cuotas) && (count($preciosPorActualizar) == 0)));
-            //Debe retornar TRUE para que aparezca el boton de "Actualizar Precios".
-            return 
-            ((getFechaActual() > $fechaActualizacionPrecio) && ($totalCuotas != $idVenta[0]->cuotas) && (count($preciosPorActualizar) == 0));
-        
-
-
+        return ((getFechaActual() > $fechaActualizacionPrecio) && ($totalCuotas != $idVenta[0]->cuotas) && (count($preciosPorActualizar) == 0));
     }
 
     public function getGenerarNuevasCuotasAttribute()
     {
-            //Devuelve la venta a la cual corresponde.
-            $idVenta = Venta::select('id_venta','fecha_actualizacion_precio','cuotas')->where('id_parcela', '=', $this->id_parcela)->get();
+        //Devuelve la venta a la cual corresponde.
+        $idVenta = Venta::select('id_venta', 'fecha_actualizacion_precio', 'cuotas')->where('id_parcela', '=', $this->id_parcela)->get();
 
-            //Devuelve el Total de cuotas pagadas.
-            $cuotasPagadas = DetalleVenta::where('id_venta', $idVenta[0]->id_venta)
-                ->where('pagado','=','si')->count('id_detalle_venta');
-            //Devuelve el total de cuotas no pagadas.
-            $cuotasPorPagar = DetalleVenta::where('id_venta', $idVenta[0]->id_venta)
-                ->where('pagado','=','no')->count('id_detalle_venta');
-            
-            //Equivale al total de cuotas.
-            $totalCuotas = $cuotasPagadas + $cuotasPorPagar;
+        //Devuelve el Total de cuotas pagadas.
+        $cuotasPagadas = DetalleVenta::where('id_venta', $idVenta[0]->id_venta)
+            ->where('pagado', '=', 'si')->count('id_detalle_venta');
+        //Devuelve el total de cuotas no pagadas.
+        $cuotasPorPagar = DetalleVenta::where('id_venta', $idVenta[0]->id_venta)
+            ->where('pagado', '=', 'no')->count('id_detalle_venta');
+
+        //Equivale al total de cuotas.
+        $totalCuotas = $cuotasPagadas + $cuotasPorPagar;
 
 
-            //Fecha de actualizacion de los precios de las cuotas.
-            $fechaActualizacionPrecio = Carbon::parse($idVenta[0]->fecha_actualizacion_precio)->format('Y-m');
+        //Fecha de actualizacion de los precios de las cuotas.
+        $fechaActualizacionPrecio = Carbon::parse($idVenta[0]->fecha_actualizacion_precio)->format('Y-m');
 
-            //Debe retornar TRUE para que aparezca el boton de "Generar nuevas Cuotas".
+        //Debe retornar TRUE para que aparezca el boton de "Generar nuevas Cuotas".
 
-            return 
-            (($cuotasPagadas === $totalCuotas) && ($fechaActualizacionPrecio >= getFechaActual() && $totalCuotas != $idVenta[0]->cuotas));
-
+        return (($cuotasPagadas === $totalCuotas) && ($fechaActualizacionPrecio >= getFechaActual() && $totalCuotas != $idVenta[0]->cuotas));
     }
 
 
     public function getVerificarCancelacionPlanAttribute()
     {
-            //Devuelve la venta a la cual corresponde.
-            $idVenta = Venta::select('id_venta','fecha_actualizacion_precio','cuotas')->where('id_parcela', '=', $this->id_parcela)->get();
+        //Devuelve la venta a la cual corresponde.
+        $idVenta = Venta::select('id_venta', 'fecha_actualizacion_precio', 'cuotas')->where('id_parcela', '=', $this->id_parcela)->get();
 
-            //Devuelve el Total de cuotas pagadas.
-            $cuotasPagadas = DetalleVenta::where('id_venta', $idVenta[0]->id_venta)
-                ->where('pagado','=','si')->count('id_detalle_venta');
+        //Devuelve el Total de cuotas pagadas.
+        $cuotasPagadas = DetalleVenta::where('id_venta', $idVenta[0]->id_venta)
+            ->where('pagado', '=', 'si')->count('id_detalle_venta');
 
-            //Devuelve el total de cuotas no pagadas.
-            $cuotasPorPagar = DetalleVenta::where('id_venta', $idVenta[0]->id_venta)
-                ->where('pagado','=','no')->count('id_detalle_venta');
+        //Devuelve el total de cuotas no pagadas.
+        $cuotasPorPagar = DetalleVenta::where('id_venta', $idVenta[0]->id_venta)
+            ->where('pagado', '=', 'no')->count('id_detalle_venta');
 
-            //Equivale al total de cuotas.
-            $totalCuotas = $cuotasPagadas + $cuotasPorPagar;
+        //Equivale al total de cuotas.
+        $totalCuotas = $cuotasPagadas + $cuotasPorPagar;
 
-            //Debe retornar TRUE para marcar como cancelado.
-            return ($totalCuotas === $idVenta[0]->cuotas && $totalCuotas === $cuotasPagadas);
-            
+        //Debe retornar TRUE para marcar como cancelado.
+        return ($totalCuotas === $idVenta[0]->cuotas && $totalCuotas === $cuotasPagadas);
     }
-        
+
 
     public function getVerificarCuotasEditarAttribute()
     {
-            //Devuelve la venta a la cual corresponde.
-            $idVenta = Venta::select('id_venta','fecha_actualizacion_precio','cuotas')->where('id_parcela', '=', $this->id_parcela)->get();
+        //Devuelve la venta a la cual corresponde.
+        $idVenta = Venta::select('id_venta', 'fecha_actualizacion_precio', 'cuotas')->where('id_parcela', '=', $this->id_parcela)->get();
 
-            //Cuotas que no estan pagadas
-            $cuotasPorPagar = DetalleVenta::where('id_venta', $idVenta[0]->id_venta)
-            ->where('pagado','=','no')->count('id_detalle_venta');
+        //Cuotas que no estan pagadas
+        $cuotasPorPagar = DetalleVenta::where('id_venta', $idVenta[0]->id_venta)
+            ->where('pagado', '=', 'no')->count('id_detalle_venta');
 
-            //Total de cuotas que deben ser actualizadas.
-            $preciosPorActualizar = DetalleVenta::whereHas('venta', function($query) {
-                $query->where('pagado', '=', 'no')
-                      ->whereColumn('id_parcela', '=', 'ventas.id_parcela')
-                      ->where('id_parcela', '=', $this->id_parcela)
-                      ->where('fecha_actualizacion_precio', '<', getFechaActualizacion())->where('fecha_actualizacion','=',null);
-            })->get();
+        //Total de cuotas que deben ser actualizadas.
+        $preciosPorActualizar = DetalleVenta::whereHas('venta', function ($query) {
+            $query->where('pagado', '=', 'no')
+                ->whereColumn('id_parcela', '=', 'ventas.id_parcela')
+                ->where('id_parcela', '=', $this->id_parcela)
+                ->where('fecha_actualizacion_precio', '<', getFechaActualizacion())->where('fecha_actualizacion', '=', null);
+        })->get();
 
-            //Total de cuotas ya actualizadas.
-            // $cantidadPreciosActualizados = DetalleVenta::whereHas('venta', function($query) {
-            //     $query->where('fecha_actualizacion', '!=', '')
-            //           ->whereColumn('id_parcela', '=', 'ventas.id_parcela')
-            //           ->where('fecha_actualizacion', '>', getFechaActualizacion());
-            // })->get();
-            
-           
-                
-
-            //Fecha de actualizacion de los precios de las cuotas.
-            $fechaActualizacion = Carbon::create($idVenta[0]->fecha_actualizacion_precio)->format('Y-m');
+        //Total de cuotas ya actualizadas.
+        // $cantidadPreciosActualizados = DetalleVenta::whereHas('venta', function($query) {
+        //     $query->where('fecha_actualizacion', '!=', '')
+        //           ->whereColumn('id_parcela', '=', 'ventas.id_parcela')
+        //           ->where('fecha_actualizacion', '>', getFechaActualizacion());
+        // })->get();
 
 
-            //Debe retornar TRUE para mostrar el mensaje de advertencia "hay cuotas desactualizadas"
-            return  ((getFechaActualEditarCuota() > $fechaActualizacion) && ($cuotasPorPagar > 0) && (count($preciosPorActualizar) != 0));
-             
 
+
+        //Fecha de actualizacion de los precios de las cuotas.
+        $fechaActualizacion = Carbon::create($idVenta[0]->fecha_actualizacion_precio)->format('Y-m');
+
+
+        //Debe retornar TRUE para mostrar el mensaje de advertencia "hay cuotas desactualizadas"
+        return ((getFechaActualEditarCuota() > $fechaActualizacion) && ($cuotasPorPagar > 0) && (count($preciosPorActualizar) != 0));
     }
-
-
-
-    }
-
-
-    
-    
+}

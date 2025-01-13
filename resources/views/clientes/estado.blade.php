@@ -21,7 +21,8 @@
                     <div class="card text-center mt-3">
                         <div class="card-header">
                             <div class="card-body">
-                                <h4>{{ $parcela->descripcion_parcela }}</h4>
+                                <h4>Parcela {{ $parcela->descripcion_parcela }} (<b>Actualizacion
+                                        {{ $ventas[0]->update_period }}</b>)</h4>
 
                                 <h5 class="card-title {{ $parcela->cantidadDeudas > 0 ? 'text-danger' : 'text-success' }}">
                                     Estado:

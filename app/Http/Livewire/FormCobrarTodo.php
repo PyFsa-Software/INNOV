@@ -167,7 +167,6 @@ class FormCobrarTodo extends Component
             return redirect()->route('clientes.estadoCuotas', $parcela->parcela->id_parcela)
                 ->with('success', "Cuotas generadas y pagadas correctamente.");
         } catch (\Throwable $e) {
-            dd($e);
             DB::rollback();
             return redirect()->route('clientes.estadoCuotas', $parcela->parcela->id_parcela)
                 ->with('error', 'Error al generar y pagar cuotas. Contacte al administrador.');

@@ -24,7 +24,8 @@ class Venta extends Model
         'forma_pago',
         'id_parcela',
         'id_cliente',
-        'concepto_de'
+        'concepto_de',
+        'update_period'
     ];
 
     public function cliente()

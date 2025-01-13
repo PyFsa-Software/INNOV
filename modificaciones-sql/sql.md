@@ -64,3 +64,11 @@ ALTER TABLE `detalle_ventas` ADD `leyenda` VARCHAR(255) NULL AFTER `moneda_pago`
 ```sql
 ALTER TABLE `detalle_reserva_parcela` ADD `leyenda` VARCHAR(255) NULL AFTER `moneda_pago`;
 ```
+
+## Se agrego el update_period a la tabla ventas
+
+```sql
+ALTER TABLE ventas
+ADD COLUMN update_period ENUM('BIMESTRAL', 'TRIMESTRAL', 'SEMESTRAL') NOT NULL DEFAULT 'SEMESTRAL';
+
+```

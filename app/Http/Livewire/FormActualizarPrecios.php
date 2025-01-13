@@ -30,7 +30,6 @@ class FormActualizarPrecios extends Component
         $this->isDisabled = true;
         $this->validateOnly($propertyName);
         $this->isDisabled = false;
-
     }
     public function mount()
     {
@@ -57,19 +56,31 @@ class FormActualizarPrecios extends Component
         try {
             DB::beginTransaction();
 
-            $this->venta->fecha_actualizacion_precio = Carbon::create($this->venta->fecha_actualizacion_precio)->addMonth(6)->format('Y-m') . '-01';
+            $periodoActualizacionVenta = $this->venta->update_period;
+
+            switch ($periodoActualizacionVenta) {
+                case 'BIMESTRAL':
+                    $periodoActualizacion =  2;
+                case 'TRIMESTRAL':
+                    $periodoActualizacion = 3;
+                case 'SEMESTRAL':
+                    $periodoActualizacion =  6;
+                default:
+                    $periodoActualizacion =  6;
+            }
+
+            $this->venta->fecha_actualizacion_precio = Carbon::create($this->venta->fecha_actualizacion_precio)->addMonth($periodoActualizacion)->format('Y-m') . '-01';
 
             $this->venta->save();
 
-            // dd($this->ultimaCuota);
             $numeroCuota = $this->ultimaCuota->numero_cuota;
 
             //Validacion de Plan de cuota Personalizado
 
-            $totalCuotas = DetalleVenta::where('id_venta','=',$this->venta->id_venta)->count('id_detalle_venta');
+            $totalCuotas = DetalleVenta::where('id_venta', '=', $this->venta->id_venta)->count('id_detalle_venta');
 
-            $planCuota =  $this->venta->cuotas; 
-            
+            $planCuota =  $this->venta->cuotas;
+
             $restoCuotas = $planCuota - $totalCuotas;
 
             // dd($restoCuotas, $numeroCuota);
@@ -84,8 +95,7 @@ class FormActualizarPrecios extends Component
                         'id_venta' => $this->venta->id_venta,
                     ]);
                 }
-
-            }else{
+            } else {
 
                 for ($i = 1; $i <= 6; $i++) {
                     $numeroCuota++;
@@ -96,21 +106,21 @@ class FormActualizarPrecios extends Component
                         'id_venta' => $this->venta->id_venta,
                     ]);
                 }
-
             }
 
 
             DB::commit();
-            return redirect()->route('clientes.estado', $this->venta->id_cliente)->with('success', "Actualización de cuotas para los proximos 6 meses guardado correctamente."
+            return redirect()->route('clientes.estado', $this->venta->id_cliente)->with(
+                'success',
+                "Actualización de cuotas para los proximos 6 meses guardado correctamente."
             );
-        } catch (\Throwable$e) {
+        } catch (\Throwable $e) {
 
             DB::rollback();
 
             // dd($e->getMessage());
             return redirect()->route('clientes.estado', $this->venta->id_cliente)->with('error', 'Error al realizar la actualización de cuotas para los proximos 6 meses, contacte con al administrador.');
         }
-
     }
 
     public function render()

@@ -20,7 +20,7 @@
                 </div>
 
                 <livewire:venta-parcela :clientes="$clientes" :parcelas="$parcelas" :promedioCementoDelMes="$promedioCemento" :formasDePagos="$formasDePagos"
-                    :conceptosDe="$conceptosDe" />
+                    :conceptosDe="$conceptosDe" :periodosActualizacion="$periodosActualizacion" />
 
             </div>
         </div>

@@ -17,10 +17,12 @@ class VentaParcela extends Component
     public $clientes;
     public $parcelas;
     public $promedioCementoDelMes;
+    public $periodosActualizacion;
     // seleccionar usuario
     public $clienteCombo = "";
     public $parcelaCombo = "";
     public $cantidadCuotas = 0;
+    public $periodoActualizacion = "";
     // public $precioTotalEntrega = 0;
     public $promedioCemento = 0;
 
@@ -43,6 +45,7 @@ class VentaParcela extends Component
         'cantidadCuotas' => 'required|numeric|integer|min:1|int',
         // 'precioTotalEntrega' => 'required|numeric|min:1',
         'promedioCemento' => 'required|numeric|integer|min:1',
+        'periodoActualizacion' => 'required',
     ];
 
     public function updated($propertyName)
@@ -71,6 +74,21 @@ class VentaParcela extends Component
         $this->calcularPlan();
     }
 
+    // Dentro de la clase VentaParcela
+
+    private function obtenerMesesPorPeriodo()
+    {
+        switch ($this->periodoActualizacion) {
+            case 'BIMESTRAL':
+                return 2;
+            case 'TRIMESTRAL':
+                return 3;
+            case 'SEMESTRAL':
+                return 6;
+            default:
+                return 6; 
+        }
+    }
 
 
 
@@ -89,7 +107,7 @@ class VentaParcela extends Component
         }
         $this->isDisabled = false;
 
-        
+
         // CALCULAR TOTAL BOLSAS DE CEMENTO POR EL PROMEDIO DEL CEMENTO
         $this->precioTotalTerreno = (int)$this->parcelaById->cantidad_bolsas * (int)$this->promedioCemento;
 
@@ -105,7 +123,7 @@ class VentaParcela extends Component
 
         // OBTENER FECHA DESDE Y HASTA DEL PLAN DE PAGO
         $this->fechaDesdeDetallePlan = Carbon::now()->addMonth(1)->format('Y-m') . '-15';
-        $this->fechaHastaDetallePlan = Carbon::now()->addMonth(6)->format('Y-m') . '-15';
+        $this->fechaHastaDetallePlan = Carbon::now()->addMonth($this->cantidadCuotas)->format('Y-m') . '-15';
     }
 
     public function submit()
@@ -123,7 +141,7 @@ class VentaParcela extends Component
                 'cuotas' => $this->cantidadCuotas,
                 'precio_total_terreno' => $this->precioTotalTerreno,
                 'cuota_mensual_bolsas_cemento' => $this->bolsasCementoMensual,
-                'fecha_actualizacion_precio' => Carbon::now()->addMonth(6)->format('Y-m') . '-01',
+                'fecha_actualizacion_precio' => Carbon::now()->addMonth($this->obtenerMesesPorPeriodo())->format('Y-m') . '-01',
                 // 'precio_total_entrega' => $this->precioTotalEntrega,
                 // 'precio_final' => $this->valorTotalFinanciar,
                 // 'importe_entrega' => $this->importeEntrega,
@@ -131,6 +149,7 @@ class VentaParcela extends Component
                 // 'concepto_de' => $this->conceptoDe,
                 'id_parcela' => $this->parcelaCombo,
                 'id_cliente' => $this->clienteCombo,
+                'update_period' => $this->periodoActualizacion,
             ]);
 
             $totalCuotas = DetalleVenta::where('id_venta', '=', $ventaGuardada->id_venta)->count('id_detalle_venta');
