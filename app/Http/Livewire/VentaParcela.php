@@ -48,6 +48,16 @@ class VentaParcela extends Component
         'periodoActualizacion' => 'required',
     ];
 
+    protected $listeners = ['setCliente'];
+
+    public function setCliente($value)
+    {
+        $this->clienteCombo = $value;
+        $this->obtenerParcelasCliente(); // Llamar a la función para actualizar parcelas
+        $this->calcularPlan(); // Recalcular plan si es necesario
+    }
+
+
     public function updated($propertyName)
     {
         $this->isDisabled = true;
@@ -86,7 +96,7 @@ class VentaParcela extends Component
             case 'SEMESTRAL':
                 return 6;
             default:
-                return 6; 
+                return 6;
         }
     }
 

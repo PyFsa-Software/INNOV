@@ -46,6 +46,13 @@ class ReservaParcela extends Component
         $this->monedasDePagos = MonedaPago::toArray();
     }
 
+    protected $listeners = ['setCliente'];
+
+    public function setCliente($value)
+    {
+        $this->clienteCombo = $value;
+    }
+
     public function updated($propertyName)
     {
         $this->isDisabled = true;
@@ -61,13 +68,13 @@ class ReservaParcela extends Component
             ['id_parcela', '=', $this->parcelaCombo],
         ])->first();
 
-             // Validar y mostrar mensaje si el importe de entrega es mayor
-            if ($this->importeEntrega > $this->montoTotal) {
-                $this->isDisabled = true;
-                $this->addError('importeEntrega', 'El importe de entrega no puede ser mayor que el monto total.');
-            } else {
-                $this->validateOnly('importeEntrega');
-            }
+        // Validar y mostrar mensaje si el importe de entrega es mayor
+        if ($this->importeEntrega > $this->montoTotal) {
+            $this->isDisabled = true;
+            $this->addError('importeEntrega', 'El importe de entrega no puede ser mayor que el monto total.');
+        } else {
+            $this->validateOnly('importeEntrega');
+        }
     }
 
     public function submit()
@@ -107,7 +114,6 @@ class ReservaParcela extends Component
             DB::rollBack();
             throw $th;
         }
-
     }
 
 

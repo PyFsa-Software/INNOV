@@ -3,18 +3,15 @@
     <div class="form-group">
         <x-alertas />
         <label for="id_cliente">Cliente</label>
-        <select name="id_cliente" id="id_cliente" class="form-control" autofocus wire:model="clienteCombo">
+        <select name="id_cliente" id="id_cliente" class="form-control" wire:model.defer="clienteCombo">
             <option value="" disabled selected>Seleccione un cliente</option>
-
             @foreach ($clientes as $cliente)
-                <option value="{{ $cliente->id_persona }}" @selected(old('id_cliente') == $cliente->id_persona)>
-                    {{ $cliente->nombre }} {{ $cliente->apellido }}
-                    ({{ $cliente->dni }})
+                <option value="{{ $cliente->id_persona }}">
+                    {{ $cliente->nombre }} {{ $cliente->apellido }} ({{ $cliente->dni }})
                 </option>
             @endforeach
-
-            {{-- <option value="1">Marcos Franco (43711063)</option> --}}
         </select>
+
     </div>
 
     <div class="form-group">

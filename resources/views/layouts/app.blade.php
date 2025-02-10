@@ -257,6 +257,37 @@
             Livewire.hook('message.processed', (message, component) => {
                 $('#clienteCombo').select2();
             });
+
+            $('#id_cliente').select2({
+                placeholder: 'Seleccione un cliente',
+                allowClear: true
+            });
+
+            // Detectar cambios en select2 y sincronizar con Livewire
+            $('#id_cliente').on('change', function() {
+                let value = $(this).val();
+                Livewire.emit('setCliente', value); // Emitir evento para actualizar Livewire
+            });
+
+            // Mantener la selección después de cada renderizado de Livewire
+            Livewire.hook('message.processed', () => {
+                $('#id_cliente').select2();
+            });
+            $('#id_cliente_venta').select2({
+                placeholder: 'Seleccione un cliente',
+                allowClear: true
+            });
+
+            // Detectar cambios en select2 y sincronizar con Livewire
+            $('#id_cliente_venta').on('change', function() {
+                let value = $(this).val();
+                Livewire.emit('setCliente', value); // Emitir evento correcto
+            });
+
+            // Mantener la selección después de cada renderizado de Livewire
+            Livewire.hook('message.processed', () => {
+                $('#id_cliente_venta').select2();
+            });
         });
     </script>
     <livewire:scripts />

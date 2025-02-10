@@ -34,6 +34,12 @@ class Parcela extends Model
         return $this->belongsTo(Lote::class, 'id_lote');
     }
 
+    public function preVenta()
+    {
+        return $this->belongsTo(ReservaParcela::class, 'id_parcela', 'id_parcela');
+    }
+
+
     public function getCantidadDeudasAttribute()
     {
         $idVenta = Venta::all()->where('id_parcela', '=', $this->id_parcela)->value('id_venta');

@@ -2,8 +2,8 @@
     {{-- @csrf --}}
     <div class="form-group">
         <x-alertas />
-        <label for="id_cliente">Cliente</label>
-        <select name="id_cliente" id="id_cliente" class="form-control" autofocus wire:model="clienteCombo"
+        <label for="id_cliente_venta">Cliente</label>
+        <select name="id_cliente_venta" id="id_cliente_venta" class="form-control" autofocus wire:model="clienteCombo"
             wire:change.debounce.500ms="calcularPlan">
             <option value="" disabled selected>Seleccione un cliente</option>
 
@@ -14,7 +14,6 @@
                 </option>
             @endforeach
 
-            {{-- <option value="1">Marcos Franco (43711063)</option> --}}
         </select>
     </div>
 
