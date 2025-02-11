@@ -148,7 +148,7 @@
                 <small>Fecha: <b>{{ date('d-m-Y', strtotime($detalleVentas[0]->fecha_pago)) }}</b></small>
                 <br>
 
-                <small>3704-712224</small>
+                <small>CEL: 3704-504731</small>
                 <br>
                 <small>España 101,Galería Orquin, local 10 P.B</small>
             </div>

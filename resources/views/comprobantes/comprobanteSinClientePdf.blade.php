@@ -144,7 +144,7 @@
                 <br>
                 <small>Fecha: <b>{{ date('d-m-Y', strtotime($comprobante->fecha_comprobante)) }}</b></small>
                 <br>
-                <small>3704-712224</small>
+                <small>CEL: 3704-504731</small>
                 <br>
                 <small>España 101,Galería Orquin, local 10 P.B</small>
             </div>
@@ -164,21 +164,21 @@
 
             <div class="content-venta">
                 <div class="nombre">
-                    <small>Sr/Sra: </small><b>{{$comprobante->sr_sra}}</b>
+                    <small>Sr/Sra: </small><b>{{ $comprobante->sr_sra }}</b>
                 </div>
                 <br>
                 <div class="dni">
-                    <small>Dni: </small> <b>{{$comprobante->dni}}</b>
+                    <small>Dni: </small> <b>{{ $comprobante->dni }}</b>
                 </div>
                 <br>
                 <div class="domicilio">
-                    <small>Domicilio del Alquiler: </small><b>{{$comprobante->domicilio}}</b>
+                    <small>Domicilio del Alquiler: </small><b>{{ $comprobante->domicilio }}</b>
                 </div>
                 @if ($comprobante->domicilio_alquiler)
-                <br>
-                <div class="domicilio">
-                    <small>Alquiler: </small><b>{{ $comprobante->domicilio_alquiler }}.</b>
-                </div>
+                    <br>
+                    <div class="domicilio">
+                        <small>Alquiler: </small><b>{{ $comprobante->domicilio_alquiler }}.</b>
+                    </div>
                 @endif
                 {{-- <div class="pago">
                     <small>Recibí(mos) la suma de: </small><b>{{$detalleVentas[0]?->moneda_pago ?? 'PESOS'}},  {{ convertDigitsToWord($totalPago) }}.</b>

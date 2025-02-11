@@ -150,7 +150,7 @@
                 <br>
                 <small>Fecha: <b>{{ date('d-m-Y', strtotime($cuota->fecha_pago)) }}</b></small>
                 <br>
-                <small>3704-712224</small>
+                <small>CEL: 3704-504731</small>
                 <br>
                 <small>España 101,Galería Orquin, local 10 P.B</small>
             </div>
@@ -241,83 +241,6 @@
             </div>
         </div>
     </main>
-    {{--
-    <main>
-        <div class="fecha">
-            <div class="content-fecha" width="150">
-                <small>N°: <b>{{ $cuota->numero_recibo }}</b></small>
-                <br>
-                <small>Fecha: <b>{{ date('d-m-Y', strtotime($cuota->fecha_pago)) }}</b></small>
-            </div>
-        </div>
-        <div class="contenido">
-            <div class="logo">
-                {!! $html !!} 
-            </div>
-
-            <div class="content-empresa">
-                <div class="info-empresa">
-                    <small class="nombre-empresa"><b> INNOV S.R.L </b></small>
-                    <br>
-                    <small>CUIT: 30-71226835-9</small>
-                </div>
-            </div>
-            <br>
-
-            <div class="content-venta">
-                <div class="nombre">
-                    <small>Sr/Sra: </small><b>{{ $cliente->nombre }} {{ $cliente->apellido }}.</b>
-                </div>
-                <div class="telefono">
-                    <small>Telefono: </small> <b>{{ $cliente->celular }}.</b>
-                </div>
-                <br>
-                <div class="dni">
-                    <small>Dni: </small> <b>{{ $cliente->dni }}.</b>
-                </div>
-                <div class="domicilio">
-                    <small>Domicilio: </small><b>{{ $cliente->domicilio }}.</b>
-                </div>
-                <br>
-                <div class="pago">
-                    <small>Recibí(mos) la suma de: </small><b>{{ convertDigitsToWord($cuota->total_pago) }} pesos.</b>
-                </div>
-                <br>
-                <div class="info-loteo">
-                    <small>Loteo: </small><b>{{ $parcela->lote->nombre_lote }}.</b>
-                </div>
-                <div class="info-parcela">
-                    <small>Parcela: </small><b> {{ $parcela->descripcion_parcela }}.</b>
-                </div>
-                <br>
-                <div class="info-parcela">
-                    <small>Dimensión: </small><b>{{ $parcela->ancho }} x {{ $parcela->largo }}.</b>
-                </div>
-                <div class="info-parcela">
-                    <small>Manzana:</small><b>{{ $parcela->manzana }}.</b>
-                </div>
-                <div class="info-parcela">
-                    <small>Ubicación: </small><b>{{ $parcela->lote->ubicacion }}.</b>
-                </div>
-                <br>
-                <div class="info-parcela">
-                    <small>Cuota N°: </small><b>{{ $cuota->numero_cuota }}.</b>
-                </div>
-                <div class="info-parcela">
-                    <small>Plan: </small><b>{{ $venta->cuotas }} Cuota/s.</b>
-                </div>
-            </div>
-            <div class="importe-total">
-                <small>Importe Total: </small><b>$ 
-                    {{ number_format($cuota->total_pago, 2, ',', '.') }}</b>
-            </div>
-            <br>
-            <div class="firma">
-                <small>Firma: ..............................</b>
-            </div>
-
-        </div>
-    </main> --}}
 
 </body>
 
