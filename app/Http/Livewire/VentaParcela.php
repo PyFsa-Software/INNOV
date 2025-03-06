@@ -71,7 +71,6 @@ class VentaParcela extends Component
         // Obtener las parcelas asociadas al cliente seleccionado
         $parcelas = Parcela::join('reserva_parcela', 'parcelas.id_parcela', '=', 'reserva_parcela.id_parcela')
             ->where('reserva_parcela.id_cliente', '=', $this->clienteCombo)
-            ->where('parcelas.disponible', '=', 0)
             ->select('parcelas.id_parcela', 'parcelas.descripcion_parcela', 'parcelas.id_lote', 'parcelas.cantidad_bolsas', 'parcelas.manzana')
             ->get();
 
