@@ -54,7 +54,7 @@ class VentasController extends Controller
 
         $periodosActualizacion = PeriodosActualizacion::toArray();
 
-        return view('ventas.crear', compact('clientes', 'parcelas', 'promedioCemento', 'formasDePagos', 'conceptosDe','periodosActualizacion'));
+        return view('ventas.crear', compact('clientes', 'parcelas', 'promedioCemento', 'formasDePagos', 'conceptosDe', 'periodosActualizacion'));
     }
 
     /**
@@ -99,17 +99,17 @@ class VentasController extends Controller
     public function eliminarVenta(Venta $venta)
     {
         DB::beginTransaction(); // Inicia la transacción para asegurar consistencia
-    
+
         try {
             // 1. Eliminar los registros relacionados en detalleVentas
             $venta->detalleVenta()->delete();
-    
+
             // 2. Obtener el id_parcela de la venta
             $idParcela = $venta->id_parcela;
-    
+
             // 3. Buscar en la tabla ReservaParcela si existe un registro relacionado
             $reservaParcela = ReservaParcela::where('id_parcela', $idParcela)->first();
-    
+
             if ($reservaParcela) {
                 // 4. Buscar en la tabla DetalleReservaParcela los registros relacionados
                 DetalleReservaParcela::where('id_reserva_parcela', $reservaParcela->id_reserva_parcela)->delete();
@@ -118,19 +118,15 @@ class VentasController extends Controller
             }
             // 5. Actualizar el campo disponible de la parcela a 1
             Parcela::where('id_parcela', $idParcela)->update(['disponible' => 1]);
-            
+
             // 7. Finalmente, eliminar la venta
             $venta->delete();
-    
+
             DB::commit(); // Confirma los cambios en la base de datos
             return redirect()->back()->with('success', 'Venta eliminada correctamente.');
         } catch (\Exception $e) {
-            dd($e);
             DB::rollBack(); // Revierte los cambios en caso de error
             return redirect()->back()->withErrors('Ocurrió un error al eliminar la venta: ' . $e->getMessage());
         }
     }
-    
-
-
 }
