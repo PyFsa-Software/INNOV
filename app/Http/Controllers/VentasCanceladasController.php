@@ -35,7 +35,6 @@ class VentasCanceladasController extends Controller
     {
         $detalleVentas = DetalleVenta::where('numero_recibo', $numeroRecibo)->get();
 
-        // dd($detalleVentas);
 
         if ($detalleVentas->isEmpty()) {
 
@@ -62,8 +61,13 @@ class VentasCanceladasController extends Controller
 
         $html = '<img src="data:image/svg+xml;base64,' . base64_encode($logo) . '"  width="100" height="100" />';
 
+        $pathCancel = Storage::path('public/img/cancelll.png');
+        $cancel = file_get_contents($pathCancel);
 
-        $pdf = Pdf::loadView('ventas_canceladas.volanteCancelacion', compact('detalleVentas', 'venta', 'cliente', 'parcela', 'pathLogo', 'html', 'numeroPrimeraCuota', 'numeroUltimaCuota', 'totalPago', 'conceptoDe'))
+        $htmlCancel = '<img src="data:image/svg+xml;base64,' . base64_encode($cancel) . '"  width="100" />';
+
+
+        $pdf = Pdf::loadView('ventas_canceladas.volanteCancelacion', compact('detalleVentas', 'venta', 'cliente', 'parcela', 'pathLogo', 'html', 'htmlCancel', 'numeroPrimeraCuota', 'numeroUltimaCuota', 'totalPago', 'conceptoDe'))
             ->setPaper('cart', 'vertical');
 
         return $pdf->stream(date('d-m-Y') . ".pdf", array('Attachment' => 0));

@@ -71,8 +71,8 @@
                 <td style="text-align: right; font-size: 13px;">
                     <div
                         style="width: 35%; margin-left: auto; text-align: left; word-wrap: break-word; white-space: normal;">
-                        <small>N°: <b>{{ $detalleVentas[0]->numero_recibo }}</b></small><br>
-                        <small>Fecha: <b>{{ date('d-m-Y', strtotime($detalleVentas[0]->fecha_pago)) }}</b></small><br>
+                        <small>N°: <b>{{ $cuota->numero_recibo }}</b></small><br>
+                        <small>Fecha: <b>{{ date('d-m-Y', strtotime($cuota->fecha_pago)) }}</b></small><br>
                         <small>CEL: 3704-504731</small><br>
                         <small style="display: block;">España 101, Galería Orquin, local 10 P.B</small>
                     </div>
@@ -82,22 +82,21 @@
 
             </tr>
             <tr>
-                <td class="header">COMPROBANTE DE VENTA
-                    <div>
-                        {!! $htmlCancel !!}
-                    </div>
+                <td class="header">COMPROBANTE DE PAGO
                 </td>
             </tr>
         </table>
 
         <table class="info">
             <tr>
-                <td><strong>Sr/Sra:</strong> {{ getFormatNombreApellido($cliente->nombre, $cliente->apellido) }}</td>
+                <td style="width: 50%;"><strong>Sr/Sra:</strong>
+                    {{ getFormatNombreApellido($cliente->nombre, $cliente->apellido) }}</td>
                 <td><strong>DNI:</strong> {{ $cliente->dni }}</td>
             </tr>
         </table>
 
         <table class="info">
+
             <tr>
                 <td style="width: 40%;">
                     <table>
@@ -150,8 +149,8 @@
                 <td style="width: 60%;">
                     <table>
                         <tr>
-                            {{-- <td style="width: 50%;"><strong>Cuota N°: </strong>{{ $cuota?->numero_cuota }}
-                            {{-- </td> --}}
+                            <td style="width: 50%;"><strong>Cuota N°: </strong>{{ $cuota?->numero_cuota }}
+                            </td>
                             <td colspan="2"><strong>Actualizacion:</strong>
                                 {{ $venta->update_period }}
                             </td>
@@ -159,14 +158,20 @@
                     </table>
                 </td>
             </tr>
+
             <tr>
                 <td colspan="2"><strong>Recibí(mos) la suma de:</strong>
-                    {{ $detalleVentas[0]?->moneda_pago ?? 'PESOS' }} {{ convertDigitsToWord($totalPago) }}
+                    {{ $detalleVentas[0]?->moneda_pago ?? 'PESOS' }} {{ convertDigitsToWord($cuota?->total_pago) }}
                 </td>
             </tr>
             <tr>
-                <td><strong>Importe Total:</strong> $ {{ number_format($totalPago, 2, ',', '.') }}</td>
-                <td><strong>Concepto de:</strong> {{ $concepto_de ?? '..............................' }}</td>
+                <td><strong>Importe Total:</strong> $ {{ number_format($cuota?->total_pago, 2, ',', '.') }}</td>
+                <td><strong>Concepto de:</strong> {{ $cuota?->concepto_de ?? '..............................' }}
+                    @if ($cuota?->leyenda)
+                        <span style="margin-left: 30px;">({{ $cuota->leyenda }})</span>
+                    @endif
+                </td>
+
             </tr>
         </table>
 

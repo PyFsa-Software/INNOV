@@ -4,11 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Volante Pago</title>
-    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
-        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> --}}
-
-
+    <title>Volante Cancelación</title>
     <style>
         body {
             margin: 0;
@@ -16,7 +12,7 @@
 
         main {
             font-family: 'Arial', sans-serif;
-            margin-top: -20px;
+            margin-top: 0%;
             border-color: black;
             border-style: solid;
             border-radius: 2%;
@@ -109,7 +105,6 @@
         }
 
         .info-parcela {
-
             font-size: 13px;
             display: inline-block;
             text-align: left;
@@ -118,13 +113,17 @@
         }
 
         .info-loteo {
-
             font-size: 13px;
             display: inline-block;
-            text-align: left;
-            padding-left: 22px;
+            /* text-align: left; */
+            /* padding-left: 22px;
             padding-right: 195px;
-            padding-bottom: 5px;
+            padding-bottom: 5px; */
+            margin-left: 20px;
+        }
+
+        .info-loteo>b {
+            padding-right: 10px;
         }
 
         .firma {
@@ -138,16 +137,13 @@
 </head>
 
 <body>
-
-
     <main>
         <div class="fecha">
-            <div class="content-fecha" width="150">
+            <div class="content-fecha" width="180">
                 <small>N°: <b>{{ $detalleVentas[0]->numero_recibo }}</b></small>
                 <br>
                 <small>Fecha: <b>{{ date('d-m-Y', strtotime($detalleVentas[0]->fecha_pago)) }}</b></small>
                 <br>
-
                 <small>CEL: 3704-504731</small>
                 <br>
                 <small>España 101,Galería Orquin, local 10 P.B</small>
@@ -157,7 +153,6 @@
             <div class="logo">
                 {!! $html !!}
             </div>
-
             <div class="content-empresa">
                 <div class="info-empresa">
                     <small class="nombre-empresa"><b> INNOV S.R.L </b></small>
@@ -169,12 +164,8 @@
 
             <div class="content-venta">
                 <div class="nombre">
-                    <small>Sr/Sra: </small><b>{{ $cliente->nombre }} {{ $cliente->apellido }}.</b>
+                    <small>Sr/Sra: </small><b>{{ getFormatNombreApellido($cliente->nombre, $cliente->apellido) }}.</b>
                 </div>
-                {{-- <br>
-                <div class="telefono">
-                    <small>Telefono: </small> <b>{{ $cliente->celular }}.</b>
-                </div> --}}
                 <br>
                 <div class="dni">
                     <small>Dni: </small> <b>{{ $cliente->dni }}.</b>
@@ -190,32 +181,27 @@
                 </div>
                 <br>
                 <div class="info-loteo">
-                    <small>Loteo: </small><b>{{ $parcela->lote->nombre_lote }}.</b>
+                    <small>Loteo: </small><b>{{ $venta->parcela->lote->nombre_lote }}.</b>
+                    <small>Parcela: </small><b> {{ $venta->parcela->descripcion_parcela }}.</b>
+                    <small>Manzana:</small><b>{{ $venta->parcela->manzana }}.</b>
+                    <small>Ubicación: </small><b>{{ $venta->parcela->lote->ubicacion }}.</b>
                 </div>
-                <div class="info-parcela">
-                    <small>Parcela: </small><b> {{ $parcela->descripcion_parcela }}.</b>
-                </div>
+                {{-- <div class="info-parcela">
+                    <small>Parcela: </small><b> {{ $venta->parcela->descripcion_parcela }}.</b>
+                </div> --}}
                 <br>
                 <div class="info-parcela">
-                    <small>Dimensión: </small><b>{{ $parcela->ancho }} x {{ $parcela->largo }}.</b>
+                    <small>Dimensión: </small><b>{{ $venta->parcela->ancho }} x {{ $venta->parcela->largo }}.</b>
                 </div>
-                <div class="info-parcela">
-                    <small>Manzana:</small><b>{{ $parcela->manzana }}.</b>
-                </div>
-                <div class="info-parcela">
-                    <small>Ubicación: </small><b>{{ $parcela->lote->ubicacion }}.</b>
-                </div>
+                {{-- <div class="info-parcela">
+                    <small>Manzana:</small><b>{{ $venta->parcela->manzana }}.</b>
+                </div> --}}
+                {{-- <div class="info-parcela">
+                    <small>Ubicación: </small><b>{{ $venta->parcela->lote->ubicacion }}.</b>
+                </div> --}}
                 <br>
                 <div class="info-parcela">
-                    <small>Cuota N°: </small><b>{{ $numeroPrimeraCuota }}</b><small> al
-                    </small><b>{{ $numeroUltimaCuota }}</b>
-                </div>
-                <div class="info-parcela">
-                    <small>Plan: </small><b>{{ $venta->cuotas }} Cuota/s.</b>
-                </div>
-                <br>
-                <div class="info-parcela">
-                    <small>Forma de Pago: </small><b>{{ $detalleVentas[0]->forma_pago ?? '-' }}.</b>
+                    <small>Plan: </small><b>{{ $venta->cuotas }} Cuota/s. CANCELACIÓN.</b>
                 </div>
             </div>
             <div class="importe-total">
@@ -223,23 +209,14 @@
             </div>
             <br>
             <div class="importe-total">
-                <small>
-                    Concepto de:
-                    <b>
-                        {{ $conceptoDe ? $conceptoDe : '..............................' }}
-                        @if ($detalleVentas[0]->leyenda)
-                            <span style="margin-left: 30px;">({{ $detalleVentas[0]->leyenda }})</span>
-                        @endif
-                    </b>
-                </small>
+                <small>Concepto de: <b>{{ $concepto_de ?? '..............................' }}.</b>
             </div>
             <br>
             <div class="firma">
-                <small>Firma: ..............................</b>
+                <small>Firma: ..............................
             </div>
         </div>
     </main>
-
 </body>
 
 </html>

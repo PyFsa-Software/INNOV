@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Volante Cancelación</title>
+    <title>Volante Pago</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -54,6 +54,12 @@
             text-align: right;
             padding-top: 15px;
         }
+
+        .info-parcela {
+            font-size: 13px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 
@@ -69,24 +75,16 @@
                     </div>
                 </td>
                 <td style="text-align: right; font-size: 13px;">
-                    <div
-                        style="width: 35%; margin-left: auto; text-align: left; word-wrap: break-word; white-space: normal;">
+                    <div style="width: 35%; margin-left: auto; text-align: left;">
                         <small>N°: <b>{{ $detalleVentas[0]->numero_recibo }}</b></small><br>
                         <small>Fecha: <b>{{ date('d-m-Y', strtotime($detalleVentas[0]->fecha_pago)) }}</b></small><br>
                         <small>CEL: 3704-504731</small><br>
-                        <small style="display: block;">España 101, Galería Orquin, local 10 P.B</small>
+                        <small>España 101, Galería Orquin, local 10 P.B</small>
                     </div>
                 </td>
-
-
-
             </tr>
             <tr>
-                <td class="header">COMPROBANTE DE VENTA
-                    <div>
-                        {!! $htmlCancel !!}
-                    </div>
-                </td>
+                <td class="header">COMPROBANTE DE PAGO</td>
             </tr>
         </table>
 
@@ -96,7 +94,6 @@
                 <td><strong>DNI:</strong> {{ $cliente->dni }}</td>
             </tr>
         </table>
-
         <table class="info">
             <tr>
                 <td style="width: 40%;">
@@ -150,8 +147,9 @@
                 <td style="width: 60%;">
                     <table>
                         <tr>
-                            {{-- <td style="width: 50%;"><strong>Cuota N°: </strong>{{ $cuota?->numero_cuota }}
-                            {{-- </td> --}}
+                            <td style="width: 50%;"><strong>Cuota N°: </strong><b>{{ $numeroPrimeraCuota }}</b> al
+                                <b>{{ $numeroUltimaCuota }}</b>
+                            </td>
                             <td colspan="2"><strong>Actualizacion:</strong>
                                 {{ $venta->update_period }}
                             </td>
@@ -161,18 +159,22 @@
             </tr>
             <tr>
                 <td colspan="2"><strong>Recibí(mos) la suma de:</strong>
-                    {{ $detalleVentas[0]?->moneda_pago ?? 'PESOS' }} {{ convertDigitsToWord($totalPago) }}
+                    {{ $detalleVentas[0]?->moneda_pago ?? 'PESOS' }}
+                    {{ convertDigitsToWord($detalleVentas[0]?->total_pago) }}
                 </td>
             </tr>
             <tr>
-                <td><strong>Importe Total:</strong> $ {{ number_format($totalPago, 2, ',', '.') }}</td>
-                <td><strong>Concepto de:</strong> {{ $concepto_de ?? '..............................' }}</td>
+                <td><strong>Importe Total:</strong> $
+                    {{ number_format($detalleVentas[0]?->total_pago, 2, ',', '.') }}
+                </td>
+                <td><strong>Concepto de:</strong>
+                    {{ $concepto_de ?? '..............................' }}</td>
             </tr>
         </table>
 
-
         <table class="info">
             <tr>
+
                 <td class="firma"><small>Firma:</small> ..............................</td>
             </tr>
         </table>

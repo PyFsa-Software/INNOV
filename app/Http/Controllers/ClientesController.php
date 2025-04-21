@@ -151,21 +151,21 @@ class ClientesController extends Controller
     public function estadoCliente(Persona $persona)
     {
         // Obtener las ventas de la persona con los campos id_parcela e id_venta
-        $ventas = Venta::where('id_cliente', '=', $persona->id_persona)->get(['id_parcela', 'id_venta','update_period']);
+        $ventas = Venta::where('id_cliente', '=', $persona->id_persona)->get(['id_parcela', 'id_venta', 'update_period']);
 
-    
+
         // Obtener las parcelas relacionadas a las ventas
         $parcelas = Parcela::whereIn('id_parcela', $ventas->pluck('id_parcela'))->get();
-    
+
         // Asociar el id_venta a cada parcela
         $parcelass = $parcelas->map(function ($parcela) use ($ventas) {
             $parcela->id_venta = $ventas->firstWhere('id_parcela', $parcela->id_parcela)->id_venta;
             return $parcela;
         });
         // Pasar los datos a la vista
-        return view('clientes.estado', compact('persona', 'parcelas','ventas'));
+        return view('clientes.estado', compact('persona', 'parcelas', 'ventas'));
     }
-    
+
     public function estadoCuotas(CuotasVentasDataTable $dataTable, $idParcela)
     {
         $venta = Venta::select('id_venta', 'id_cliente')->where('id_parcela', '=', $idParcela)->first();
@@ -214,7 +214,7 @@ class ClientesController extends Controller
 
         $html = '<img src="data:image/svg+xml;base64,' . base64_encode($logo) . '"  width="100" height="100" />';
 
-        $pdf = Pdf::loadView('clientes.volantePago', compact('cuota', 'venta', 'cliente', 'parcela', 'pathLogo', 'html'))
+        $pdf = Pdf::loadView('clientes.volantePagoNew', compact('cuota', 'venta', 'cliente', 'parcela', 'pathLogo', 'html'))
             ->setPaper('cart', 'vertical');
 
         return $pdf->stream(date('d-m-Y') . ".pdf", array('Attachment' => 0));
@@ -254,7 +254,7 @@ class ClientesController extends Controller
 
 
 
-        $pdf = Pdf::loadView('clientes.volantePagoMultiple', compact('detalleVentas', 'venta', 'cliente', 'parcela', 'pathLogo', 'html', 'numeroPrimeraCuota', 'numeroUltimaCuota', 'totalPago', 'conceptoDe'))
+        $pdf = Pdf::loadView('clientes.volantePagoMultipleNew', compact('detalleVentas', 'venta', 'cliente', 'parcela', 'pathLogo', 'html', 'numeroPrimeraCuota', 'numeroUltimaCuota', 'totalPago', 'conceptoDe'))
             ->setPaper('cart', 'vertical');
 
         return $pdf->stream(date('d-m-Y') . ".pdf", array('Attachment' => 0));
