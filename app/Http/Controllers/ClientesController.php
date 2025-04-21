@@ -209,10 +209,10 @@ class ClientesController extends Controller
         $cliente = Persona::all()->where('id_persona', '=', $venta->id_cliente)->first();
         $parcela = Parcela::with('lote')->where('id_parcela', '=', $cuota->id_parcela)->first();
 
-        $pathLogo = Storage::path('public/img/logoInnova.jpg');
+        $pathLogo = Storage::path('public/img/logoInnova.png');
         $logo = file_get_contents($pathLogo);
 
-        $html = '<img src="data:image/svg+xml;base64,' . base64_encode($logo) . '"  width="100" height="100" />';
+        $html = '<img src="data:image/svg+xml;base64,' . base64_encode($logo) . '"  width="180" height="100" />';
 
         $pdf = Pdf::loadView('clientes.volantePagoNew', compact('cuota', 'venta', 'cliente', 'parcela', 'pathLogo', 'html'))
             ->setPaper('cart', 'vertical');
@@ -247,10 +247,10 @@ class ClientesController extends Controller
         $numeroPrimeraCuota = $detalleVentas->first()->numero_cuota;
         $numeroUltimaCuota = $detalleVentas->last()->numero_cuota;
 
-        $pathLogo = Storage::path('public/img/logoInnova.jpg');
+        $pathLogo = Storage::path('public/img/logoInnova.png');
         $logo = file_get_contents($pathLogo);
 
-        $html = '<img src="data:image/svg+xml;base64,' . base64_encode($logo) . '"  width="100" height="100" />';
+        $html = '<img src="data:image/svg+xml;base64,' . base64_encode($logo) . '" width="180" height="100" />';
 
 
 

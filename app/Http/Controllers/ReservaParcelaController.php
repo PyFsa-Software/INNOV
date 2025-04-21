@@ -94,9 +94,9 @@ class ReservaParcelaController extends Controller
 
             $parcela = Parcela::where('id_parcela', $idParcela)->with('lote')->first();
 
-            $pathLogo = Storage::path('public/img/logoInnova.jpg');
+            $pathLogo = Storage::path('public/img/logoInnova.png');
             $logo = file_get_contents($pathLogo);
-            $html = '<img src="data:image/svg+xml;base64,' . base64_encode($logo) . '"  width="100" height="100" />';
+            $html = '<img src="data:image/svg+xml;base64,' . base64_encode($logo) . '"  width="180" height="100" />';
 
             $fecha_pago = Carbon::parse($detalleReservaParcela->fecha_pago);
             $fecha_pago->format('d/m/Y');

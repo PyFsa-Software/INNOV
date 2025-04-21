@@ -75,9 +75,9 @@ class VentasController extends Controller
 
             $parcela = Parcela::where('id_parcela', $venta->id_parcela)->with('lote')->first();
 
-            $pathLogo = Storage::path('public/img/logoInnova.jpg');
+            $pathLogo = Storage::path('public/img/logoInnova.png');
             $logo = file_get_contents($pathLogo);
-            $html = '<img src="data:image/svg+xml;base64,' . base64_encode($logo) . '"  width="100" height="100" />';
+            $html = '<img src="data:image/svg+xml;base64,' . base64_encode($logo) . '"  width="180" height="100" />';
 
             $fecha_venta = Carbon::parse($venta->fecha_venta);
             $fecha_venta->format('d/m/Y');

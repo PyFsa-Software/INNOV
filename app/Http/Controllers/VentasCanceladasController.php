@@ -59,7 +59,7 @@ class VentasCanceladasController extends Controller
         $pathLogo = Storage::path('public/img/logoInnova.jpg');
         $logo = file_get_contents($pathLogo);
 
-        $html = '<img src="data:image/svg+xml;base64,' . base64_encode($logo) . '"  width="100" height="100" />';
+        $html = '<img src="data:image/svg+xml;base64,' . base64_encode($logo) . '"  width="180" height="100" />';
 
         $pathCancel = Storage::path('public/img/cancelll.png');
         $cancel = file_get_contents($pathCancel);

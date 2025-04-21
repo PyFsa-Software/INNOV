@@ -47,12 +47,12 @@ class ComprobanteController extends Controller
         $venta = Venta::where('id_venta', '=', $comprobante->id_venta)->first();
         $parcela = Parcela::with('lote')->where('id_parcela', '=', $venta->id_parcela)->first();
 
-        $pathLogo = Storage::path('public/img/logoInnova.jpg');
+        $pathLogo = Storage::path('public/img/logoInnova.png');
         $logo = file_get_contents($pathLogo);
 
-        $html = '<img src="data:image/svg+xml;base64,' . base64_encode($logo) . '"  width="100" height="100" />';
+        $html = '<img src="data:image/svg+xml;base64,' . base64_encode($logo) . '"  width="180" height="100" />';
 
-        $pdf = Pdf::loadView('comprobantes.comprobanteConClientePdf', compact('comprobante','venta', 'cliente', 'parcela', 'pathLogo', 'html'))
+        $pdf = Pdf::loadView('comprobantes.comprobanteConClientePdf', compact('comprobante', 'venta', 'cliente', 'parcela', 'pathLogo', 'html'))
             ->setPaper('cart', 'vertical');
 
         return $pdf->stream(date('d-m-Y') . ".pdf", array('Attachment' => 0));
@@ -61,10 +61,10 @@ class ComprobanteController extends Controller
     public static function generarComprobanteSinCliente($comprobante)
     {
 
-        $pathLogo = Storage::path('public/img/logoInnova.jpg');
+        $pathLogo = Storage::path('public/img/logoInnova.png');
         $logo = file_get_contents($pathLogo);
 
-        $html = '<img src="data:image/svg+xml;base64,' . base64_encode($logo) . '"  width="100" height="100" />';
+        $html = '<img src="data:image/svg+xml;base64,' . base64_encode($logo) . '"  width="180" height="100"/>';
 
         $pdf = Pdf::loadView('comprobantes.comprobanteSinClientePdf', compact('comprobante', 'pathLogo', 'html'))
             ->setPaper('cart', 'vertical');
