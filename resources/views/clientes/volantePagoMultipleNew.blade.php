@@ -160,12 +160,12 @@
             <tr>
                 <td colspan="2"><strong>Recibí(mos) la suma de:</strong>
                     {{ $detalleVentas[0]?->moneda_pago ?? 'PESOS' }}
-                    {{ convertDigitsToWord($detalleVentas[0]?->total_pago) }}
+                    {{ convertDigitsToWord($totalPago) }}
                 </td>
             </tr>
             <tr>
                 <td><strong>Importe Total:</strong> $
-                    {{ number_format($detalleVentas[0]?->total_pago, 2, ',', '.') }}
+                    {{ number_format($totalPago, 2, ',', '.') }}
                 </td>
                 <td><strong>Concepto de:</strong>
                     {{ $concepto_de ?? '..............................' }}</td>
