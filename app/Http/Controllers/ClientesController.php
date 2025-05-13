@@ -17,6 +17,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+
 
 class ClientesController extends Controller
 {
@@ -214,7 +216,13 @@ class ClientesController extends Controller
 
         $html = '<img src="data:image/svg+xml;base64,' . base64_encode($logo) . '"  width="180" height="100" />';
 
-        $pdf = Pdf::loadView('clientes.volantePagoNew', compact('cuota', 'venta', 'cliente', 'parcela', 'pathLogo', 'html'))
+        $descripcionParcela = $venta->parcela->descripcion_parcela ?? '';
+
+        if (Str::contains($descripcionParcela, ['Parcela', '-Manzana'])) {
+            $descripcionParcela = Str::before($descripcionParcela, '-Manzana');
+        }
+
+        $pdf = Pdf::loadView('clientes.volantePagoNew', compact('cuota', 'venta', 'cliente', 'parcela', 'pathLogo', 'html', 'descripcionParcela'))
             ->setPaper('cart', 'vertical');
 
         return $pdf->stream(date('d-m-Y') . ".pdf", array('Attachment' => 0));
@@ -252,9 +260,15 @@ class ClientesController extends Controller
 
         $html = '<img src="data:image/svg+xml;base64,' . base64_encode($logo) . '" width="180" height="100" />';
 
+        $descripcionParcela = $venta->parcela->descripcion_parcela ?? '';
+
+        if (Str::contains($descripcionParcela, ['Parcela', '-Manzana'])) {
+            $descripcionParcela = Str::before($descripcionParcela, '-Manzana');
+        }
 
 
-        $pdf = Pdf::loadView('clientes.volantePagoMultipleNew', compact('detalleVentas', 'venta', 'cliente', 'parcela', 'pathLogo', 'html', 'numeroPrimeraCuota', 'numeroUltimaCuota', 'totalPago', 'conceptoDe'))
+
+        $pdf = Pdf::loadView('clientes.volantePagoMultipleNew', compact('detalleVentas', 'venta', 'cliente', 'parcela', 'pathLogo', 'html', 'numeroPrimeraCuota', 'numeroUltimaCuota', 'totalPago', 'conceptoDe', 'descripcionParcela'))
             ->setPaper('cart', 'vertical');
 
         return $pdf->stream(date('d-m-Y') . ".pdf", array('Attachment' => 0));

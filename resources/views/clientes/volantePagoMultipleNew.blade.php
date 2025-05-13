@@ -129,7 +129,7 @@
                 <td style="width: 60%;">
                     <table>
                         <tr>
-                            <td style="width: 50%;"><strong>Parcela:</strong> {{ $venta->parcela->descripcion_parcela }}
+                            <td style="width: 50%;"><strong>Parcela:</strong> {{ $descripcionParcela }}
                             </td>
 
                         </tr>

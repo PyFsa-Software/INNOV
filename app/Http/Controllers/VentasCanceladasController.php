@@ -9,6 +9,7 @@ use App\Models\Persona;
 use App\Models\Venta;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class VentasCanceladasController extends Controller
 {
@@ -66,8 +67,13 @@ class VentasCanceladasController extends Controller
 
         $htmlCancel = '<img src="data:image/svg+xml;base64,' . base64_encode($cancel) . '"  width="100" />';
 
+        $descripcionParcela = $venta->parcela->descripcion_parcela ?? '';
 
-        $pdf = Pdf::loadView('ventas_canceladas.volanteCancelacion', compact('detalleVentas', 'venta', 'cliente', 'parcela', 'pathLogo', 'html', 'htmlCancel', 'numeroPrimeraCuota', 'numeroUltimaCuota', 'totalPago', 'conceptoDe'))
+        if (Str::contains($descripcionParcela, ['Parcela', '-Manzana'])) {
+            $descripcionParcela = Str::before($descripcionParcela, '-Manzana');
+        }
+
+        $pdf = Pdf::loadView('ventas_canceladas.volanteCancelacion', compact('detalleVentas', 'venta', 'cliente', 'parcela', 'pathLogo', 'html', 'htmlCancel', 'numeroPrimeraCuota', 'numeroUltimaCuota', 'totalPago', 'conceptoDe', 'descripcionParcela'))
             ->setPaper('cart', 'vertical');
 
         return $pdf->stream(date('d-m-Y') . ".pdf", array('Attachment' => 0));
