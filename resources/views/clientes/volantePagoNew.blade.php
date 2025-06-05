@@ -161,7 +161,8 @@
 
             <tr>
                 <td colspan="2"><strong>Recibí(mos) la suma de:</strong>
-                    {{ $detalleVentas[0]?->moneda_pago ?? 'PESOS' }} {{ convertDigitsToWord($cuota?->total_pago) }}
+                    {{ $cuota?->moneda_pago ?? 'PESOS' }}
+                    {{ convertDigitsToWord($cuota?->total_pago) }}.</b>
                 </td>
             </tr>
             <tr>

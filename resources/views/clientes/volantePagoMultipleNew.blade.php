@@ -168,7 +168,7 @@
                     {{ number_format($totalPago, 2, ',', '.') }}
                 </td>
                 <td><strong>Concepto de:</strong>
-                    {{ $concepto_de ?? '..............................' }}</td>
+                    {{ $conceptoDe ?? '..............................' }}</td>
             </tr>
         </table>
 
