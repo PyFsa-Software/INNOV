@@ -720,47 +720,151 @@
 }
 
 /* Modal Clientes Vencidos - DataTable Styles */
+#clientesVencidosModal .modal-body {
+    padding: 1rem;
+}
+
 #clientesVencidosModal .table-responsive {
-    max-height: 400px;
-    overflow-y: auto;
+    border: none;
+    max-height: none;
 }
 
 #clientesVencidosTable {
     font-size: 0.875rem;
+    width: 100% !important;
+    margin-bottom: 0;
+    table-layout: fixed !important;
 }
 
 #clientesVencidosTable th {
-    background-color: #343a40;
-    color: white;
+    background-color: #343a40 !important;
+    color: white !important;
     font-weight: 600;
-    border-color: #495057;
-    padding: 0.5rem 0.75rem;
+    border: 1px solid #495057;
+    padding: 0.75rem 0.5rem;
+    text-align: center;
+    white-space: nowrap;
+    font-size: 0.8rem;
 }
 
 #clientesVencidosTable td {
-    padding: 0.5rem 0.75rem;
+    padding: 0.75rem 0.5rem;
     vertical-align: middle;
+    border: 1px solid #dee2e6;
+    text-align: center;
+}
+
+/* Anchos específicos para columnas */
+#clientesVencidosTable th:nth-child(1),
+#clientesVencidosTable td:nth-child(1) {
+    width: 25%;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#clientesVencidosTable th:nth-child(2),
+#clientesVencidosTable td:nth-child(2) {
+    width: 15%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#clientesVencidosTable th:nth-child(3),
+#clientesVencidosTable td:nth-child(3) {
+    width: 20%;
+}
+
+#clientesVencidosTable th:nth-child(4),
+#clientesVencidosTable td:nth-child(4) {
+    width: 10%;
+}
+
+#clientesVencidosTable th:nth-child(5),
+#clientesVencidosTable td:nth-child(5) {
+    width: 15%;
+}
+
+#clientesVencidosTable th:nth-child(6),
+#clientesVencidosTable td:nth-child(6) {
+    width: 15%;
 }
 
 .badge-sm {
-    font-size: 0.7rem;
-    padding: 0.2rem 0.4rem;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    white-space: nowrap;
 }
 
-/* DataTable specific styling */
-#clientesVencidosModal .dataTables_wrapper .dataTables_length select,
-#clientesVencidosModal .dataTables_wrapper .dataTables_filter input {
+/* DataTable Controls */
+#clientesVencidosModal .dataTables_wrapper {
     font-size: 0.875rem;
-    padding: 0.25rem 0.5rem;
 }
 
-#clientesVencidosModal .dataTables_wrapper .dataTables_paginate .paginate_button {
-    padding: 0.25rem 0.5rem;
+#clientesVencidosModal .dataTables_wrapper .row {
+    margin: 0;
+}
+
+#clientesVencidosModal .dataTables_length,
+#clientesVencidosModal .dataTables_filter {
+    margin-bottom: 1rem;
+}
+
+#clientesVencidosModal .dataTables_length select,
+#clientesVencidosModal .dataTables_filter input {
+    font-size: 0.875rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.375rem;
+    border: 1px solid #ced4da;
+}
+
+#clientesVencidosModal .dataTables_filter input {
+    width: 200px;
+}
+
+/* Paginación */
+#clientesVencidosModal .dataTables_paginate {
+    margin-top: 1rem;
+}
+
+#clientesVencidosModal .dataTables_paginate .paginate_button {
+    padding: 0.375rem 0.75rem;
     margin: 0 0.125rem;
+    border-radius: 0.375rem;
+    border: 1px solid #dee2e6;
+    background: white;
+    color: #495057;
+}
+
+#clientesVencidosModal .dataTables_paginate .paginate_button:hover {
+    background: #e9ecef;
+    border-color: #adb5bd;
+}
+
+#clientesVencidosModal .dataTables_paginate .paginate_button.current {
+    background: #007bff !important;
+    border-color: #007bff !important;
+    color: white !important;
 }
 
 #clientesVencidosModal .dataTables_info {
     font-size: 0.875rem;
+    margin-top: 1rem;
+    color: #6c757d;
+}
+
+/* Fix para evitar overflow */
+#clientesVencidosModal .modal-dialog {
+    max-width: 90%;
+    margin: 1.75rem auto;
+}
+
+@media (min-width: 992px) {
+    #clientesVencidosModal .modal-dialog {
+        max-width: 900px;
+    }
 }
 
 .summary-icon {
@@ -906,56 +1010,102 @@
 }
 </style>
 
+@push('scripts')
 <script>
     $(document).ready(function() {
         // Inicializar DataTable para clientes con cuotas vencidas
-        if ($('#clientesVencidosTable').length) {
-            $('#clientesVencidosTable').DataTable({
-                language: {
-                    "lengthMenu": "Mostrar _MENU_ registros por página",
-                    "zeroRecords": "No se encontraron registros",
-                    "info": "Mostrando página _PAGE_ de _PAGES_",
-                    "infoEmpty": "No hay registros disponibles",
-                    "infoFiltered": "(filtrado de _MAX_ registros totales)",
-                    "search": "Buscar:",
-                    "paginate": {
-                        "first": "Primero",
-                        "last": "Último",
-                        "next": "Siguiente",
-                        "previous": "Anterior"
-                    }
-                },
-                pageLength: 10,
-                responsive: true,
-                order: [
-                    [0, 'asc']
-                ], // Ordenar por nombre del cliente
-                columnDefs: [{
-                        targets: [4, 5], // Columnas Cuotas Vencidas y Acciones
-                        orderable: false
+        function initClientesVencidosTable() {
+            if ($('#clientesVencidosTable').length && $.fn.DataTable) {
+                $('#clientesVencidosTable').DataTable({
+                    language: {
+                        "lengthMenu": "Mostrar _MENU_ registros por página",
+                        "zeroRecords": "No se encontraron registros",
+                        "info": "Mostrando página _PAGE_ de _PAGES_",
+                        "infoEmpty": "No hay registros disponibles",
+                        "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                        "search": "Buscar:",
+                        "paginate": {
+                            "first": "Primero",
+                            "last": "Último",
+                            "next": "Siguiente",
+                            "previous": "Anterior"
+                        }
                     },
-                    {
-                        targets: [4], // Columna Cuotas Vencidas
-                        className: 'text-center'
+                    pageLength: 10,
+                    responsive: false, // Desactivar responsive para evitar deformaciones
+                    scrollX: false,
+                    autoWidth: false, // Control manual de anchos
+                    order: [
+                        [0, 'asc']
+                    ], // Ordenar por nombre del cliente
+                    columnDefs: [{
+                            targets: [0], // Columna Cliente
+                            width: '25%',
+                            className: 'text-left'
+                        },
+                        {
+                            targets: [1], // Columna DNI
+                            width: '15%',
+                            className: 'text-center'
+                        },
+                        {
+                            targets: [2], // Columna Parcela
+                            width: '20%',
+                            className: 'text-center'
+                        },
+                        {
+                            targets: [3], // Columna Manzana
+                            width: '10%',
+                            className: 'text-center'
+                        },
+                        {
+                            targets: [4], // Columna Cuotas Vencidas
+                            width: '15%',
+                            className: 'text-center',
+                            orderable: false
+                        },
+                        {
+                            targets: [5], // Columna Acciones
+                            width: '15%',
+                            className: 'text-center',
+                            orderable: false
+                        }
+                    ],
+                    dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
+                        '<"row"<"col-sm-12"tr>>' +
+                        '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+                    drawCallback: function(settings) {
+                        // Aplicar estilos después de cada redibujado
+                        $('#clientesVencidosTable th, #clientesVencidosTable td').css({
+                            'white-space': 'nowrap',
+                            'text-overflow': 'ellipsis'
+                        });
                     },
-                    {
-                        targets: [5], // Columna Acciones
-                        className: 'text-center'
+                    initComplete: function(settings, json) {
+                        // Agregar clases personalizadas a los elementos de DataTable
+                        $('.dataTables_filter input').addClass('form-control form-control-sm');
+                        $('.dataTables_length select').addClass('form-control form-control-sm');
+                        $('.dataTables_paginate .paginate_button').addClass('btn btn-sm');
+                        $('.dataTables_paginate .paginate_button.current').addClass('btn-primary');
+                        $('.dataTables_paginate .paginate_button:not(.current)').addClass(
+                            'btn-outline-primary');
+
+                        // Forzar anchuras fijas
+                        $('#clientesVencidosTable').css('table-layout', 'fixed');
                     }
-                ],
-                dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
-                    '<"row"<"col-sm-12"tr>>' +
-                    '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-                initComplete: function(settings, json) {
-                    // Agregar clases personalizadas a los elementos de DataTable
-                    $('.dataTables_filter input').addClass('form-control form-control-sm');
-                    $('.dataTables_length select').addClass('form-control form-control-sm');
-                    $('.dataTables_paginate .paginate_button').addClass('btn btn-sm');
-                    $('.dataTables_paginate .paginate_button.current').addClass('btn-primary');
-                    $('.dataTables_paginate .paginate_button:not(.current)').addClass(
-                        'btn-outline-primary');
-                }
-            });
+                });
+            }
         }
+
+        // Intentar inicializar inmediatamente
+        initClientesVencidosTable();
+
+        // También inicializar cuando se abra el modal (por si acaso)
+        $('#clientesVencidosModal').on('shown.bs.modal', function() {
+            if (!$.fn.DataTable.isDataTable('#clientesVencidosTable')) {
+                initClientesVencidosTable();
+            }
+        });
     });
 </script>
+@endpush
