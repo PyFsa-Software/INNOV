@@ -96,6 +96,122 @@
         </div>
     </div>
 
+    {{-- Sección de Configuración de Fechas --}}
+    @if ($puedeConfigurarFechas)
+        <div class="form-group">
+            <div class="card border-info shadow-sm">
+                <div class="card-header bg-light border-info">
+                    <div class="d-flex align-items-center">
+                        <input type="checkbox" id="configurarFechas" wire:model="configurarFechas" class="mr-3"
+                            style="width: 18px; height: 18px; cursor: pointer;">
+                        <label for="configurarFechas" class="mb-0 cursor-pointer" style="cursor: pointer;">
+                            <i class="fa fa-calendar text-info mr-2"></i>
+                            <strong>Configurar fechas de vencimiento personalizadas</strong>
+                        </label>
+                    </div>
+                    <small class="text-muted mt-2 d-block" style="margin-left: 33px;">
+                        <i class="fa fa-info-circle text-info"></i> Permite personalizar las fechas de vencimiento de
+                        cuotas futuras no vencidas
+                    </small>
+                </div>
+
+                @if ($mostrarConfiguracion)
+                    <div class="card-body">
+                        @error('configuracion_fechas')
+                            <div class="alert alert-danger alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                <i class="fa fa-exclamation-triangle"></i> {{ $message }}
+                            </div>
+                        @enderror
+
+                        <div class="row">
+                            {{-- Configurar fecha de cuota actual (solo si no está vencida) --}}
+                            @if (!Carbon\Carbon::createFromFormat('Y-m-d', $cuota->fecha_maxima_a_pagar)->isPast())
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="nuevaFechaCuotaActual" class="form-label">
+                                            <i class="fa fa-calendar text-primary"></i>
+                                            <strong>Nueva fecha para cuota actual</strong>
+                                            <span class="badge badge-primary ml-1">{{ $cuota->numero_cuota }}</span>
+                                        </label>
+                                        <input type="date" class="form-control" id="nuevaFechaCuotaActual"
+                                            wire:model="nuevaFechaCuotaActual" min="{{ date('Y-m-d') }}"
+                                            placeholder="Seleccionar fecha">
+                                        @error('nuevaFechaCuotaActual')
+                                            <div class="invalid-feedback d-block">
+                                                <i class="fa fa-exclamation-circle"></i> {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            @endif
+
+                            {{-- Configurar fechas de cuotas siguientes --}}
+                            @if (!empty($cuotasSiguientes))
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="nuevaFechaSiguientes" class="form-label">
+                                            <i class="fa fa-calendar-plus-o text-success"></i>
+                                            <strong>Nueva fecha base para cuotas siguientes</strong>
+                                        </label>
+                                        <input type="date" class="form-control" id="nuevaFechaSiguientes"
+                                            wire:model="nuevaFechaSiguientes" min="{{ date('Y-m-d') }}"
+                                            placeholder="Seleccionar fecha base">
+                                        @error('nuevaFechaSiguientes')
+                                            <div class="invalid-feedback d-block">
+                                                <i class="fa fa-exclamation-circle"></i> {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="cantidadCuotasConfigurar" class="form-label">
+                                            <i class="fa fa-list-ol text-warning"></i>
+                                            <strong>Cantidad de cuotas a configurar</strong>
+                                        </label>
+                                        <select class="form-control" id="cantidadCuotasConfigurar"
+                                            wire:model="cantidadCuotasConfigurar">
+                                            @for ($i = 1; $i <= count($cuotasSiguientes); $i++)
+                                                <option value="{{ $i }}">{{ $i }}
+                                                    cuota{{ $i > 1 ? 's' : '' }}</option>
+                                            @endfor
+                                        </select>
+                                        @error('cantidadCuotasConfigurar')
+                                            <div class="invalid-feedback d-block">
+                                                <i class="fa fa-exclamation-circle"></i> {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+
+                        {{-- Información sobre cuotas disponibles --}}
+                        @if (!empty($cuotasSiguientes))
+                            <div class="alert alert-info" style="border-left: 4px solid #17a2b8;">
+                                <div class="d-flex align-items-start">
+                                    <i class="fa fa-info-circle text-info mr-2 mt-1"></i>
+                                    <div>
+                                        <strong>Cuotas disponibles:</strong> {{ count($cuotasSiguientes) }} cuotas
+                                        futuras no vencidas
+                                        <br>
+                                        <small class="text-muted">
+                                            <i class="fa fa-lightbulb-o"></i>
+                                            <strong>Tip:</strong> Las fechas se aplicarán mes a mes a partir de la fecha
+                                            base configurada
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                @endif
+            </div>
+        </div>
+    @endif
+
     <div wire:loading>
         Calculando abono..
     </div>
@@ -121,7 +237,26 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Una vez realizada esta acción ya no se podra modificar.</p>
+                    <p>Una vez realizada esta acción ya no se podrá modificar.</p>
+
+                    @if ($configurarFechas)
+                        <div class="alert alert-info">
+                            <h6><i class="fa fa-calendar"></i> <strong>Configuración de fechas aplicada:</strong></h6>
+
+                            @if ($nuevaFechaCuotaActual && !Carbon\Carbon::createFromFormat('Y-m-d', $cuota->fecha_maxima_a_pagar)->isPast())
+                                <p><small><strong>Cuota actual ({{ $cuota->numero_cuota }}):</strong>
+                                        {{ \Carbon\Carbon::createFromFormat('Y-m-d', $nuevaFechaCuotaActual)->format('d/m/Y') }}</small>
+                                </p>
+                            @endif
+
+                            @if ($nuevaFechaSiguientes && !empty($cuotasSiguientes))
+                                <p><small><strong>{{ $cantidadCuotasConfigurar }} cuota(s) siguiente(s):</strong> A
+                                        partir del
+                                        {{ \Carbon\Carbon::createFromFormat('Y-m-d', $nuevaFechaSiguientes)->format('d/m/Y') }}</small>
+                                </p>
+                            @endif
+                        </div>
+                    @endif
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger close-btn" data-dismiss="modal">Cancelar</button>
