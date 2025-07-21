@@ -26,7 +26,6 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/', [AuthController::class, 'index'])->name('inicioSesion.index');
 
     Route::post('/', [AuthController::class, 'loguearse'])->name('inicioSesion.loguearse');
-
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -36,6 +35,7 @@ Route::middleware(['auth'])->group(function () {
 
     route::get('/inicio', function () {
 
+        // Métricas básicas existentes
         $totalParcelas = Parcela::all()->count();
         $totalParcelasVendidas = Parcela::where('disponible', '=', '0')->count();
         $totalParcelasDisponibles = Parcela::where('disponible', '=', '1')->count();
@@ -43,7 +43,41 @@ Route::middleware(['auth'])->group(function () {
             ->where('activo', '=', '1')
             ->count();
 
-            $clientesCuotasVencidas = DetalleVenta::where('fecha_maxima_a_pagar', '<', date('Y-m-d'))
+        // NUEVAS MÉTRICAS DE NEGOCIO
+
+        // Cantidad de cuotas cobradas este mes
+        $cobranzaDelMes = DetalleVenta::whereMonth('fecha_pago', date('m'))
+            ->whereYear('fecha_pago', date('Y'))
+            ->where('pagado', 'si')
+            ->count();
+
+        // Pre-ventas pendientes (aún faltan pagos para completarlas)
+        $reservasPendientes = \App\Models\ReservaParcela::where('estado_reserva', false)->count();
+
+        // Pre-ventas canceladas (usando la relación con detalle_reserva_parcela)
+        $reservasCanceladas = \App\Models\ReservaParcela::whereHas('detalles', function ($query) {
+            $query->where('cancelado', 1);
+        })->count();
+
+        // Total de pre-ventas realizadas este mes
+        $reservasDelMes = \App\Models\ReservaParcela::whereMonth('fecha_reserva', date('m'))
+            ->whereYear('fecha_reserva', date('Y'))
+            ->count();
+
+        // ALERTAS CRÍTICAS
+
+        // Cuotas vencidas hace más de 30 días
+        $cuotasVencidasCriticas = DetalleVenta::where('pagado', 'no')
+            ->where('fecha_maxima_a_pagar', '<', date('Y-m-d', strtotime('-30 days')))
+            ->count();
+
+        // Cuotas que vencen en los próximos 7 días
+        $cuotasProximasVencer = DetalleVenta::where('pagado', 'no')
+            ->whereBetween('fecha_maxima_a_pagar', [date('Y-m-d'), date('Y-m-d', strtotime('+7 days'))])
+            ->count();
+
+        // Clientes con cuotas vencidas (existente mejorado)
+        $clientesCuotasVencidas = DetalleVenta::where('fecha_maxima_a_pagar', '<', date('Y-m-d'))
             ->with(['venta' => function ($query) {
                 $query->with('cliente');
             }])
@@ -53,46 +87,34 @@ Route::middleware(['auth'])->group(function () {
                 return $detalleVenta->venta->cliente->id_persona;
             })
             ->map(function ($item) {
-              return $item->unique('id_persona');
+                return $item->unique('id_persona');
             });
 
-            // $clientesGenerarCuotas = 
-                // $clientes = DetalleVenta::with(['venta' => function ($query) {
-                //     $query->with('cliente');
-                // }])
-                // ->get()
-                // ->groupBy(function ($detalleVenta) {
-                //     return $detalleVenta->venta->cliente->id_persona;
-                // })
-                // ->filter(function ($detalleVenta) {
-                //     $cuotasGeneradas = $detalleVenta->count('id_detalle_venta');
-                //     $cuotasPagadas = $detalleVenta->count('pagado','si');
-                   
-                //     return $cuotasGeneradas != $cuotasPagadas;
-                // })
-                // ->map(function ($item) {
-                //     return $item->unique('id_persona');
-                //   });
-            // $clientesNuevasCuotas = DetalleVenta::
-            // ->select('id_venta', DB::raw('COUNT(*) as cuotas_pagadas'))
-            // ->where('pagado', 'si')
-            // ->groupBy('id_venta')
-            // ->havingRaw('COUNT(*) != (SELECT COUNT(*) FROM detalle_ventas WHERE id_venta = ventas.id_venta)')
-            // ->with(['venta'])
-            // ->get();
 
-            
-            // dd($clientes);
-            
-            
-            
-            
 
-             
-            // dd($cuotasVencidas);
+        // Cálculo de tendencias (comparar con mes anterior)
+        $cobranzaMesAnterior = DetalleVenta::whereMonth('fecha_pago', date('m') - 1)
+            ->whereYear('fecha_pago', date('Y'))
+            ->where('pagado', 'si')
+            ->count();
 
-        return view('dashboard.dashboard', compact('totalParcelas', 'totalParcelasVendidas', 'totalParcelasDisponibles', 'totalClientes','clientesCuotasVencidas'));
+        $tendenciaCobranza = $cobranzaMesAnterior > 0 ?
+            (($cobranzaDelMes - $cobranzaMesAnterior) / $cobranzaMesAnterior) * 100 : 0;
 
+        return view('dashboard.dashboard', compact(
+            'totalParcelas',
+            'totalParcelasVendidas',
+            'totalParcelasDisponibles',
+            'totalClientes',
+            'clientesCuotasVencidas',
+            'cobranzaDelMes',
+            'reservasPendientes',
+            'reservasCanceladas',
+            'reservasDelMes',
+            'cuotasVencidasCriticas',
+            'cuotasProximasVencer',
+            'tendenciaCobranza'
+        ));
     })->name('inicio');
 
     //ROUTES LOTES
@@ -108,7 +130,6 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('lotes/eliminar/{lote}', 'EliminarLoteView')->name('lotes.borrar');
         Route::delete('lotes/eliminar/{lote}', 'EliminarLote')->name('lotes.eliminar');
-
     });
 
     //ROUTES PARCELAS
@@ -119,14 +140,14 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('parcelas/crear', 'CrearParcelaView')->name('parcelas.crear');
         Route::post('parcelas/crear', 'CrearParcela')->name('parcelas.guardar');
-        
+
         Route::get('parcelas/editar/{parcela}', 'EditarParcelaView')->name('parcelas.editar');
         Route::put('parcelas/editar/{parcela}', 'EditarParcela')->name('parcelas.modificar');
 
         Route::get('parcelas/eliminar/{parcela}', 'EliminarParcelaView')->name('parcelas.borrar');
         Route::delete('parcelas/eliminar/{parcela}', 'EliminarParcela')->name('parcelas.eliminar');
-        
-        
+
+
         Route::get('parcelas/crear-multiple', 'CrearParcelasMultiplesView')->name('parcelas.crearParcelasMultiples');
         // Route::post('parcelas/crear-multiple', 'CrearParcela')->name('parcelas.guardar');
 
@@ -145,7 +166,6 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('precios/borrar/{precio}', 'showQuestion')->name('precios.borrar');
         Route::delete('precios/borrar/{precio}', 'destroy')->name('precios.eliminar');
-
     });
 
     // ROUTES CLIENTES
@@ -194,9 +214,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('clientes/actualizar-precios-cuotas/{parcela}', 'actualizarPreciosCuotasVencidas')->name('clientes.actualizarPreciosCuotasVencidas');
         Route::post('clientes/actualizar-precios-cuotas/{parcela}', 'guardarPreciosCuotasVencidas')->name('clientes.guardarPreciosCuotasVencidas');
 
-        Route ::get('clientes/calcularDeuda/{parcela}', 'calcularDeuda')->name('clientes.calcularDeuda');
-        Route ::post('clientes/calcularDeudaResultado/{parcela}', 'calcularDeudaResultado')->name('clientes.calcularDeudaResultado');
-
+        Route::get('clientes/calcularDeuda/{parcela}', 'calcularDeuda')->name('clientes.calcularDeuda');
+        Route::post('clientes/calcularDeudaResultado/{parcela}', 'calcularDeudaResultado')->name('clientes.calcularDeudaResultado');
     });
 
     // ROUTES RESERVA PARCELAS
@@ -210,8 +229,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('pre-venta/crear', 'create')->name('reservaParcela.crear');
 
         Route::get('pre-venta/volante-pago/{idDetalleReserva}', 'generarVolantePago')->name('reservaParcela.volantePago');
-
-
     });
 
     // ROUTES VENTAS
@@ -248,12 +265,11 @@ Route::middleware(['auth'])->group(function () {
 
     //ROUTE FOR RESUMEN DIARIO
 
-    Route::controller(ResumenDiarioController::class)->group(function (){
+    Route::controller(ResumenDiarioController::class)->group(function () {
         Route::get('resumen-diario', 'index')->name('resumenDiario.index');
         Route::get('resumen-cuotas', 'resumenCuotas')->name('resumenCuotas.resumenCuotas');
         Route::get('resumen-ventas', 'resumenVentas')->name('resumenVentas.resumenVentas');
         Route::get('resumen-preVentas', 'resumenPreVentas')->name('resumenPreVentas.resumenPreVentas');
         Route::get('exportar-resumen', 'exportarExcel')->name('resumen.exportarExcel');
     });
-
 });

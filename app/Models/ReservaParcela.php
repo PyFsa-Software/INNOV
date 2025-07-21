@@ -29,5 +29,8 @@ class ReservaParcela extends Model
         return $this->belongsTo(Parcela::class, 'id_parcela', 'id_parcela');
     }
 
-    
+    public function detalles()
+    {
+        return $this->hasMany(DetalleReservaParcela::class, 'id_reserva_parcela', 'id_reserva_parcela');
+    }
 }
