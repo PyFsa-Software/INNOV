@@ -49,7 +49,7 @@ class CuotasSheet implements FromCollection, WithHeadings
         return $cuotas->map(function ($cuota) {
             return [
                 'Tipo' => 'Cuota',
-                'Cliente' => $cuota->venta->cliente->nombre,
+                'Cliente' => $cuota->venta->cliente->nombre . ' ' . $cuota->venta->cliente->apellido,
                 'Fecha de Pago' => $cuota->fecha_pago,
                 'Método de Pago' => $cuota->forma_pago,
                 'Parcela' => $cuota->venta->parcela->descripcion_parcela,
