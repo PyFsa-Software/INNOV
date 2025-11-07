@@ -31,6 +31,8 @@ class FormCobrarTodo extends Component
     public $parcela;
     public $monedaPago = "";
     public $monedasDePagos = [];
+    public $mismaFechaParaTodas = false;
+    public $fechaUnica = '';
 
     public function rules()
     {
@@ -100,33 +102,23 @@ class FormCobrarTodo extends Component
             $cuotasNoPagadas = DetalleVenta::where('id_venta', '=', $this->venta->id_venta)
                 ->where('pagado', '=', 'no')->get();
 
+            // Determinar la fecha a usar para todas las cuotas si está checkeado
+            $fechaParaTodas = null;
+            if ($this->mismaFechaParaTodas) {
+                // Si el usuario especificó una fecha, usarla; si no, usar el día 15 del mes actual
+                if (!empty($this->fechaUnica)) {
+                    $fechaParaTodas = Carbon::parse($this->fechaUnica)->format('Y-m-d');
+                } else {
+                    $fechaParaTodas = Carbon::now()->format('Y-m') . '-15';
+                }
+            }
+
             if (count($cuotasNoPagadas) >=  $this->cantidadCuotasPagar) {
 
                 // Si hay suficientes cuotas no pagadas, pagar solo la cantidad requerida
                 $this->cantidadCuotasPagar = intval($this->cantidadCuotasPagar);
-                        $cuotasNoPagadas->take($this->cantidadCuotasPagar)->each(function ($cuota) use (&$numeroRecibo) {
-                            $cuota->update([
-                                'pagado' => 'si',
-                                'numero_recibo' => $numeroRecibo,
-                                'forma_pago' => $this->formaPago,
-                                'total_estimado_a_pagar' => $this->precioActual,
-                                'total_pago' => $this->precioActual,
-                                'fecha_pago' => Carbon::now()->format('Y-m-d'),
-                                'concepto_de' => $this->conceptoDe,
-                                'moneda_pago' => $this->monedaPago,
-                                'leyenda' => $this->leyenda
-                            ]);
-                        });
-            
-         
-            } else {
-
-                // Si no hay suficientes cuotas no pagadas, pagar todas y generar y pagar las que faltan
-                
-
-                $cuotasNoPagadas->each(function ($cuota) use (&$numeroRecibo) {
-
-                    $cuota->update([
+                $cuotasNoPagadas->take($this->cantidadCuotasPagar)->each(function ($cuota) use (&$numeroRecibo, $fechaParaTodas) {
+                    $updateData = [
                         'pagado' => 'si',
                         'numero_recibo' => $numeroRecibo,
                         'forma_pago' => $this->formaPago,
@@ -136,7 +128,39 @@ class FormCobrarTodo extends Component
                         'concepto_de' => $this->conceptoDe,
                         'moneda_pago' => $this->monedaPago,
                         'leyenda' => $this->leyenda
-                    ]);
+                    ];
+
+                    // Si está checkeado, actualizar también la fecha_maxima_a_pagar
+                    if ($this->mismaFechaParaTodas && $fechaParaTodas) {
+                        $updateData['fecha_maxima_a_pagar'] = $fechaParaTodas;
+                    }
+
+                    $cuota->update($updateData);
+                });
+            } else {
+
+                // Si no hay suficientes cuotas no pagadas, pagar todas y generar y pagar las que faltan
+
+
+                $cuotasNoPagadas->each(function ($cuota) use (&$numeroRecibo, $fechaParaTodas) {
+                    $updateData = [
+                        'pagado' => 'si',
+                        'numero_recibo' => $numeroRecibo,
+                        'forma_pago' => $this->formaPago,
+                        'total_estimado_a_pagar' => $this->precioActual,
+                        'total_pago' => $this->precioActual,
+                        'fecha_pago' => Carbon::now()->format('Y-m-d'),
+                        'concepto_de' => $this->conceptoDe,
+                        'moneda_pago' => $this->monedaPago,
+                        'leyenda' => $this->leyenda
+                    ];
+
+                    // Si está checkeado, actualizar también la fecha_maxima_a_pagar
+                    if ($this->mismaFechaParaTodas && $fechaParaTodas) {
+                        $updateData['fecha_maxima_a_pagar'] = $fechaParaTodas;
+                    }
+
+                    $cuota->update($updateData);
                 });
 
 
@@ -145,9 +169,15 @@ class FormCobrarTodo extends Component
 
                 for ($i = 1; $i <= $cuotasFaltantes; $i++) {
                     $ultimaCuota++;
+
+                    // Determinar la fecha según si está checkeado o no
+                    $fechaMaximaPagar = $this->mismaFechaParaTodas && $fechaParaTodas
+                        ? $fechaParaTodas
+                        : Carbon::now()->addMonth($i)->format('Y-m') . '-15';
+
                     DetalleVenta::create([
                         'numero_cuota' => $ultimaCuota,
-                        'fecha_maxima_a_pagar' => Carbon::now()->addMonth($i)->format('Y-m') . '-15',
+                        'fecha_maxima_a_pagar' => $fechaMaximaPagar,
                         'fecha_pago' => Carbon::now()->format('Y-m-d'),
                         'total_estimado_a_pagar' => $this->precioActual,
                         'total_pago' => $this->precioActual,

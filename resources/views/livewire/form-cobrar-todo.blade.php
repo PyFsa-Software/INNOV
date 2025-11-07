@@ -71,6 +71,31 @@
         </div>
     </div>
 
+    <!-- Nueva sección para configuración de fechas -->
+    <div class="form-group">
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="mismaFechaParaTodas" 
+                   wire:model="mismaFechaParaTodas">
+            <label class="custom-control-label" for="mismaFechaParaTodas">
+                <strong>Todas las cuotas con la misma fecha estimada a pagar</strong>
+            </label>
+        </div>
+        <small class="form-text text-muted">
+            Si marca esta opción, todas las cuotas tendrán la misma fecha estimada a pagar dentro del mismo mes.
+        </small>
+    </div>
+
+    @if($mismaFechaParaTodas)
+    <div class="form-group">
+        <label for="fechaUnica">Fecha Estimada a Pagar (opcional):</label>
+        <input type="date" class="form-control" name="fechaUnica" id="fechaUnica" 
+               wire:model="fechaUnica">
+        <small class="form-text text-muted">
+            Si no especifica una fecha, se usará el día 15 del mes actual ({{ \Carbon\Carbon::now()->format('Y-m-15') }}).
+        </small>
+    </div>
+    @endif
+
     <div wire:loading>
         Calculando...
     </div>
