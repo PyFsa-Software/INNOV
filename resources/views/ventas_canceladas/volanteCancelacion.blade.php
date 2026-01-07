@@ -73,8 +73,8 @@
                         style="width: 35%; margin-left: auto; text-align: left; word-wrap: break-word; white-space: normal;">
                         <small>N°: <b>{{ $detalleVentas[0]->numero_recibo }}</b></small><br>
                         <small>Fecha: <b>{{ date('d-m-Y', strtotime($detalleVentas[0]->fecha_pago)) }}</b></small><br>
-                        <small>CEL: 3704-504731</small><br>
-                        <small style="display: block;">España 101, Galería Orquin, local 10 P.B</small>
+                        <small>CEL: 3704-998173</small><br>
+                        <small style="display: block;">Rivadavia 210</small>
                     </div>
                 </td>
 

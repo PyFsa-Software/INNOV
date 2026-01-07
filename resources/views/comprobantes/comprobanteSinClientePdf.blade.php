@@ -144,9 +144,9 @@
                 <br>
                 <small>Fecha: <b>{{ date('d-m-Y', strtotime($comprobante->fecha_comprobante)) }}</b></small>
                 <br>
-                <small>CEL: 3704-504731</small>
+                <small>CEL: 3704-998173</small>
                 <br>
-                <small>España 101,Galería Orquin, local 10 P.B</small>
+                <small>Rivadavia 210</small>
             </div>
         </div>
         <div class="contenido">
