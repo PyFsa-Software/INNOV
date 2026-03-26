@@ -47,17 +47,16 @@ class DetalleVenta extends Model
     public function getActualizarCuotasAttribute()
     {
         //Devuelve la fecha de actualizacion de de los precios de cuota.
-        $venta = Venta::where('id_venta',$this->id_venta)->value('fecha_actualizacion_precio');
-    
+        $venta = Venta::where('id_venta', $this->id_venta)->value('fecha_actualizacion_precio');
+
         //Fecha de actualizacion de los precios de las cuotas.
         $fechaActualizacionVenta = Carbon::create($venta)->format('Y-m');
 
         //Fecha de modificacion del precio de cuota.
         // $fechaModificacionPrecioCuota = Carbon::create($this->fecha_actualizacion)->format('Y-m');
 
-    
-        return (getFechaActualEditarCuota() > $fechaActualizacionVenta && $this->pagado != 'si' && $this->fecha_actualizacion === null);
 
+        return (getFechaActualEditarCuota() > $fechaActualizacionVenta && $this->pagado != 'si' && $this->fecha_actualizacion === null);
     }
 
 
@@ -67,22 +66,21 @@ class DetalleVenta extends Model
     {
 
         return $this->pagado === 'si';
-
     }
 
 
     public static function getSiguienteNumeroRecibo()
     {
-        // get numero_recibo from DetalleVenta
-        $ultimoNumeroRecibo = (int) DetalleVenta::where('numero_recibo', '!=', null)->orderBy('numero_recibo', 'desc')->value('numero_recibo');
+        $ultimoNumeroRecibo = (int) DetalleVenta::whereNotNull('numero_recibo')
+            ->orderByRaw('CAST(numero_recibo AS UNSIGNED) DESC')
+            ->value('numero_recibo');
 
-        // get numero_recibo from Comprobante
-        $ultimoNumeroReciboComprobante = (int) Comprobante::where('numero_recibo', '!=', null)->orderBy('numero_recibo', 'desc')->value('numero_recibo');
+        $ultimoNumeroReciboComprobante = (int) Comprobante::whereNotNull('numero_recibo')
+            ->orderByRaw('CAST(numero_recibo AS UNSIGNED) DESC')
+            ->value('numero_recibo');
 
-        if ($ultimoNumeroRecibo > $ultimoNumeroReciboComprobante) {
-            return $ultimoNumeroRecibo + 1;
-        } else {
-            return $ultimoNumeroReciboComprobante + 1;
-        }
+        $maximo = max($ultimoNumeroRecibo, $ultimoNumeroReciboComprobante);
+
+        return $maximo > 0 ? $maximo + 1 : 1500;
     }
 }

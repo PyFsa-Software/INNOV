@@ -192,7 +192,7 @@ class FormCobrarCuotas extends Component
                 $this->cuota->total_pago = $this->totalAbonar;
                 $this->cuota->fecha_pago = date('Y-m-d');
                 $this->cuota->pagado = 'si';
-                $this->cuota->numero_recibo = $numeroRecibo === null ? 1500 : $numeroRecibo;
+                $this->cuota->numero_recibo = $numeroRecibo;
                 $this->cuota->forma_pago = $this->formaPago;
                 $this->cuota->concepto_de = $this->conceptoDe;
                 $this->cuota->moneda_pago = $this->monedaPago;
@@ -215,7 +215,7 @@ class FormCobrarCuotas extends Component
                 $this->cuota->total_pago = $this->totalAbonar;
                 $this->cuota->fecha_pago = date('Y-m-d');
                 $this->cuota->pagado = 'si';
-                $this->cuota->numero_recibo = $numeroRecibo === null ? 1500 : $numeroRecibo;
+                $this->cuota->numero_recibo = $numeroRecibo;
                 $this->cuota->forma_pago = $this->formaPago;
                 $this->cuota->concepto_de = $this->conceptoDe;
                 $this->cuota->moneda_pago = $this->monedaPago;
