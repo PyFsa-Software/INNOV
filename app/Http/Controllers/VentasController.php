@@ -104,6 +104,15 @@ class VentasController extends Controller
             // 1. Eliminar los registros relacionados en detalleVentas
             $venta->detalleVenta()->delete();
 
+            // NVO: Eliminar los comprobantes asociados a esta venta
+            // (Asumiendo que tienes la relación comprobantes() en el modelo Venta, 
+            //  o puedes hacerlo mediante Query Builder si no existe la relación)
+            if (method_exists($venta, 'comprobantes')) {
+                $venta->comprobantes()->delete();
+            } else {
+                \App\Models\Comprobante::where('id_venta', $venta->id_venta)->delete();
+            }
+
             // 2. Obtener el id_parcela de la venta
             $idParcela = $venta->id_parcela;
 
@@ -116,6 +125,7 @@ class VentasController extends Controller
                 // 6. Eliminar la reserva parcela
                 $reservaParcela->delete();
             }
+
             // 5. Actualizar el campo disponible de la parcela a 1
             Parcela::where('id_parcela', $idParcela)->update(['disponible' => 1]);
 
