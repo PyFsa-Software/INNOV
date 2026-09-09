@@ -180,33 +180,6 @@
                         <small>Alquiler: </small><b>{{ $comprobante->domicilio_alquiler }}.</b>
                     </div>
                 @endif
-                {{-- <div class="pago">
-                    <small>Recibí(mos) la suma de: </small><b>{{$detalleVentas[0]?->moneda_pago ?? 'PESOS'}},  {{ convertDigitsToWord($totalPago) }}.</b>
-                </div> --}}
-                <br>
-                <div class="info-loteo">
-                    <small>Loteo: </small><b>....................</b>
-                    <small>Parcela: </small><b> ....................</b>
-                    <small>Manzana:</small><b>....................</b>
-                    <small>Ubicación: </small><b>....................</b>
-                </div>
-                {{-- <div class="info-parcela">
-                    <small>Parcela: </small><b> {{ $venta->parcela->descripcion_parcela }}.</b>
-                </div> --}}
-                <br>
-                <div class="info-parcela">
-                    <small>Dimensión: </small><b>....................</b>
-                </div>
-                {{-- <div class="info-parcela">
-                    <small>Manzana:</small><b>{{ $venta->parcela->manzana }}.</b>
-                </div> --}}
-                {{-- <div class="info-parcela">
-                    <small>Ubicación: </small><b>{{ $venta->parcela->lote->ubicacion }}.</b>
-                </div> --}}
-                {{-- <br>
-                <div class="info-parcela">
-                    <small>Plan: </small><b>................... Cuota/s.</b>
-                </div> --}}
             </div>
             <div class="info-parcela">
                 <small>Forma de Pago: </small><b>{{ $comprobante?->forma_pago ?? '-' }}.</b>
