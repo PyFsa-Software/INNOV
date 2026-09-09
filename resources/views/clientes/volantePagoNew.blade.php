@@ -166,13 +166,29 @@
                 </td>
             </tr>
             <tr>
-                <td><strong>Importe Total:</strong> $ {{ number_format($cuota?->total_pago, 2, ',', '.') }}</td>
-                <td><strong>Concepto de:</strong> {{ $cuota?->concepto_de ?? '..............................' }}
-                    @if ($cuota?->leyenda)
-                        <span style="margin-left: 30px;">({{ $cuota->leyenda }})</span>
-                    @endif
+                <td style="width: 40%;">
+                    <table>
+                        <tr>
+                            <td><strong>Importe Total:</strong> $
+                                {{ number_format($cuota?->total_pago, 2, ',', '.') }}</td>
+                        </tr>
+                    </table>
                 </td>
-
+                <td style="width: 60%;">
+                    <table>
+                        <tr>
+                            <td style="width: 50%;"><strong>Concepto de:</strong>
+                                {{ $cuota?->concepto_de ?? '..............................' }}
+                                @if ($cuota?->leyenda)
+                                    <span style="margin-left: 30px;">({{ $cuota->leyenda }})</span>
+                                @endif
+                            </td>
+                            <td style="width: 50%;"><strong>F. Pago:</strong>
+                                {{ $cuota?->forma_pago ?? '..............................' }}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
             </tr>
         </table>
 

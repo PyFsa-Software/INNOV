@@ -164,11 +164,27 @@
                 </td>
             </tr>
             <tr>
-                <td><strong>Importe Total:</strong> $
-                    {{ number_format($totalPago, 2, ',', '.') }}
+                <td style="width: 40%;">
+                    <table>
+                        <tr>
+                            <td><strong>Importe Total:</strong> $
+                                {{ number_format($totalPago, 2, ',', '.') }}
+                            </td>
+                        </tr>
+                    </table>
                 </td>
-                <td><strong>Concepto de:</strong>
-                    {{ $conceptoDe ?? '..............................' }}</td>
+                <td style="width: 60%;">
+                    <table>
+                        <tr>
+                            <td style="width: 50%;"><strong>Concepto de:</strong>
+                                {{ $conceptoDe ?? '..............................' }}
+                            </td>
+                            <td style="width: 50%;"><strong>F. Pago:</strong>
+                                {{ $detalleVentas[0]?->forma_pago ?? '..............................' }}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
             </tr>
         </table>
 

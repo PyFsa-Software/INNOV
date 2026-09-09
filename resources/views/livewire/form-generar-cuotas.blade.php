@@ -90,7 +90,8 @@
     @endif
 
     <div class="form-group">
-        <label for="totalAbonarProximosMeses">Total Abonar Proximo 6 Meses: </label>
+        <label for="totalAbonarProximosMeses">Total Abonar Proximos {{ $cuotasAGenerar }}
+            {{ $cuotasAGenerar == 1 ? 'Mes' : 'Meses' }}: </label>
         <input type="text" class="form-control" name="totalAbonarProximosMeses" id="totalAbonarProximosMeses"
             value="{{ $totalAbonarProximosMeses }}" wire:model="totalAbonarProximosMeses">
     </div>
@@ -100,7 +101,8 @@
 
 
     <button class="btn btn-primary mr-2 mb-2 form-control" type="button" {{ $isDisabled ? 'disabled' : '' }}
-        data-toggle="modal" data-target="#actualizarPrecios">Generar Cuotas</button>
+        data-toggle="modal" data-target="#actualizarPrecios">Generar
+        {{ $cuotasAGenerar }} {{ $cuotasAGenerar == 1 ? 'Cuota' : 'Cuotas' }}</button>
 
     <a href="{{ route('clientes.estado', $venta?->id_cliente) }}" class="btn btn-danger form-control">Cancelar</a>
     <x-alertas />

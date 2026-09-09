@@ -19,6 +19,7 @@ class FormGenerarCuotas extends Component
     public $promedio6Meses;
     public $totalAbonarProximosMeses;
     public $isDisabled = true;
+    public $cuotasAGenerar = 0;
 
     protected $rules = [
         'totalAbonarProximosMeses' => 'required|numeric|min:1',
@@ -31,6 +32,38 @@ class FormGenerarCuotas extends Component
         $this->isDisabled = false;
 
     }
+
+    // Cantidad de cuotas a generar por bloque según el período de actualización de la venta.
+    private function obtenerCuotasPorPeriodo()
+    {
+        switch ($this->venta->update_period) {
+            case 'BIMESTRAL':
+                return 2;
+            case 'TRIMESTRAL':
+                return 3;
+            case 'SEMESTRAL':
+                return 6;
+            default:
+                return 6;
+        }
+    }
+
+    // Calcula cuántas cuotas se van a generar realmente, respetando el resto del plan si es menor al período.
+    private function calcularCuotasAGenerar()
+    {
+        $cuotasPorPeriodo = $this->obtenerCuotasPorPeriodo();
+
+        if ($this->ultimaCuota === null) {
+            $this->cuotasAGenerar = $cuotasPorPeriodo;
+            return;
+        }
+
+        $totalCuotas = DetalleVenta::where('id_venta', '=', $this->venta->id_venta)->count('id_detalle_venta');
+        $restoCuotas = $this->venta->cuotas - $totalCuotas;
+
+        $this->cuotasAGenerar = $restoCuotas < $cuotasPorPeriodo ? $restoCuotas : $cuotasPorPeriodo;
+    }
+
     public function mount()
     {
 
@@ -42,7 +75,7 @@ class FormGenerarCuotas extends Component
             });
         $this->promedio6Meses = $this->promedio6Meses / 6;
 
-      
+        $this->calcularCuotasAGenerar();
 
     }
 
@@ -76,7 +109,7 @@ class FormGenerarCuotas extends Component
             if ($numeroCuota == null) {
                 $numeroCuota = 0;
 
-                for ($i = 0; $i <= 6; $i++) {
+                for ($i = 0; $i < $this->cuotasAGenerar; $i++) {
                     $numeroCuota++;
                     DetalleVenta::create([
                         'numero_cuota' => $numeroCuota,
@@ -87,50 +120,23 @@ class FormGenerarCuotas extends Component
                 }
 
                 DB::commit();
-                return redirect()->route('clientes.estado', $this->venta->id_cliente)->with('success', "Actualización de cuotas para los proximos 6 meses guardado correctamente."
+                return redirect()->route('clientes.estado', $this->venta->id_cliente)->with('success', "Actualización de cuotas para los proximos {$this->cuotasAGenerar} meses guardado correctamente."
                 );
             }
 
-            //Validacion de Plan de cuota Personalizado
-
-            $totalCuotas = DetalleVenta::where('id_venta','=',$this->venta->id_venta)->count('id_detalle_venta');
-
-           
-
-            $planCuota =  $this->venta->cuotas; 
-            
-            $restoCuotas = $planCuota - $totalCuotas;
-
-
-            if ($restoCuotas < 6) {
-
-                for ($i = 1; $i <= $restoCuotas; $i++) {
-                    $numeroCuota++;
-                    DetalleVenta::create([
-                        'numero_cuota' => $numeroCuota,
-                        'fecha_maxima_a_pagar' => Carbon::create($this->ultimaCuota->fecha_maxima_a_pagar)->addMonth($i)->format('Y-m') . '-15',
-                        'total_estimado_a_pagar' => $this->totalAbonarProximosMeses,
-                        'id_venta' => $this->venta->id_venta,
-                    ]);
-                }
-
-            }else{
-
-                for ($i = 1; $i <= 6; $i++) {
-                    $numeroCuota++;
-                    DetalleVenta::create([
-                        'numero_cuota' => $numeroCuota,
-                        'fecha_maxima_a_pagar' => Carbon::create($this->ultimaCuota->fecha_maxima_a_pagar)->addMonth($i)->format('Y-m') . '-15',
-                        'total_estimado_a_pagar' => $this->totalAbonarProximosMeses,
-                        'id_venta' => $this->venta->id_venta,
-                    ]);
-                }
-
+            for ($i = 1; $i <= $this->cuotasAGenerar; $i++) {
+                $numeroCuota++;
+                DetalleVenta::create([
+                    'numero_cuota' => $numeroCuota,
+                    'fecha_maxima_a_pagar' => Carbon::create($this->ultimaCuota->fecha_maxima_a_pagar)->addMonth($i)->format('Y-m') . '-15',
+                    'total_estimado_a_pagar' => $this->totalAbonarProximosMeses,
+                    'id_venta' => $this->venta->id_venta,
+                ]);
             }
 
 
             DB::commit();
-            return redirect()->route('clientes.estado', $this->venta->id_cliente)->with('success', "Actualización de cuotas para los proximos 6 meses guardado correctamente."
+            return redirect()->route('clientes.estado', $this->venta->id_cliente)->with('success', "Actualización de cuotas para los proximos {$this->cuotasAGenerar} meses guardado correctamente."
             );
         } catch (\Throwable$e) {
 
