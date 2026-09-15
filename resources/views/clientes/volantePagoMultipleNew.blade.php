@@ -131,6 +131,9 @@
                         <tr>
                             <td style="width: 50%;"><strong>Parcela:</strong> {{ $descripcionParcela }}
                             </td>
+                            <td colspan="2"><strong>Actualizacion:</strong>
+                                {{ $venta->update_period }}
+                            </td>
 
                         </tr>
                     </table>
@@ -150,8 +153,8 @@
                             <td style="width: 50%;"><strong>Cuota N°: </strong><b>{{ $numeroPrimeraCuota }}</b> al
                                 <b>{{ $numeroUltimaCuota }}</b>
                             </td>
-                            <td colspan="2"><strong>Actualizacion:</strong>
-                                {{ $venta->update_period }}
+                            <td colspan="2"><strong>F. Pago:</strong>
+                                {{ $detalleVentas[0]?->forma_pago ?? '..............................' }}
                             </td>
                         </tr>
                     </table>
@@ -178,9 +181,6 @@
                         <tr>
                             <td style="width: 50%;"><strong>Concepto de:</strong>
                                 {{ $conceptoDe ?? '..............................' }}
-                            </td>
-                            <td style="width: 50%;"><strong>F. Pago:</strong>
-                                {{ $detalleVentas[0]?->forma_pago ?? '..............................' }}
                             </td>
                         </tr>
                     </table>

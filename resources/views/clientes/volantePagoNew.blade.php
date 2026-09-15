@@ -133,6 +133,9 @@
                         <tr>
                             <td style="width: 50%;"><strong>Parcela:</strong> {{ $descripcionParcela }}
                             </td>
+                            <td colspan="2"><strong>Actualizacion:</strong>
+                                {{ $venta->update_period }}
+                            </td>
 
                         </tr>
                     </table>
@@ -151,8 +154,8 @@
                         <tr>
                             <td style="width: 50%;"><strong>Cuota N°: </strong>{{ $cuota?->numero_cuota }}
                             </td>
-                            <td colspan="2"><strong>Actualizacion:</strong>
-                                {{ $venta->update_period }}
+                            <td colspan="2"><strong>F. Pago:</strong>
+                                {{ $cuota?->forma_pago ?? '..............................' }}
                             </td>
                         </tr>
                     </table>
@@ -182,9 +185,6 @@
                                 @if ($cuota?->leyenda)
                                     <span style="margin-left: 30px;">({{ $cuota->leyenda }})</span>
                                 @endif
-                            </td>
-                            <td style="width: 50%;"><strong>F. Pago:</strong>
-                                {{ $cuota?->forma_pago ?? '..............................' }}
                             </td>
                         </tr>
                     </table>
