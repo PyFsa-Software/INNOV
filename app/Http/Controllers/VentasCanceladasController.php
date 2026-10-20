@@ -62,7 +62,7 @@ class VentasCanceladasController extends Controller
         $numeroPrimeraCuota = $detalleVentas->first()->numero_cuota;
         $numeroUltimaCuota = $detalleVentas->last()->numero_cuota;
 
-        $pathLogo = Storage::path('public/img/logoInnova.jpg');
+        $pathLogo = Storage::path('public/img/logoInnova.png');
         $logo = file_get_contents($pathLogo);
 
         $html = '<img src="data:image/svg+xml;base64,' . base64_encode($logo) . '"  width="180" height="100" />';
