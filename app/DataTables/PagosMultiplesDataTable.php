@@ -56,10 +56,10 @@ class PagosMultiplesDataTable extends DataTable
                 $cuotaMax = (int)$data->max_numero_cuota;
 
                 if ($data->venta->cuotas == $cuotaMax && $data->pagado == 'si') {
-                    return $data->verificarCuotaPagada ? "<a href='" . route('ventasCanceladas.imprimirVolanteCancelacion', $data->numero_recibo) . "' class='btn btn-info btn-sm' target='_blank'><i class='ti-download'></i></a>" : "-";
+                    return $data->verificarCuotaPagada ? "<a href='" . route('ventasCanceladas.imprimirVolanteCancelacion', ['numeroRecibo' => $data->numero_recibo, 'venta' => $data->id_venta]) . "' class='btn btn-info btn-sm' target='_blank'><i class='ti-download'></i></a>" : "-";
                 }
 
-                return $data->verificarCuotaPagada ? "<a href='" . route('clientes.volantePagoMultiple', $data->numero_recibo) . "' class='btn btn-info btn-sm' target='_blank'><i class='ti-download'></i></a>" : "-";
+                return $data->verificarCuotaPagada ? "<a href='" . route('clientes.volantePagoMultiple', ['numeroRecibo' => $data->numero_recibo, 'venta' => $data->id_venta]) . "' class='btn btn-info btn-sm' target='_blank'><i class='ti-download'></i></a>" : "-";
             })
             ->rawColumns(['FechaPago','Cuotas','Cancelado','totalPago', 'pagado', 'volantePago']);
     }
@@ -72,27 +72,25 @@ class PagosMultiplesDataTable extends DataTable
      */
     public function query(): QueryBuilder
     {
-        $subquery = DetalleVenta::with('venta')->select(
-            'numero_recibo',
-            DB::raw('SUM(total_pago) as total_pago_agrupado'),
-            DB::raw('MIN(CAST(numero_cuota AS UNSIGNED)) as min_numero_cuota'),
-            DB::raw('MAX(CAST(numero_cuota AS UNSIGNED)) as max_numero_cuota')
-        )
-        ->where('id_venta', '=', $this->idVenta)
-        ->groupBy('numero_recibo')
-        ->havingRaw('COUNT(numero_recibo) > 1')
-        ->groupBy('numero_recibo');
-
-        
-    
-    return DetalleVenta::joinSub($subquery, 'sub', function ($join) {
-        $join->on('detalle_ventas.numero_recibo', '=', 'sub.numero_recibo');
-    })
-        ->select('detalle_ventas.fecha_pago', 'detalle_ventas.pagado', 'sub.total_pago_agrupado', 'detalle_ventas.numero_recibo', 'detalle_ventas.id_venta', 'sub.min_numero_cuota', 'sub.max_numero_cuota')
-        ->orderByRaw("CAST(numero_cuota AS UNSIGNED) DESC")
-        ->groupBy('detalle_ventas.numero_recibo', 'detalle_ventas.fecha_pago', 'detalle_ventas.pagado', 'sub.total_pago_agrupado', 'detalle_ventas.id_venta', 'sub.min_numero_cuota', 'sub.max_numero_cuota');    
-
-        // return $model->newQuery();
+        // Un pago multiple (FormCobrarTodo) se guarda sin total_intereses y con varias cuotas
+        // bajo el mismo recibo. Los pagos individuales siempre guardan total_intereses, por lo
+        // que un recibo repetido por error nunca se confunde con un pago multiple.
+        return DetalleVenta::with('venta')
+            ->select(
+                'numero_recibo',
+                'id_venta',
+                DB::raw('MAX(fecha_pago) as fecha_pago'),
+                DB::raw('MIN(pagado) as pagado'),
+                DB::raw('SUM(CAST(total_pago AS DECIMAL(14,2))) as total_pago_agrupado'),
+                DB::raw('MIN(CAST(numero_cuota AS UNSIGNED)) as min_numero_cuota'),
+                DB::raw('MAX(CAST(numero_cuota AS UNSIGNED)) as max_numero_cuota')
+            )
+            ->where('id_venta', '=', $this->idVenta)
+            ->whereNotNull('numero_recibo')
+            ->groupBy('numero_recibo', 'id_venta')
+            ->havingRaw('COUNT(*) > 1')
+            ->havingRaw('SUM(total_intereses IS NOT NULL) = 0')
+            ->orderByRaw('MAX(CAST(numero_cuota AS UNSIGNED)) DESC');
     }
     /**
      * Optional method if you want to use html builder.

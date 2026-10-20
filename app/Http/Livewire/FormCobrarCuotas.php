@@ -177,8 +177,8 @@ class FormCobrarCuotas extends Component
         }
 
         try {
-            $numeroRecibo = DetalleVenta::getSiguienteNumeroRecibo();
             DB::beginTransaction();
+            $numeroRecibo = DetalleVenta::getSiguienteNumeroRecibo();
 
             $fechaMaximaPagar = Carbon::create($this->cuota->fecha_maxima_a_pagar)->format('Y-m');
 

@@ -41,7 +41,7 @@ class VentasCanceladasDataTable extends DataTable
 
             // add colum for href volante
             ->addColumn('volante', function ($data) {
-                return '<a href="' . route('ventasCanceladas.imprimirVolanteCancelacion', $data->maxNumeroRecibo->max_numero_recibo) . '" class="btn btn-warning btn-sm" target="_blank">Volante</a>';
+                return '<a href="' . route('ventasCanceladas.imprimirVolanteCancelacion', ['numeroRecibo' => $data->maxNumeroRecibo->max_numero_recibo, 'venta' => $data->id_venta]) . '" class="btn btn-warning btn-sm" target="_blank">Volante</a>';
             })
 
             ->rawColumns(['nombre_apellido_cliente', 'total_cuotas', 'parcela', 'lote', 'volante'])

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class DetalleVenta extends Model
 {
@@ -69,18 +70,47 @@ class DetalleVenta extends Model
     }
 
 
+    /**
+     * Cuotas de un recibo, opcionalmente acotadas a una venta.
+     */
+    public function scopeDelRecibo($query, $numeroRecibo, $idVenta = null)
+    {
+        return $query->where('numero_recibo', $numeroRecibo)
+            ->when($idVenta, fn ($q) => $q->where('id_venta', $idVenta));
+    }
+
+    /**
+     * Devuelve el siguiente numero de recibo (compartido entre cuotas y comprobantes).
+     *
+     * Toma un lock sobre la fila de la tabla numeracion_recibos, por lo que dos cobros
+     * simultaneos nunca obtienen el mismo numero. Debe llamarse dentro de la misma
+     * transaccion que guarda el recibo: el lock se libera recien al commit/rollback.
+     * Si el contador quedo por detras de los datos, se toma el maximo real.
+     */
     public static function getSiguienteNumeroRecibo()
     {
-        $ultimoNumeroRecibo = (int) DetalleVenta::whereNotNull('numero_recibo')
-            ->orderByRaw('CAST(numero_recibo AS UNSIGNED) DESC')
-            ->value('numero_recibo');
+        return DB::transaction(function () {
+            $contador = DB::table('numeracion_recibos')->lockForUpdate()->first();
 
-        $ultimoNumeroReciboComprobante = (int) Comprobante::whereNotNull('numero_recibo')
-            ->orderByRaw('CAST(numero_recibo AS UNSIGNED) DESC')
-            ->value('numero_recibo');
+            if (!$contador) {
+                DB::table('numeracion_recibos')->insert(['id' => 1, 'ultimo' => 0]);
+                $contador = DB::table('numeracion_recibos')->lockForUpdate()->first();
+            }
 
-        $maximo = max($ultimoNumeroRecibo, $ultimoNumeroReciboComprobante);
+            $ultimoNumeroRecibo = (int) DetalleVenta::whereNotNull('numero_recibo')
+                ->orderByRaw('CAST(numero_recibo AS UNSIGNED) DESC')
+                ->value('numero_recibo');
 
-        return $maximo > 0 ? $maximo + 1 : 1500;
+            $ultimoNumeroReciboComprobante = (int) Comprobante::whereNotNull('numero_recibo')
+                ->orderByRaw('CAST(numero_recibo AS UNSIGNED) DESC')
+                ->value('numero_recibo');
+
+            $maximo = max((int) $contador->ultimo, $ultimoNumeroRecibo, $ultimoNumeroReciboComprobante);
+            $siguiente = $maximo > 0 ? $maximo + 1 : 1500;
+
+            DB::table('numeracion_recibos')->where('id', $contador->id)->update(['ultimo' => $siguiente]);
+
+            return $siguiente;
+        });
     }
 }

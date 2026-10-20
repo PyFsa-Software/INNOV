@@ -229,27 +229,30 @@ class ClientesController extends Controller
     }
 
 
-    public function generarVolantePagoMultiple($numeroRecibo)
+    public function generarVolantePagoMultiple(Request $request, $numeroRecibo)
     {
-        $detalleVentas = DetalleVenta::where('numero_recibo', $numeroRecibo)->get();
-
-        // dd($detalleVentas);
+        $detalleVentas = DetalleVenta::delRecibo($numeroRecibo, $request->query('venta'))
+            ->orderByRaw('CAST(numero_cuota AS UNSIGNED) ASC')
+            ->get();
 
         if ($detalleVentas->isEmpty()) {
 
             return back()->with('error', 'No se encontraron cuotas con el número de recibo ingresado!');
         }
 
+        // Un mismo recibo nunca debe abarcar ventas de distintos clientes.
+        if ($detalleVentas->pluck('id_venta')->unique()->count() > 1) {
+
+            return back()->with('error', 'El número de recibo está asociado a más de una venta, no se puede generar el volante.');
+        }
+
         $totalPago = $detalleVentas->sum('total_pago');
 
         $conceptoDe = $detalleVentas[0]->concepto_de;
 
-
-
-
-        $venta = Venta::all()->where('id_parcela', '=', $detalleVentas->first()->id_parcela)->first();
-        $cliente = Persona::all()->where('id_persona', '=', $venta->id_cliente)->first();
-        $parcela = Parcela::with('lote')->where('id_parcela', '=', $detalleVentas->first()->id_parcela)->first();
+        $venta = Venta::find($detalleVentas->first()->id_venta);
+        $cliente = Persona::find($venta->id_cliente);
+        $parcela = Parcela::with('lote')->find($venta->id_parcela);
 
         // Obtener el rango de números de cuota
         $numeroPrimeraCuota = $detalleVentas->first()->numero_cuota;
